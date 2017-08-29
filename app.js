@@ -11,17 +11,101 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
+
+// Load custom permissions
+var fs = require('fs');
+var dangerousCommands = [];
+var Permissions = {};
+try{
+	Permissions = require("./permissions.json");
+} catch(e){
+	Permissions.global = {};
+	Permissions.users = {};
+}
+
+for( var i=0; i<dangerousCommands.length;i++ ){
+	var cmd = dangerousCommands[i];
+	if(!Permissions.global.hasOwnProperty(cmd)){
+		Permissions.global[cmd] = false;
+	}
+}
+Permissions.checkPermission = function (user,permission){
+	try {
+		var allowed = true;
+		try{
+			if(Permissions.global.hasOwnProperty(permission)){
+				allowed = Permissions.global[permission] === true;
+			}
+		} catch(e){}
+		try{
+			if(Permissions.users[user.id].hasOwnProperty(permission)){
+				allowed = Permissions.users[user.id][permission] === true;
+			}
+		} catch(e){}
+		return allowed;
+	} catch(e){}
+	return false;
+}
+fs.writeFile("./permissions.json",JSON.stringify(Permissions,null,2));
+
+
+// Get authentication data
+try {
+	var AuthDetails = require("./auth.json");
+} catch (e){
+	console.log("Please create an auth.json like auth.json.example with a bot token.\n"+e.stack);
+	process.exit();
+}
+
+const mainetance = 1
+
+// BOT STARTED UP HERE!!!!!!!!!!!
 client.on("ready", () => {
+
+  // Checking if you are using a token to log in.
+  if(AuthDetails.bot_token){
+  console.log("-------------");
+	console.log("Trying to log in with token...");
+	client.login(AuthDetails.bot_token);
+} else {
+	console.log("Bot token not found in auth.json! Remember you cant log in with credentials anymore.");
+}
+
+// If you got here it means you logged in.
+  console.log("-------------");
+  console.log("Logged in!");
+  console.log("-------------");
+
   // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+  console.log("-------------");
+
+  if (mainetance == 1) {
+    client.user.setPresence({ game: { name: 'Under mainetance.', type: 0 } });
+    client.user.setStatus("idle");
+    console.log("Variable mainetance is set to 1. This means the status has been set to idle and presence set to 'Under mainetance'.");
+    console.log("-------------");
+  }else {
+
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setGame(`on ${client.guilds.size} servers`);
+  client.user.setPresence({ game: { name: 'AAAAAAAAAAAAAAAAAAA', type: 0 } });
+  client.user.setStatus("online");
+  console.log("Tried setting bots game, if failed check github or something.");
+  console.log("-------------");
+}
+
+});
+
+client.on("disconnected", function () {
+	console.error("Disconnected!");
+	process.exit(1); //exit node.js with an error
 });
 
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
-  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   client.user.setGame(`on ${client.guilds.size} servers`);
 });
 
@@ -43,12 +127,20 @@ client.on("message", async message => {
   // which is set in the configuration file.
   if(message.content.indexOf(config.prefix) !== 0) return;
 
+  console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
+  console.log("-------------");
+
+  if(message.isMentioned(client.user)){
+    message.channel.send("Hello?");
+  }
+
   // Here we separate our "command" name, and our "arguments" for the command.
   // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
   // command = say
   // args = ["Is", "this", "the", "real", "life?"]
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+
 
   // Let's go with a few common example commands! Feel free to delete or change those.
 
@@ -60,7 +152,18 @@ client.on("message", async message => {
   }
 
   if(command === "invite") {
-			msg.channel.send("invite link: https://discordapp.com/oauth2/authorize?&client_id=" + AuthDetails.client_id + "&scope=bot&permissions=470019135");
+      message.react('👌');
+			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + AuthDetails.client_id + "&scope=bot&permissions=470019135");
+}
+// Help command manually made at the moment.
+if(command === "help"){
+  message.react('👌');
+  message.channel.send("Check your private messages! :wink:");
+  message.author.send("**Available Commands:**");
+  message.author.send(config.prefix + " ``ping`` // Calculates ping.");
+  message.author.send(config.prefix + " ``invite`` // Gives you an bot invite link.");
+  message.author.send(config.prefix + " ``say`` // Repeats what you say.");
+  message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
 }
 
   if(command === "say") {
@@ -73,11 +176,12 @@ client.on("message", async message => {
     message.channel.send(sayMessage);
   }
 
+/*/
   if(command === "kick") {
     // This command must be limited to mods and admins. In this example we just hardcode the role names.
     // Please read on Array.some() to understand this bit:
     // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
-    if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+    if(!message.member.roles.some(r=>["Administrator", "Moderator", "Admin", "Mod"].includes(r.name)) )
       return message.reply("Sorry, you don't have permissions to use this!");
 
     // Let's first check if we have a member and if we can kick them!
@@ -97,9 +201,10 @@ client.on("message", async message => {
     await member.kick(reason)
       .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
     message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
-
   }
+  /*/
 
+/*/
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
@@ -120,7 +225,7 @@ client.on("message", async message => {
       .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
     message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
   }
-
+/*/
   if(command === "purge") {
     // This command removes all messages from all users in the channel, up to 100.
 
