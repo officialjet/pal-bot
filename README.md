@@ -3,7 +3,9 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 
 ## Features:
 - +ping **|** You guessed it!
-- +say ```text``` **|** echos text.
+- +say ```text``` **|** Echos text.
 - +purge ```number``` **|** This command removes all messages from all users in the channel, up to 100.
+- +invite **|** Gives you an invite link for adding the bot to servers.
+- +help **|** Provides a list of commands.
 
 _And more coming soon!_
