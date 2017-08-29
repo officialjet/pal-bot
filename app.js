@@ -59,6 +59,10 @@ client.on("message", async message => {
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
 
+  if(command === "invite") {
+			msg.channel.send("invite link: https://discordapp.com/oauth2/authorize?&client_id=" + AuthDetails.client_id + "&scope=bot&permissions=470019135");
+}
+
   if(command === "say") {
     // makes the bot say something and delete the message. As an example, it's open to anyone to use.
     // To get the "message" itself we join the `args` back into a string with spaces:
