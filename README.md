@@ -8,4 +8,4 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 - +invite **|** Gives you an invite link for adding the bot to servers.
 - +help **|** Provides a list of commands.
 
-_And more coming soon!_
+_And more!_
