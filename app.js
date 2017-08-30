@@ -6,14 +6,15 @@ const Discord = require("discord.js");
 // this is what we're refering to. Your client.
 const client = new Discord.Client();
 
-// Create a new webhook
-const hook = new Discord.WebhookClient('352562055745896459', 'Z4xOVJz0uauFeH-1cUiNBT8mv7ilBa1umsNNb7XQZgqwivBKBPvgaWwJ7m8yKIDMQx6W');
-
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
+// Create a new webhook
+const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
+
+// Mainetance on?
 const mainetance = 0
 
 // BOT STARTED UP HERE!!!!!!!!!!!
