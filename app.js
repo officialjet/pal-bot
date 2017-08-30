@@ -7,7 +7,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 // Create a new webhook
-const hook = new Discord.WebhookClient('352514750665719810', '6QDsMx58ku2Xbg74ozmUvTyXkvFWK2XujXbw9YFi8RHoSKEaOZikjK_LP7Zeg6e-MK7I');
+const hook = new Discord.WebhookClient('352562055745896459', 'Z4xOVJz0uauFeH-1cUiNBT8mv7ilBa1umsNNb7XQZgqwivBKBPvgaWwJ7m8yKIDMQx6W');
 
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
@@ -33,25 +33,29 @@ client.on("ready", () => {
 // If you got here it means you logged in.
   console.log("-------------");
   console.log("Logged in!");
+	hook.send(`Logged in!`)
   console.log("-------------");
 
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
   console.log("-------------");
 
   if (mainetance == 1) {
     client.user.setPresence({ game: { name: 'Under mainetance.', type: 0 } });
     client.user.setStatus("idle");
     console.log("Variable mainetance is set to 1. This means the status has been set to idle and presence set to 'Under mainetance'.");
+		hook.send("Variable mainetance is set to 1. This means the status has been set to idle and presence set to 'Under mainetance'.");
     console.log("-------------");
   }else {
 
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setGame(`on ${client.guilds.size} servers`);
-  client.user.setPresence({ game: { name: 'AAAAAAAAAAAAAAAAAAA', type: 0 } });
+  client.user.setPresence({ game: { name: `+help | on ${client.guilds.size} servers`, type: 0 } });
   client.user.setStatus("online");
-  console.log("Tried setting bots game, if failed check github or something.");
+  console.log("Bot's status and game set.");
+	hook.send(`Bot's status and game set.`)
   console.log("-------------");
 }
 
@@ -59,19 +63,22 @@ client.on("ready", () => {
 
 client.on("disconnected", function () {
 	console.error("Disconnected!");
+	hook.send("Disconnected!");
 	process.exit(1); //exit node.js with an error
 });
 
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  client.user.setGame(`on ${client.guilds.size} servers`);
+	hook.send(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  // client.user.setGame(`on ${client.guilds.size} servers`);
 });
 
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  client.user.setGame(`on ${client.guilds.size} servers`);
+	hook.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  // client.user.setGame(`on ${client.guilds.size} servers`);
 });
 
 
@@ -113,6 +120,10 @@ client.on("message", async message => {
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
 
+	if(command === "server"){
+		message.author.send("You can join this bots discord server using https://discord.gg/k6qSHQs")
+	}
+
   if(command === "invite") {
       message.react('👌');
 			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + AuthDetails.client_id + "&scope=bot&permissions=470019135");
@@ -126,6 +137,9 @@ if(command === "help"){
   message.author.send(config.prefix + " ``invite`` // Gives you an bot invite link.");
   message.author.send(config.prefix + " ``say`` // Repeats what you say.");
   message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
+	message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
+	message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
+	message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
 }
 
   if(command === "say") {
@@ -137,6 +151,53 @@ if(command === "help"){
     // And we get the bot to say the thing:
     message.channel.send(sayMessage);
   }
+
+if(command === "me"){
+  message.react('👌');
+	console.log("Reacted sending message now...");
+	message.channel.send(
+		{
+  embed: {
+    title: "User's info",
+    description: "--------------------------------------------------------",
+    color: 6814447,
+
+    footer: {
+      icon_url : client.user.avatarURL,
+      text: "© [slem]"
+    },
+    thumbnail: {
+      url: message.author.avatarURL
+    },
+    author: {
+      name: message.author.username,
+      icon_url: message.author.avatarURL
+    },
+    fields: [
+			{
+				name : "Username:",
+				value : message.author.username,
+				inline: true
+			},
+      {
+        name : "ID:",
+        value : message.author.id,
+				inline: true
+      },
+      {
+        name : "Account creation date:",
+        value : message.author.createdAt
+      },
+      {
+        name: "Profile picture link:",
+        value : message.author.displayAvatarURL
+      }
+    ]
+  }
+});
+console.log("Message sent.");
+console.log("-------------");
+}
 
 
 	if(command === "info"){
