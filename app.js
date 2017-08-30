@@ -6,47 +6,13 @@ const Discord = require("discord.js");
 // this is what we're refering to. Your client.
 const client = new Discord.Client();
 
+// Create a new webhook
+const hook = new Discord.WebhookClient('352514750665719810', '6QDsMx58ku2Xbg74ozmUvTyXkvFWK2XujXbw9YFi8RHoSKEaOZikjK_LP7Zeg6e-MK7I');
+
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
-
-
-// Load custom permissions
-var fs = require('fs');
-var dangerousCommands = [];
-var Permissions = {};
-try{
-	Permissions = require("./permissions.json");
-} catch(e){
-	Permissions.global = {};
-	Permissions.users = {};
-}
-
-for( var i=0; i<dangerousCommands.length;i++ ){
-	var cmd = dangerousCommands[i];
-	if(!Permissions.global.hasOwnProperty(cmd)){
-		Permissions.global[cmd] = false;
-	}
-}
-Permissions.checkPermission = function (user,permission){
-	try {
-		var allowed = true;
-		try{
-			if(Permissions.global.hasOwnProperty(permission)){
-				allowed = Permissions.global[permission] === true;
-			}
-		} catch(e){}
-		try{
-			if(Permissions.users[user.id].hasOwnProperty(permission)){
-				allowed = Permissions.users[user.id][permission] === true;
-			}
-		} catch(e){}
-		return allowed;
-	} catch(e){}
-	return false;
-}
-fs.writeFile("./permissions.json",JSON.stringify(Permissions,null,2));
 
 
 // Get authentication data
@@ -62,14 +28,7 @@ const mainetance = 1
 // BOT STARTED UP HERE!!!!!!!!!!!
 client.on("ready", () => {
 
-  // Checking if you are using a token to log in.
-  if(AuthDetails.bot_token){
-  console.log("-------------");
-	console.log("Trying to log in with token...");
-	client.login(AuthDetails.bot_token);
-} else {
-	console.log("Bot token not found in auth.json! Remember you cant log in with credentials anymore.");
-}
+
 
 // If you got here it means you logged in.
   console.log("-------------");
@@ -119,6 +78,9 @@ client.on("guildDelete", guild => {
 client.on("message", async message => {
   // This event will run on every single message received, from any channel or DM.
 
+	if(message.isMentioned(client.user)) message.channel.send('Hello?');
+
+
   // It's good practice to ignore other bots. This also makes your bot ignore itself
   // and not get into a spam loop (we call that "botception").
   if(message.author.bot) return;
@@ -127,12 +89,11 @@ client.on("message", async message => {
   // which is set in the configuration file.
   if(message.content.indexOf(config.prefix) !== 0) return;
 
+
   console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
+	hook.send("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
   console.log("-------------");
 
-  if(message.isMentioned(client.user)){
-    message.channel.send("Hello?");
-  }
 
   // Here we separate our "command" name, and our "arguments" for the command.
   // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -140,6 +101,7 @@ client.on("message", async message => {
   // args = ["Is", "this", "the", "real", "life?"]
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+
 
 
   // Let's go with a few common example commands! Feel free to delete or change those.
@@ -175,6 +137,71 @@ if(command === "help"){
     // And we get the bot to say the thing:
     message.channel.send(sayMessage);
   }
+
+
+	if(command === "info"){
+		message.react('👌');
+		message.author.send({
+  "embed": {
+    "description": "**Pal is a bot for discord that does various things!**",
+    "color": 9484764,
+    "footer": {
+      "icon_url": "https://cdn.discordapp.com/app-icons/300955174225051650/0cff84632c70375f738cad76f449f65c.png",
+      "text": "© [slem]  |  build on discord.js"
+    },
+    "author": {
+      "name": "Pal",
+      "icon_url": "https://cdn.discordapp.com/app-icons/300955174225051650/0cff84632c70375f738cad76f449f65c.png"
+    },
+    "fields": [
+      {
+        "name": "**Some things i can do:**",
+        "value": "------------------------------"
+      },
+      {
+        "name": "**+ invite**",
+        "value": "Gives you an bot invite link."
+      },
+      {
+        "name": "**+ ping**",
+        "value": "Calculates ping."
+      },
+      {
+        "name": "**+ say**",
+        "value": "Repeats what you say."
+      },
+      {
+        "name": "**+ help**",
+        "value": "Provides help."
+      },
+      {
+        "name": "**+ info**",
+        "value": "------------------------------"
+      }
+
+
+
+    ]
+  }
+})
+	}
+
+
+
+	/*
+	Hook Test
+	*/
+
+	if(command === "hookme") {
+		if(message.author.id !== config.ownerID || config.benID){
+			message.react("👎");
+		}else {
+			message.react('👌');
+			const sayMessage = args.join(" ");
+			// Send a message using the webhook
+			hook.send(sayMessage);
+		}
+}
 
 /*/
   if(command === "kick") {
@@ -241,6 +268,16 @@ if(command === "help"){
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
+
+
+
 });
 
-client.login(config.token);
+// Checking if you are using a token to log in.
+if(AuthDetails.bot_token){
+console.log("-------------");
+console.log("Trying to log in with token...");
+client.login(AuthDetails.bot_token);
+} else {
+console.log("Bot token not found in auth.json! Remember you cant log in with credentials anymore.");
+}
