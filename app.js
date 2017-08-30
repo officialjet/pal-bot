@@ -14,15 +14,6 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
-
-// Get authentication data
-try {
-	var AuthDetails = require("./auth.json");
-} catch (e){
-	console.log("Please create an auth.json like auth.json.example with a bot token.\n"+e.stack);
-	process.exit();
-}
-
 const mainetance = 1
 
 // BOT STARTED UP HERE!!!!!!!!!!!
@@ -335,10 +326,10 @@ console.log("-------------");
 });
 
 // Checking if you are using a token to log in.
-if(AuthDetails.bot_token){
+if(config.bot_token){
 console.log("-------------");
 console.log("Trying to log in with token...");
-client.login(AuthDetails.bot_token);
+client.login(config.bot_token);
 } else {
 console.log("Bot token not found in auth.json! Remember you cant log in with credentials anymore.");
 }
