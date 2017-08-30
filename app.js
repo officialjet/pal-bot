@@ -41,7 +41,7 @@ client.on("ready", () => {
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setGame(`on ${client.guilds.size} servers`);
-  client.user.setPresence({ game: { name: `+help | on ${client.guilds.size} servers`, type: 0 } });
+  client.user.setPresence({ game: { name: `Online! | +help `, type: 0 } });
   client.user.setStatus("online");
   console.log("Bot's status and game set.");
 	hook.send(`Bot's status and game set.`)
