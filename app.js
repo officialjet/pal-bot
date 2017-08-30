@@ -14,14 +14,11 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
-const mainetance = 1
+const mainetance = 0
 
 // BOT STARTED UP HERE!!!!!!!!!!!
 client.on("ready", () => {
-
-
-
-// If you got here it means you logged in.
+// If you got here it means bot logged in.
   console.log("-------------");
   console.log("Logged in!");
 	hook.send(`Logged in!`)
@@ -239,7 +236,6 @@ console.log("-------------");
 	}
 
 
-
 	/*
 	Hook Test
 	*/
@@ -255,56 +251,6 @@ console.log("-------------");
 		}
 }
 
-/*/
-  if(command === "kick") {
-    // This command must be limited to mods and admins. In this example we just hardcode the role names.
-    // Please read on Array.some() to understand this bit:
-    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
-    if(!message.member.roles.some(r=>["Administrator", "Moderator", "Admin", "Mod"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
-
-    // Let's first check if we have a member and if we can kick them!
-    // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
-    let member = message.mentions.members.first();
-    if(!member)
-      return message.reply("Please mention a valid member of this server");
-    if(!member.kickable)
-      return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
-
-    // slice(1) removes the first part, which here should be the user mention!
-    let reason = args.slice(1).join(' ');
-    if(!reason)
-      return message.reply("Please indicate a reason for the kick!");
-
-    // Now, time for a swift kick in the nuts!
-    await member.kick(reason)
-      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
-  }
-  /*/
-
-/*/
-  if(command === "ban") {
-    // Most of this command is identical to kick, except that here we'll only let admins do it.
-    // In the real world mods could ban too, but this is just an example, right? ;)
-    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
-
-    let member = message.mentions.members.first();
-    if(!member)
-      return message.reply("Please mention a valid member of this server");
-    if(!member.bannable)
-      return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
-
-    let reason = args.slice(1).join(' ');
-    if(!reason)
-      return message.reply("Please indicate a reason for the ban!");
-
-    await member.ban(reason)
-      .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
-    message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
-  }
-/*/
   if(command === "purge") {
     // This command removes all messages from all users in the channel, up to 100.
 
@@ -320,16 +266,13 @@ console.log("-------------");
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
-
-
-
 });
 
 // Checking if you are using a token to log in.
-if(config.bot_token){
+if(config.token){
 console.log("-------------");
 console.log("Trying to log in with token...");
-client.login(config.bot_token);
+client.login(config.token);
 } else {
-console.log("Bot token not found in auth.json! Remember you cant log in with credentials anymore.");
+console.log("Bot token not found! Remember you cant log in with credentials anymore.");
 }
