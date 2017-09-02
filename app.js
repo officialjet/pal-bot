@@ -109,6 +109,37 @@ client.on("message", async(message) => {
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
 
+  if(command === "git"){
+    message.channel.send({
+  embed: {
+    title: "GitHub Repo",
+    description: "--------------------------------------------------------",
+    color: 6814447,
+
+    footer: {
+      icon_url : client.user.avatarURL,
+      text: "© [slem]"
+    },
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    fields: [
+			{
+				name : "Repo link:",
+				value : "https://github.com/sleme/pal-bot",
+				inline: true
+			},
+      {
+        name : "Latest release:",
+        value : "1.0.0",
+				inline: true
+      }
+    ]
+  }
+})
+  }
+
 	if(command === "server"){
 		message.author.send("You can join this bots discord server using https://discord.gg/k6qSHQs")
 	}
