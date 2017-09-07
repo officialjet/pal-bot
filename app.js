@@ -31,7 +31,8 @@ client.on("ready", () => {
   console.log("-------------");
 
   if (mainetance == 1) {
-    client.user.setPresence({ game: { name: 'Under mainetance.', type: 0 } });
+    // client.user.setPresence({ game: { name: 'Under mainetance.', type: 0 } });
+    client.user.setGame(`Under mainetance.`);
     client.user.setStatus("idle");
     console.log("Variable mainetance is set to 1. This means the status has been set to idle and presence set to 'Under mainetance'.");
 		hook.send("Variable mainetance is set to 1. This means the status has been set to idle and presence set to 'Under mainetance'.");
@@ -40,8 +41,8 @@ client.on("ready", () => {
 
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
-  client.user.setGame(`on ${client.guilds.size} servers`);
-  client.user.setPresence({ game: { name: `Online! | +help `, type: 0 } });
+  client.user.setGame(`Online on ${client.guilds.size} servers! | +help`);
+  // client.user.setPresence({ game: { name: `Online! | +help `, type: 0 } });
   client.user.setStatus("online");
   console.log("Bot's status and game set.");
 	hook.send(`Bot's status and game set.`)
