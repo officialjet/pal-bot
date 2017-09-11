@@ -10,6 +10,9 @@ const config = require("./config.json");
 // Loading "Missigno" hook for #console in pal-bot discord.
 const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
 
+// Loading "Venter" hook
+const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
+
 // Here we define mainetance. (0 = off | 1 = on)
 const mainetance = 0
 
@@ -86,7 +89,7 @@ client.on("message", async(message) => {
 
   // Logging recived commands.
   console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-	hook.send("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
+	hook.send("Recived " + message.content + ". Treating it as a command.");
   console.log("-------------");
 
 
@@ -108,6 +111,16 @@ client.on("message", async(message) => {
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
+  }
+
+  if(command === "vent"){
+    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
+    // To get the "message" itself we join the `args` back into a string with spaces:
+    const sayMessage = args.join(" ");
+    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+    message.delete().catch(O_o=>{});
+    // And we get the bot to say the thing:
+    vent.send(sayMessage +" - Anonymous");
   }
 
 
@@ -157,7 +170,19 @@ client.on("message", async(message) => {
   */
   if(command === "invite") {
       message.react('👌');
-			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + AuthDetails.client_id + "&scope=bot&permissions=470019135");
+			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+}
+
+if(command === "kill") {
+  if(message.author.id !== config.ownerID){
+    message.react("👎");
+  }else {
+    message.react('👌');
+    // Send a message using the webhook
+    hook.send("Killing bot...");
+    process.exit();
+  }
+
 }
 
 /*
@@ -173,6 +198,7 @@ if(command === "help"){
   message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
 	message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
 	message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
+  message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/vzysQSF ");
 	message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
 }
 
