@@ -122,6 +122,7 @@ client.on("message", async(message) => {
     message.delete().catch(O_o=>{});
     // And we get the bot to say the thing:
     vent.send(sayMessage +" - Anonymous");
+    vent2.send(sayMessage +" - Anonymous");
   }
 
 if(command === "mainetance-1"){
