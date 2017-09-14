@@ -172,6 +172,7 @@ if(command === "mainetance-1"){
 						console.log("Shutting down...");
 						sentmessage.edit("I will be right back!").then(function(){
 							client.destroy().then(function(){
+                sentmessage.edit("I will be right back!");
 								process.exit();
 							});
 						});
