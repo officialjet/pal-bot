@@ -255,6 +255,8 @@ if(command === "kill") {
       })
     })
   }
+}
+
 
 /*
 Command: help
