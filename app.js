@@ -171,7 +171,7 @@ if(command === "mainetance-1"){
 					npm.on("close",function(code){
 						console.log("goodbye");
 						sentmessage.edit("brb!").then(function(){
-							bot.destroy().then(function(){
+							client.destroy().then(function(){
 								process.exit();
 							});
 						});
