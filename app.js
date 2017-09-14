@@ -12,8 +12,8 @@ const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
 
 // Loading "Venter" hook
 const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
-
 const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
+const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
 // Here we define mainetance. (0 = off | 1 = on)
 const mainetance = 0
@@ -123,8 +123,15 @@ client.on("message", async(message) => {
     message.delete().catch(O_o=>{});
     // And we get the bot to say the thing:
     vent.send(sayMessage +" - Anonymous");
-    sad.send(sayMessage +" - Anonymous");
+  }
 
+  if(command === "rant"){
+    const sayMessage = args.join(" ");
+    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+    message.delete().catch(O_o=>{});
+    // And we get the bot to say the thing:
+    sad.send(sayMessage +" - Anonymous");
+    admin.send(sayMessage +"-"+ message.author);
   }
 
 if(command === "mainetance-1"){
