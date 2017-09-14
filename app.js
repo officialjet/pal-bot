@@ -4,15 +4,6 @@ const Discord = require("discord.js");
 // Defining the Discord Client as "client".
 const client = new Discord.Client();
 
-const reboot = new Promise(resolve => { // reboot; kill bot and start it again
-  client.kill('SIGTERM');
-  client = spawn('node', ['index'], {
-    cwd: path.join(__dirname, 'bot'),
-    env: process.env
-  });
-  resolve();
-});
-
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 
@@ -157,7 +148,7 @@ if(command === "mainetance-1"){
       message.react("👎");
     }else {
     message.channel.send("Fetching updates...").then(function(sentmessage){
-			console.log("updating...");
+			console.log("Bot updating...");
 			var spawn = require('child_process').spawn;
 			var log = function(err,stdout,stderr){
 				if(stdout){console.log(stdout);}
@@ -178,10 +169,10 @@ if(command === "mainetance-1"){
 						console.log(data.toString());
 					});
 					npm.on("close",function(code){
-						console.log("goodbye");
-						sentmessage.edit("brb!").then(function(){
+						console.log("Shutting down...");
+						sentmessage.edit("I will be right back!").then(function(){
 							client.destroy().then(function(){
-								reboot();
+								process.quit();
 							});
 						});
 					});
@@ -198,7 +189,7 @@ if(command === "version"){
 		});
 		commit.on('close',function(code) {
 			if( code != 0){
-				message.channel.send("failed checking git version!");
+				message.channel.send("Failed checking git version!");
 			}
 		});
 }
@@ -258,10 +249,8 @@ if(command === "kill") {
   }else {
     message.react('👌');
     // Send a message using the webhook
-    hook.send("Killing bot...").then(reboot())
-    reboot();
+    hook.send("Killing bot...").then(process.quit())
   }
-
 }
 
 /*
