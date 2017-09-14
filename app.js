@@ -183,7 +183,6 @@ if(command === "mainetance-1"){
   }
 
 if(command === "version"){
-  process: function(bot,msg,suffix) {
 		var commit = require('child_process').spawn('git', ['log','-n','1']);
 		commit.stdout.on('data', function(data) {
 			msg.channel.sendMessage(data);
@@ -193,7 +192,6 @@ if(command === "version"){
 				msg.channel.sendMessage("failed checking git version!");
 			}
 		});
-	}
 }
 
   /*
