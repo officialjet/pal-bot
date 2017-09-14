@@ -249,8 +249,7 @@ if(command === "kill") {
   }else {
     message.react('👌');
     // Send a message using the webhook
-    hook.send("Killing bot...");
-    setTimeout(process.exit(), 5000);
+    hook.send("Killing bot...").then(process.exit())
 
   }
 
@@ -335,57 +334,6 @@ if(command === "help"){
 console.log("Message sent.");
 console.log("-------------");
 }
-
-  /*
-  Command: info
-  */
-	if(command === "info"){
-		message.react('👌');
-		message.author.send({
-  "embed": {
-    "description": "**Pal is a bot for discord that does various things!**",
-    "color": 9484764,
-    "footer": {
-      "icon_url": "https://cdn.discordapp.com/app-icons/300955174225051650/0cff84632c70375f738cad76f449f65c.png",
-      "text": "© [slem]  |  build on discord.js"
-    },
-    "author": {
-      "name": "Pal",
-      "icon_url": "https://cdn.discordapp.com/app-icons/300955174225051650/0cff84632c70375f738cad76f449f65c.png"
-    },
-    "fields": [
-      {
-        "name": "**Some things i can do:**",
-        "value": "------------------------------"
-      },
-      {
-        "name": "**+ invite**",
-        "value": "Gives you an bot invite link."
-      },
-      {
-        "name": "**+ ping**",
-        "value": "Calculates ping."
-      },
-      {
-        "name": "**+ say**",
-        "value": "Repeats what you say."
-      },
-      {
-        "name": "**+ help**",
-        "value": "Provides help."
-      },
-      {
-        "name": "**+ info**",
-        "value": "------------------------------"
-      }
-
-
-
-    ]
-  }
-})
-	}
-
 
 	/*
 	Hook Test
