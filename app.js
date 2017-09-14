@@ -185,11 +185,11 @@ if(command === "mainetance-1"){
 if(command === "version"){
 		var commit = require('child_process').spawn('git', ['log','-n','1']);
 		commit.stdout.on('data', function(data) {
-			message.channel.sendMessage(data);
+			message.channel.send(data);
 		});
 		commit.on('close',function(code) {
 			if( code != 0){
-				message.channel.sendMessage("failed checking git version!");
+				message.channel.send("failed checking git version!");
 			}
 		});
 }
