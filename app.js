@@ -4,6 +4,15 @@ const Discord = require("discord.js");
 // Defining the Discord Client as "client".
 const client = new Discord.Client();
 
+const reboot = new Promise(resolve => { // reboot; kill bot and start it again
+  client.kill('SIGTERM');
+  client = spawn('node', ['index'], {
+    cwd: path.join(__dirname, 'bot'),
+    env: process.env
+  });
+  resolve();
+});
+
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 
@@ -172,7 +181,7 @@ if(command === "mainetance-1"){
 						console.log("goodbye");
 						sentmessage.edit("brb!").then(function(){
 							client.destroy().then(function(){
-								process.exit();
+								reboot();
 							});
 						});
 					});
@@ -249,8 +258,8 @@ if(command === "kill") {
   }else {
     message.react('👌');
     // Send a message using the webhook
-    hook.send("Killing bot...").then(process.exit())
-
+    hook.send("Killing bot...").then(reboot())
+    reboot();
   }
 
 }
