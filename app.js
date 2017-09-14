@@ -131,7 +131,7 @@ client.on("message", async(message) => {
     message.delete().catch(O_o=>{});
     // And we get the bot to say the thing:
     sad.send(sayMessage +" - Anonymous");
-    admin.send(sayMessage +"-"+ message.author);
+    admin.send("Recived: ' '"sayMessage +"' - "+ message.author);
   }
 
 if(command === "mainetance-1"){
