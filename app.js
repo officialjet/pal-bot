@@ -199,38 +199,38 @@ if(command === "version"){
 		});
 }
 
-  /*
-  Command: git
-  */
-  if(command === "git"){
-    message.channel.send({
-  embed: {
-    title: "GitHub Repo",
-    description: "--------------------------------------------------------",
-    color: 6814447,
+    /*
+    Command: git
+    */
+    if(command === "git"){
+        message.channel.send({
+      embed: {
+        title: "GitHub Repo",
+        description: "--------------------------------------------------------",
+        color: 6814447,
 
-    footer: {
-      icon_url : client.user.avatarURL,
-      text: "© [slem]"
-    },
-    author: {
-      name: client.user.username,
-      icon_url: client.user.avatarURL
-    },
-    fields: [
-			{
-				name : "Repo link:",
-				value : "https://github.com/sleme/pal-bot",
-				inline: true
-			},
-      {
-        name : "Latest release:",
-        value : "1.0.0",
-				inline: true
+        footer: {
+          icon_url : client.user.avatarURL,
+          text: "© [slem]"
+        },
+        author: {
+          name: client.user.username,
+          icon_url: client.user.avatarURL
+        },
+        fields: [
+                {
+                    name : "Repo link:",
+                    value : "https://github.com/sleme/pal-bot",
+                    inline: true
+                },
+          {
+            name : "Latest release:",
+            value : "1.0.0",
+                    inline: true
+          }
+        ]
       }
-    ]
-  }
-})
+    })
   }
 
   /*
@@ -240,19 +240,19 @@ if(command === "version"){
 		message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
-  /*
-  Command: bot-invite
-  */
-  if(command === "bot-invite") {
-      message.react('👌');
-			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
-  }
+    /*
+    Command: bot-invite
+    */
+    if(command === "bot-invite") {
+        message.react('👌');
+		message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+    }
 
-  /*
-  Command: invite
-  Description: Sends the first invite link which never expires.
-  */
-  if(command === "invite"){
+    /*
+    Command: invite
+    Description: Sends the first invite link which never expires.
+    */
+    if(command === "invite"){
         try {
             const invites = await message.guild.fetchInvites();
             message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
@@ -260,39 +260,40 @@ if(command === "version"){
             message.delete();
             message.author.send("No invite link found! Create one yourself in Discord.")
         }
-  }
+    }
 
-if(command === "kill") {
-  if(message.author.id !== config.ownerID){
-    message.react("👎");
-  }else {
-    message.react('👌');
-    // Send a message using the webhook
-    hook.send("Killing bot...").then(function(){
-      client.destroy().then(function(){
-        process.exit();
-      })
-    })
-  }
-}
+    if(command === "kill") {
+      if(message.author.id !== config.ownerID){
+        message.react("👎");
+      }else {
+        message.react('👌');
+        // Send a message using the webhook
+        hook.send("Killing bot...").then(function(){
+          client.destroy().then(function(){
+            process.exit();
+          })
+        })
+      }
+    }
 
 
-/*
-Command: help
-*/
-if(command === "help"){
-  message.react('👌');
-  message.channel.send("Check your private messages! :wink:");
-  message.author.send("**Available Commands:**");
-  message.author.send(config.prefix + " ``ping`` // Calculates ping.");
-  message.author.send(config.prefix + " ``bot-invite`` // Gives you an bot invite link.");
-  message.author.send(config.prefix + " ``say`` // Repeats what you say.");
-  message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
-	message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
-	message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
-  message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/vzysQSF ");
-	message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
-}
+    /*
+    Command: help
+    */
+    if(command === "help"){
+        message.react('👌');
+        message.channel.send("Check your private messages! :wink:");
+        message.author.send("**Available Commands:**");
+        message.author.send(config.prefix + " ``ping`` // Calculates ping.");
+        message.author.send(config.prefix + " ``invite`` // Gives you an invite link to this discord server.");
+        message.author.send(config.prefix + " ``bot-invite`` // Gives you a bot invite link.");
+        message.author.send(config.prefix + " ``say`` // Repeats what you say.");
+        message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
+        message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
+        message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
+        message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/vzysQSF ");
+        message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
+    }
 
   /*
   Command: say
