@@ -123,6 +123,23 @@ client.on("message", async(message) => {
     vent.send(sayMessage +" - Anonymous");
   }
 
+if(command === "mainetance 1"){
+  if(message.author.id !== config.ownerID){
+    message.react("👎");
+  }else {
+    client.user.setGame(`Under mainetance.`);
+    client.user.setStatus("idle");
+  }
+}
+
+  if(command === "mainetance 0"){
+    if(message.author.id !== config.ownerID){
+      message.react("👎");
+    }else {
+      client.user.setGame(`Online! | +help`);
+      client.user.setStatus("online");
+    }
+  }
 
   /*
   Command: git
@@ -180,7 +197,8 @@ if(command === "kill") {
     message.react('👌');
     // Send a message using the webhook
     hook.send("Killing bot...");
-    process.exit();
+    setTimeout(process.exit(), 5000);
+
   }
 
 }
