@@ -143,6 +143,59 @@ if(command === "mainetance-1"){
     }
   }
 
+  if(command === "update"){
+    if(message.author.id !== config.ownerID){
+      message.react("👎");
+    }else {
+    msg.channel.sendMessage("Fetching updates...").then(function(sentMsg){
+			console.log("updating...");
+			var spawn = require('child_process').spawn;
+			var log = function(err,stdout,stderr){
+				if(stdout){console.log(stdout);}
+				if(stderr){console.log(stderr);}
+			};
+			var fetch = spawn('git', ['fetch']);
+			fetch.stdout.on('data',function(data){
+				console.log(data.toString());
+			});
+			fetch.on("close",function(code){
+				var reset = spawn('git', ['reset','--hard','origin/master']);
+				reset.stdout.on('data',function(data){
+					console.log(data.toString());
+				});
+				reset.on("close",function(code){
+					var npm = spawn('npm', ['install']);
+					npm.stdout.on('data',function(data){
+						console.log(data.toString());
+					});
+					npm.on("close",function(code){
+						console.log("goodbye");
+						sentMsg.edit("brb!").then(function(){
+							bot.destroy().then(function(){
+								process.exit();
+							});
+						});
+					});
+				});
+			});
+		});
+    }
+  }
+
+if(command === "version"){
+  process: function(bot,msg,suffix) {
+		var commit = require('child_process').spawn('git', ['log','-n','1']);
+		commit.stdout.on('data', function(data) {
+			msg.channel.sendMessage(data);
+		});
+		commit.on('close',function(code) {
+			if( code != 0){
+				msg.channel.sendMessage("failed checking git version!");
+			}
+		});
+	}
+}
+
   /*
   Command: git
   */
