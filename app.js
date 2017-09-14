@@ -15,8 +15,8 @@ const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 
 const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 
-// Here we define mainetance. (0 = off | 1 = on)
-const mainetance = 0
+// Here we define maintenance. (0 = off | 1 = on)
+const maintenance = 0
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
@@ -30,15 +30,15 @@ client.on("ready", () => {
 	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
   console.log("-------------");
 
-  // The events under here will run if the bot starts, logs in successfully and mainetance is set to "ON".
-  if (mainetance == 1) {
+  // The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
+  if (maintenance == 1) {
     // Setting bot's game and status.
-    client.user.setGame(`Under mainetance.`);
+    client.user.setGame(`Under maintenance.`);
     client.user.setStatus("idle");
 
     // Logging changes.
-    console.log("Mainetance set to 'ON'. This means the status has been set to idle and presence set to 'Under mainetance'.");
-		hook.send("Mainetance set to 'ON'. This means the status has been set to idle and presence set to 'Under mainetance'.");
+    console.log("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
+		hook.send("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
     console.log("-------------");
   }else {
   // Setting bot's game and status.
@@ -127,17 +127,17 @@ client.on("message", async(message) => {
 
   }
 
-if(command === "mainetance-1"){
+if(command === "maintenance-1"){
   if(message.author.id !== config.ownerID){
     message.react("👎");
   }else {
-    hook.send("Bot set under mainetance");
-    client.user.setGame(`Under mainetance.`);
+    hook.send("Bot set under maintenance!");
+    client.user.setGame(`Under maintenance.`);
     client.user.setStatus("idle");
   }
 }
 
-  if(command === "mainetance-0"){
+  if(command === "maintenance-0"){
     if(message.author.id !== config.ownerID){
       message.react("👎");
     }else {
@@ -237,13 +237,13 @@ if(command === "version"){
   Command: server
   */
 	if(command === "server"){
-		message.author.send("You can join this bots discord server using https://discord.gg/k6qSHQs")
+		message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
   /*
-  Command: invite
+  Command: bot-invite
   */
-  if(command === "invite") {
+  if(command === "bot-invite") {
       message.react('👌');
 			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
 }
@@ -271,7 +271,7 @@ if(command === "help"){
   message.channel.send("Check your private messages! :wink:");
   message.author.send("**Available Commands:**");
   message.author.send(config.prefix + " ``ping`` // Calculates ping.");
-  message.author.send(config.prefix + " ``invite`` // Gives you an bot invite link.");
+  message.author.send(config.prefix + " ``bot-invite`` // Gives you an bot invite link.");
   message.author.send(config.prefix + " ``say`` // Repeats what you say.");
   message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
 	message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
