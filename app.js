@@ -252,8 +252,8 @@ if(command === "kill") {
     hook.send("Killing bot...").then(function(){
       client.destroy().then(function(){
         process.exit();
-      }
-    }
+      })
+    })
   }
 
 /*
