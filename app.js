@@ -12,7 +12,7 @@ const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
 
 // Loading "Venter" hook
 const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
-const vent2 = new Discord.WebhookClient(config.vent2_id, config.vent2_token);
+const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 
 // Here we define mainetance. (0 = off | 1 = on)
 const mainetance = 0
