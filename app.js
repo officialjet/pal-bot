@@ -172,7 +172,7 @@ if(command === "mainetance-1"){
 						console.log("Shutting down...");
 						sentmessage.edit("I will be right back!").then(function(){
 							client.destroy().then(function(){
-								process.quit();
+								process.exit();
 							});
 						});
 					});
@@ -249,9 +249,12 @@ if(command === "kill") {
   }else {
     message.react('👌');
     // Send a message using the webhook
-    hook.send("Killing bot...").then(process.quit())
+    hook.send("Killing bot...").then(function(){
+      client.destroy().then(function(){
+        process.exit();
+      }
+    }
   }
-}
 
 /*
 Command: help
