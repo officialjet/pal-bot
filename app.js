@@ -147,7 +147,7 @@ if(command === "mainetance-1"){
     if(message.author.id !== config.ownerID){
       message.react("👎");
     }else {
-    msg.channel.sendMessage("Fetching updates...").then(function(sentMsg){
+    message.channel.send("Fetching updates...").then(function(sentmessage){
 			console.log("updating...");
 			var spawn = require('child_process').spawn;
 			var log = function(err,stdout,stderr){
@@ -170,7 +170,7 @@ if(command === "mainetance-1"){
 					});
 					npm.on("close",function(code){
 						console.log("goodbye");
-						sentMsg.edit("brb!").then(function(){
+						sentmessage.edit("brb!").then(function(){
 							bot.destroy().then(function(){
 								process.exit();
 							});
@@ -185,11 +185,11 @@ if(command === "mainetance-1"){
 if(command === "version"){
 		var commit = require('child_process').spawn('git', ['log','-n','1']);
 		commit.stdout.on('data', function(data) {
-			msg.channel.sendMessage(data);
+			message.channel.sendMessage(data);
 		});
 		commit.on('close',function(code) {
 			if( code != 0){
-				msg.channel.sendMessage("failed checking git version!");
+				message.channel.sendMessage("failed checking git version!");
 			}
 		});
 }
