@@ -123,19 +123,21 @@ client.on("message", async(message) => {
     vent.send(sayMessage +" - Anonymous");
   }
 
-if(command === "mainetance 1"){
+if(command === "mainetance-1"){
   if(message.author.id !== config.ownerID){
     message.react("👎");
   }else {
+    hook.send("Bot set under mainetance");
     client.user.setGame(`Under mainetance.`);
     client.user.setStatus("idle");
   }
 }
 
-  if(command === "mainetance 0"){
+  if(command === "mainetance-0"){
     if(message.author.id !== config.ownerID){
       message.react("👎");
     }else {
+      hook.send("Bot set online");
       client.user.setGame(`Online! | +help`);
       client.user.setStatus("online");
     }
