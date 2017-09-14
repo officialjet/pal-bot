@@ -246,7 +246,21 @@ if(command === "version"){
   if(command === "bot-invite") {
       message.react('👌');
 			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
-}
+  }
+
+  /*
+  Command: invite
+  Description: Sends the first invite link which never expires.
+  */
+  if(command === "invite"){
+        try {
+            const invites = await message.guild.fetchInvites();
+            message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
+        } catch(err){
+            message.delete();
+            message.author.send("No invite link found! Create one yourself in Discord.")
+        }
+  }
 
 if(command === "kill") {
   if(message.author.id !== config.ownerID){
