@@ -118,8 +118,8 @@ client.on("message", async(message) => {
 
 			const rupmin = Number(Math.round(upmin+'e2')+'e-2');
 			const ruphou = Number(Math.round(uphou+'e2')+'e-2');
-			rupmin.toString()
-			ruphou.toString()
+			num.toString(rupmin);
+			num.toString(ruphou);
 
 			message.channel.send(
 				{
