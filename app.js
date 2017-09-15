@@ -118,9 +118,9 @@ client.on("message", async(message) => {
 
 			const rupmin = Number(Math.round(upmin+'e2')+'e-2');
 			const ruphou = Number(Math.round(uphou+'e2')+'e-2');
-			String(rupmin);
-			String(ruphou);
-			
+			rupmin.toString()
+			ruphou.toString()
+
 			message.channel.send(
 				{
   	embed: {
