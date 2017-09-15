@@ -149,9 +149,6 @@ client.on("message", async(message) => {
 		)
 	}
 
-
-
-
     /*
     Command: ping
     */
@@ -215,7 +212,7 @@ client.on("message", async(message) => {
       message.react("👎");
     }else {
     message.channel.send("Fetching updates...").then(function(sentmessage){
-			console.log("Bot updating...");
+			hook.send("Bot updating...");
 			var spawn = require('child_process').spawn;
 			var log = function(err,stdout,stderr){
 				if(stdout){console.log(stdout);}
@@ -224,16 +221,19 @@ client.on("message", async(message) => {
 			var fetch = spawn('git', ['fetch']);
 			fetch.stdout.on('data',function(data){
 				console.log(data.toString());
+				sentmessage.edit("Fetching...")
 			});
 			fetch.on("close",function(code){
 				var reset = spawn('git', ['reset','--hard','origin/master']);
 				reset.stdout.on('data',function(data){
 					console.log(data.toString());
+					sentmessage.edit("I will be right back!")
 				});
 				reset.on("close",function(code){
 					var npm = spawn('npm', ['install']);
 					npm.stdout.on('data',function(data){
 						console.log(data.toString());
+						sentmessage.edit("I will be right back!");
 					});
 					npm.on("close",function(code){
 						console.log("Shutting down...");
