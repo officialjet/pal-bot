@@ -28,11 +28,10 @@ const maintenance = 0
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
-  // Logging in console that bot has logged in and is using discord.js version "xx.x.x".
   console.log("-------------");
   console.log("Logged in!");
   hook.send(`Logged in!`);
-  hook.send("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
+  hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
   console.log("-------------");
   console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
 	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
@@ -119,6 +118,9 @@ client.on("message", async(message) => {
         // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
         const m = await message.channel.send("Ping?");
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
+        if(suffix){
+                message.channel.send( "Please note that ping takes no arguments!");
+            }
     }
 
     if(command === "vent"){
@@ -293,17 +295,20 @@ client.on("message", async(message) => {
     if(command === "help"){
         message.react('👌');
         message.channel.send("Check your private messages! :wink:");
-        message.author.send("**Available Commands:**");
-        message.author.send(config.prefix + " ``ping`` // Calculates ping.");
-        message.author.send(config.prefix + " ``invite`` // Gives you an invite link to this discord server.");
-        message.author.send(config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed.");
-        message.author.send(config.prefix + " ``bot-invite`` // Gives you a bot invite link.");
-        message.author.send(config.prefix + " ``say`` // Repeats what you say.");
-        message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
-        message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
-        message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
-        message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg ");
-        message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
+        var batch = {
+          ("\n" + "**Available Commands:**");
+        ("\n" + config.prefix + " ``ping`` // Calculates ping.");
+        ("\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server.");
+        ("\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed.");
+        ("\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link.");
+        ("\n" + config.prefix + " ``say`` // Repeats what you say.");
+        ("\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
+        ("\n" + config.prefix + " ``me`` // Gives you a list of info about you. ");
+        ("\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
+        ("\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg ");
+        ("\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
+      }
+      message.author.send(batch);
     }
 
   /*
