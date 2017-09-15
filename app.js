@@ -115,12 +115,6 @@ client.on("message", async(message) => {
 		if(command === "bot-info") {
 			const upmin = client.uptime / 60;
 			const uphou = upmin /60;
-
-			const rupmin = Number(Math.round(upmin+'e2')+'e-2');
-			const ruphou = Number(Math.round(uphou+'e2')+'e-2');
-			rupmin.toString();
-			ruphou.toString();
-
 			message.channel.send(
 				{
   	embed: {
@@ -146,13 +140,8 @@ client.on("message", async(message) => {
         inline: true
       },
 			{
-        name: "Uptime in minutes:",
-        value: rupmin,
-      },
-			{
-        name: "Uptime in hours:",
-        value: ruphou,
-				inline: true
+        name: "Uptime in seconds:",
+        value: client.uptime,
       }
     ]
   }
