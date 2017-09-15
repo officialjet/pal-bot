@@ -1,5 +1,13 @@
 // Load up the discord.js library.
-const Discord = require("discord.js");
+try {
+	var Discord = require("discord.js");
+} catch (e){
+	console.log(e.stack);
+	console.log(process.version);
+	console.log("Please run npm install and ensure it passes with no errors!");
+	process.exit();
+}
+console.log("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
 
 // Defining the Discord Client as "client".
 const client = new Discord.Client();
