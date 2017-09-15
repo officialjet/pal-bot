@@ -109,6 +109,20 @@ client.on("message", async(message) => {
     // Make recived command all lower case.
     const command = args.shift().toLowerCase();
 
+		/*
+    Command: servers
+    */
+		if(command === "bot-info") {
+			message.channel.send(
+				"\n On " + client.guilds.size + " servers." +
+				"\n Serving " + client.users.size + " users." +
+				"\n Uptime: " + client.uptime +
+				"\n In: " + client.uptime.names
+			)
+		}
+
+
+
 
     /*
     Command: ping
@@ -118,11 +132,11 @@ client.on("message", async(message) => {
         // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
         const m = await message.channel.send("Ping?");
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
-        if(args){
-                message.channel.send( "Please note that ping takes no arguments!");
-            }
     }
 
+		/*
+    Command: vent
+    */
     if(command === "vent"){
         // makes the bot say something and delete the message. As an example, it's open to anyone to use.
         // To get the "message" itself we join the `args` back into a string with spaces:
@@ -133,6 +147,9 @@ client.on("message", async(message) => {
         vent.send(sayMessage +" - Anonymous");
     }
 
+		/*
+    Command: rant
+    */
     if(command === "rant"){
         const sayMessage = args.join(" ");
         // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
@@ -162,6 +179,9 @@ client.on("message", async(message) => {
         }
     }
 
+		/*
+		Command: update
+		*/
   if(command === "update"){
     if(message.author.id !== config.ownerID){
       message.react("👎");
