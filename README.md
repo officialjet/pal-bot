@@ -7,6 +7,7 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 - +purge ```number``` **|** This command removes all messages from all users in the channel, up to 100.
 - +bot-invite **|** Gives you an invite link for adding the bot to servers.
 - +invite **|** Send you a invite link of the discord server where this command was executed.
+- +count-discord-member **|** Counting the discord member of the server where the command was executed.
 - +help **|** Provides a list of commands.
 
 _And more!_

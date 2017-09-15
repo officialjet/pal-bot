@@ -260,12 +260,21 @@ if(command === "version"){
     */
     if(command === "invite"){
         try {
+            message.react('👌');
             const invites = await message.guild.fetchInvites();
             message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
         } catch(err){
             message.delete();
             message.author.send("No invite link found! Create one yourself in Discord.")
         }
+    }
+
+    /*
+    Command: count-discord-member (can be changed in the next time)
+    Description: Counting the members of the discord server where the command was called.
+    */
+    if(command === "count-discord-member"){
+        message.channel.send("On this discord server there are " + message.guild.memberCount + " members including yourself.");
     }
 
     if(command === "kill") {
@@ -292,6 +301,7 @@ if(command === "version"){
         message.author.send("**Available Commands:**");
         message.author.send(config.prefix + " ``ping`` // Calculates ping.");
         message.author.send(config.prefix + " ``invite`` // Gives you an invite link to this discord server.");
+        message.author.send(config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed.");
         message.author.send(config.prefix + " ``bot-invite`` // Gives you a bot invite link.");
         message.author.send(config.prefix + " ``say`` // Repeats what you say.");
         message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
@@ -314,55 +324,54 @@ if(command === "version"){
     message.channel.send(sayMessage);
   }
 
-  /*
-  Command: me
-  */
-  if(command === "me"){
-    message.react('👌');
-	  console.log("Reacted sending message now...");
-	  message.channel.send(
-		{
-  embed: {
-    title: "User's info",
-    description: "--------------------------------------------------------",
-    color: 6814447,
+    /*
+    Command: me
+    */
+    if(command === "me"){
+      message.react('👌');
+      console.log("Reacted sending message now...");
+      message.channel.send({
+          embed: {
+            title: "User's info",
+            description: "--------------------------------------------------------",
+            color: 6814447,
 
-    footer: {
-      icon_url : client.user.avatarURL,
-      text: "© [slem]"
-    },
-    thumbnail: {
-      url: message.author.avatarURL
-    },
-    author: {
-      name: message.author.username,
-      icon_url: message.author.avatarURL
-    },
-    fields: [
-			{
-				name : "Username:",
-				value : message.author.username,
-				inline: true
-			},
-      {
-        name : "ID:",
-        value : message.author.id,
-				inline: true
-      },
-      {
-        name : "Account creation date:",
-        value : message.author.createdAt
-      },
-      {
-        name: "Profile picture link:",
-        value : message.author.displayAvatarURL
-      }
-    ]
-  }
-});
-console.log("Message sent.");
-console.log("-------------");
-}
+            footer: {
+              icon_url : client.user.avatarURL,
+              text: "© [slem]"
+            },
+            thumbnail: {
+              url: message.author.avatarURL
+            },
+            author: {
+              name: message.author.username,
+              icon_url: message.author.avatarURL
+            },
+            fields: [
+                    {
+                        name : "Username:",
+                        value : message.author.username,
+                        inline: true
+                    },
+              {
+                name : "ID:",
+                value : message.author.id,
+                        inline: true
+              },
+              {
+                name : "Account creation date:",
+                value : message.author.createdAt
+              },
+              {
+                name: "Profile picture link:",
+                value : message.author.displayAvatarURL
+              }
+            ]
+          }
+      });
+    console.log("Message sent.");
+    console.log("-------------");
+    }
 
 	/*
 	Hook Test
@@ -401,12 +410,12 @@ console.log("-------------");
 
 // This checks if bot is using a bot token to log in.
 if(config.token){
-// Log whats happening.
-console.log("-------------");
-console.log("Trying to log in with token...");
-hook.send("Trying to log in with token...");
-client.login(config.token);
+    // Log whats happening.
+    console.log("-------------");
+    console.log("Trying to log in with token...");
+    hook.send("Trying to log in with token...");
+    client.login(config.token);
 } else {
-// Only will happpen is error. This should only happen if the error is you dont have a bot token.
-console.log("Bot token not found! Remember you cant log in with credentials anymore.");
+    // Only will happpen is error. This should only happen if the error is you dont have a bot token.
+    console.log("Bot token not found! Remember you cant log in with credentials anymore.");
 }
