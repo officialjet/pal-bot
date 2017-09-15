@@ -120,7 +120,7 @@ client.on("message", async(message) => {
 			message.channel.send(
 				"On " + client.guilds.size + " servers." +
 				"\n Serving " + client.users.size + " users." +
-				"\n Uptime: " + uphou  + " hours."
+				"\n Uptime: " + upmin  + " minutes."
 			)
 		}
 
