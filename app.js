@@ -114,8 +114,8 @@ client.on("message", async(message) => {
 
 		const rupmin = Number(Math.round(upmin+'e2')+'e-2');
 		const ruphou = Number(Math.round(uphou+'e2')+'e-2');
-		string(rupmin);
-		string(ruphou);
+		String(rupmin);
+		String(ruphou);
 		/*
     Command: servers
     */
