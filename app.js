@@ -117,8 +117,7 @@ client.on("message", async(message) => {
     */
 		if(command === "bot-info") {
 			message.channel.send(
-				{
-  "embed": {
+  	"embed": {
     "title": "Bot-Info",
     "description": "Stats of the bot, just for nerds.",
     "color": 33150243,
@@ -152,7 +151,6 @@ client.on("message", async(message) => {
       }
     ]
   }
-}
 		)
 	}
 
