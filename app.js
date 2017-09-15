@@ -15,6 +15,9 @@ const client = new Discord.Client();
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 
+// Loading "Missigno" hook for #console in pal-bot discord.
+const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
+
 // Loading "Venter" hook
 const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
