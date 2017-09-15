@@ -145,12 +145,11 @@ client.on("message", async(message) => {
       },
 			{
         name: "Uptime in minutes:",
-        value: "rupmin",
-				inline: true
+        value: rupmin,
       },
 			{
         name: "Uptime in hours:",
-        value: "ruphou",
+        value: ruphou,
 				inline: true
       }
     ]
