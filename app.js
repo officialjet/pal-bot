@@ -110,7 +110,7 @@ client.on("message", async(message) => {
     const command = args.shift().toLowerCase();
 
 		const upsec = client.uptime / 1000;
-		const upmin = upsec / 60;
+		const upmin = client.uptime / 60;
 		const uphou = upmin /60;
 
 		/*
