@@ -90,10 +90,10 @@ client.on("message", async(message) => {
     // If the bot is being pinged, reply with "Hello?".
     if(message.isMentioned(client.user)) message.channel.send('Hello?');
 
-    // It's good practice to ignore other bots. This also makes your bot ignore itself and not get into a "botception".
+    // Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
     if(message.author.bot) return;
 
-    // Also good practice to ignore any message that does not start with our prefix, set in the configuration file.
+    // Ignore any message that does not start with our prefix, set in the configuration file.
     if(message.content.indexOf(config.prefix) !== 0) return;
 
     console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
@@ -118,7 +118,7 @@ client.on("message", async(message) => {
         // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
         const m = await message.channel.send("Ping?");
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
-        if(suffix){
+        if(args){
                 message.channel.send( "Please note that ping takes no arguments!");
             }
     }
@@ -317,7 +317,7 @@ client.on("message", async(message) => {
     // makes the bot say something and delete the message. As an example, it's open to anyone to use.
     // To get the "message" itself we join the `args` back into a string with spaces:
     const sayMessage = args.join(" ");
-    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+    // Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
     message.delete().catch(O_o=>{});
     // And we get the bot to say the thing:
     message.channel.send(sayMessage);
