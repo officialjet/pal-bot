@@ -117,13 +117,44 @@ client.on("message", async(message) => {
     */
 		if(command === "bot-info") {
 			message.channel.send(
-				"\n" +
-				"\n On " + client.guilds.size + " servers." +
-				"\n Serving " + client.users.size + " users." +
-				"\n Uptime (minutes): " + upmin  + " minutes." +
-				"\n Uptime (hours): " + uphou  + " hours."
-			)
-		}
+				{
+  "embed": {
+    "title": "Bot-Info",
+    "description": "Stats of the bot, just for nerds.",
+    "color": 33150243,
+    "footer": {
+      "text": "© [slem]"
+    },
+    "author": {
+			name: client.user.username,
+			icon_url: client.user.avatarURL
+    },
+    "fields": [
+      {
+        "name": "Servers online in:",
+        "value":  client.guilds.size,
+        "inline": true
+      },
+      {
+        "name": "Users serving",
+        "value": client.users.size,
+        "inline": true
+      },
+			{
+        "name": "Uptime in minutes",
+        "value": upmin,
+				"inline": true
+      },
+			{
+        "name": "Uptime in hours",
+        "value": uphou,
+				"inline": true
+      }
+    ]
+  }
+}
+		)
+	}
 
 
 
