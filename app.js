@@ -15,8 +15,8 @@ const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
-// Here we define mainetance. (0 = off | 1 = on)
-const mainetance = 0
+// Here we define maintenance. (0 = off | 1 = on)
+const maintenance = 0
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
@@ -30,15 +30,15 @@ client.on("ready", () => {
 	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
   console.log("-------------");
 
-  // The events under here will run if the bot starts, logs in successfully and mainetance is set to "ON".
-  if (mainetance == 1) {
+  // The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
+  if (maintenance == 1) {
     // Setting bot's game and status.
-    client.user.setGame(`Under mainetance.`);
+    client.user.setGame(`Under maintenance.`);
     client.user.setStatus("idle");
 
     // Logging changes.
-    console.log("Mainetance set to 'ON'. This means the status has been set to idle and presence set to 'Under mainetance'.");
-		hook.send("Mainetance set to 'ON'. This means the status has been set to idle and presence set to 'Under mainetance'.");
+    console.log("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
+		hook.send("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
     console.log("-------------");
   }else {
   // Setting bot's game and status.
@@ -134,17 +134,17 @@ client.on("message", async(message) => {
     admin.send("Recived:  ' " + sayMessage +" ' From:"+ message.author);
   }
 
-if(command === "mainetance-1"){
+if(command === "maintenance-1"){
   if(message.author.id !== config.ownerID){
     message.react("👎");
   }else {
-    hook.send("Bot set under mainetance");
-    client.user.setGame(`Under mainetance.`);
+    hook.send("Bot set under maintenance!");
+    client.user.setGame(`Under maintenance.`);
     client.user.setStatus("idle");
   }
 }
 
-  if(command === "mainetance-0"){
+  if(command === "maintenance-0"){
     if(message.author.id !== config.ownerID){
       message.react("👎");
     }else {
@@ -206,86 +206,101 @@ if(command === "version"){
 		});
 }
 
-  /*
-  Command: git
-  */
-  if(command === "git"){
-    message.channel.send({
-  embed: {
-    title: "GitHub Repo",
-    description: "--------------------------------------------------------",
-    color: 6814447,
+    /*
+    Command: git
+    */
+    if(command === "git"){
+        message.channel.send({
+      embed: {
+        title: "GitHub Repo",
+        description: "--------------------------------------------------------",
+        color: 6814447,
 
-    footer: {
-      icon_url : client.user.avatarURL,
-      text: "© [slem]"
-    },
-    author: {
-      name: client.user.username,
-      icon_url: client.user.avatarURL
-    },
-    fields: [
-			{
-				name : "Repo link:",
-				value : "https://github.com/sleme/pal-bot",
-				inline: true
-			},
-      {
-        name : "Latest release:",
-        value : "1.0.0",
-				inline: true
+        footer: {
+          icon_url : client.user.avatarURL,
+          text: "© [slem]"
+        },
+        author: {
+          name: client.user.username,
+          icon_url: client.user.avatarURL
+        },
+        fields: [
+                {
+                    name : "Repo link:",
+                    value : "https://github.com/sleme/pal-bot",
+                    inline: true
+                },
+          {
+            name : "Latest release:",
+            value : "1.0.0",
+                    inline: true
+          }
+        ]
       }
-    ]
-  }
-})
+    })
   }
 
   /*
   Command: server
   */
 	if(command === "server"){
-		message.author.send("You can join this bots discord server using https://discord.gg/k6qSHQs")
+		message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
-  /*
-  Command: invite
-  */
-  if(command === "invite") {
-      message.react('👌');
-			message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
-}
+    /*
+    Command: bot-invite
+    */
+    if(command === "bot-invite") {
+        message.react('👌');
+		message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+    }
 
-if(command === "kill") {
-  if(message.author.id !== config.ownerID){
-    message.react("👎");
-  }else {
-    message.react('👌');
-    // Send a message using the webhook
-    hook.send("Killing bot...").then(function(){
-      client.destroy().then(function(){
-        process.exit();
-      })
-    })
-  }
-}
+    /*
+    Command: invite
+    Description: Sends the first invite link which never expires.
+    */
+    if(command === "invite"){
+        try {
+            const invites = await message.guild.fetchInvites();
+            message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
+        } catch(err){
+            message.delete();
+            message.author.send("No invite link found! Create one yourself in Discord.")
+        }
+    }
+
+    if(command === "kill") {
+      if(message.author.id !== config.ownerID){
+        message.react("👎");
+      }else {
+        message.react('👌');
+        // Send a message using the webhook
+        hook.send("Killing bot...").then(function(){
+          client.destroy().then(function(){
+            process.exit();
+          })
+        })
+      }
+    }
 
 
-/*
-Command: help
-*/
-if(command === "help"){
-  message.react('👌');
-  message.channel.send("Check your private messages! :wink:");
-  message.author.send("**Available Commands:**");
-  message.author.send(config.prefix + " ``ping`` // Calculates ping.");
-  message.author.send(config.prefix + " ``invite`` // Gives you an bot invite link.");
-  message.author.send(config.prefix + " ``say`` // Repeats what you say.");
-  message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
-	message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
-	message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
-  message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/vzysQSF ");
-	message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
-}
+    /*
+    Command: help
+    */
+    if(command === "help"){
+        message.react('👌');
+        message.channel.send("Check your private messages! :wink:");
+        message.author.send("**Available Commands:**");
+        message.author.send(config.prefix + " ``ping`` // Calculates ping.");
+        message.author.send(config.prefix + " ``invite`` // Gives you an invite link to this discord server.");
+        message.author.send(config.prefix + " ``bot-invite`` // Gives you a bot invite link.");
+        message.author.send(config.prefix + " ``say`` // Repeats what you say.");
+        message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
+        message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
+        message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
+        message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/vzysQSF ");
+        message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
+    }
 
   /*
   Command: say
