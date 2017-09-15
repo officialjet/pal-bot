@@ -295,20 +295,19 @@ client.on("message", async(message) => {
     if(command === "help"){
         message.react('👌');
         message.channel.send("Check your private messages! :wink:");
-        var batch = {
-        "\n" + "**Available Commands:**"
-        "\n" + config.prefix + " ``ping`` // Calculates ping."
-        "\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server."
-        "\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed."
-        "\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link."
-        "\n" + config.prefix + " ``say`` // Repeats what you say."
-        "\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. "
-        "\n" + config.prefix + " ``me`` // Gives you a list of info about you. "
-        "\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. "
-        "\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg "
-        "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
-      }
-      message.author.send(batch);
+        message.author.send(
+          "\n" + "**Available Commands:**" +
+          "\n" + config.prefix + " ``ping`` // Calculates ping." +
+          "\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
+          "\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed."+
+          "\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
+          "\n" + config.prefix + " ``say`` // Repeats what you say." +
+          "\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
+          "\n" + config.prefix + " ``me`` // Gives you a list of info about you. " +
+          "\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
+          "\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
+          "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
+        );
     }
 
   /*
