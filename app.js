@@ -112,6 +112,9 @@ client.on("message", async(message) => {
 		const upmin = client.uptime / 60;
 		const uphou = upmin /60;
 
+		const rupmin = Number(Math.round(upmin+'e2')+'e-2');
+		const ruphou = Number(Math.round(uphou+'e2')+'e-2');
+
 		/*
     Command: servers
     */
@@ -121,7 +124,7 @@ client.on("message", async(message) => {
   	embed: {
     title: "Bot-Info",
     description: "Stats of the bot, just for nerds.",
-    color: 33150243,
+    color: 16777215,
   	footer: {
       text: "© [slem]"
     },
@@ -142,12 +145,12 @@ client.on("message", async(message) => {
       },
 			{
         name: "Uptime in minutes:",
-        value: "",
+        value: "rupmin",
 				inline: true
       },
 			{
         name: "Uptime in hours:",
-        value: "",
+        value: "ruphou",
 				inline: true
       }
     ]
