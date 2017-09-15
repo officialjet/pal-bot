@@ -87,13 +87,11 @@ client.on("message", async(message) => {
     if(message.author.bot) return;
 
     // Also good practice to ignore any message that does not start with our prefix, set in the configuration file.
-    if(message.content.indexOf(config.prefix) !== 0){
-      // Logging recived commands.
-      console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-  	  hook.send("Recived " + message.content + ". Treating it as a command.");
-      console.log("-------------");
-      return;
-    }
+    if(message.content.indexOf(config.prefix) !== 0) return;
+
+    console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
+	  hook.send("Recived " + message.content + ". Treating it as a command.");
+    console.log("-------------");
 
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
