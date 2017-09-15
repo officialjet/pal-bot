@@ -23,7 +23,7 @@ client.on("ready", () => {
   // Logging in console that bot has logged in and is using discord.js version "xx.x.x".
   console.log("-------------");
   console.log("Logged in!");
-  hook.send(`Logged in!`)
+  hook.send(`Logged in!`);
   console.log("Using discord.js version 11.2.0");
   console.log("-------------");
   console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
@@ -47,7 +47,7 @@ client.on("ready", () => {
 
   // Logging changes.
   console.log("Bot's status and game set.");
-	hook.send(`Bot's status and game set.`)
+	hook.send(`Bot's status and game set.`);
   console.log("-------------");
 }
 
@@ -87,12 +87,13 @@ client.on("message", async(message) => {
     if(message.author.bot) return;
 
     // Also good practice to ignore any message that does not start with our prefix, set in the configuration file.
-    if(message.content.indexOf(config.prefix) !== 0) return;
-
-    // Logging recived commands.
-    console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-	hook.send("Recived " + message.content + ". Treating it as a command.");
-    console.log("-------------");
+    if(message.content.indexOf(config.prefix) !== 0){
+      // Logging recived commands.
+      console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
+  	  hook.send("Recived " + message.content + ". Treating it as a command.");
+      console.log("-------------");
+      return;
+    }
 
     // Here we separate our "command" name, and our "arguments" for the command.
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -192,18 +193,6 @@ client.on("message", async(message) => {
 		});
     }
   }
-
-if(command === "version"){
-		var commit = require('child_process').spawn('git', ['log','-n','1']);
-		commit.stdout.on('data', function(data) {
-			message.channel.send(data);
-		});
-		commit.on('close',function(code) {
-			if( code != 0){
-				message.channel.send("Failed checking git version!");
-			}
-		});
-}
 
     /*
     Command: git
@@ -307,7 +296,7 @@ if(command === "version"){
         message.author.send(config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. ");
         message.author.send(config.prefix + " ``me`` // Gives you a list of info about you. ");
         message.author.send(config.prefix + " ``server`` // Gives an invite to the bot's discord. ");
-        message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/vzysQSF ");
+        message.author.send(config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg ");
         message.author.send("You can also join this bots discord server for more help using https://discord.gg/k6qSHQs")
     }
 
@@ -369,8 +358,6 @@ if(command === "version"){
             ]
           }
       });
-    console.log("Message sent.");
-    console.log("-------------");
     }
 
 	/*
