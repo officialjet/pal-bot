@@ -5,9 +5,13 @@ try {
 	console.log(e.stack);
 	console.log(process.version);
 	console.log("Please run npm install and ensure it passes with no errors!");
+  hook.send(e.stack);
+	hook.send(process.version);
+	hook.send("Please run npm install and ensure it passes with no errors!");
 	process.exit();
 }
 console.log("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
+hook.send("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
 
 // Defining the Discord Client as "client".
 const client = new Discord.Client();
