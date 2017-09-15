@@ -109,7 +109,6 @@ client.on("message", async(message) => {
     // Make recived command all lower case.
     const command = args.shift().toLowerCase();
 
-		const upsec = client.uptime / 1000;
 		const upmin = client.uptime / 60;
 		const uphou = upmin /60;
 
@@ -118,9 +117,11 @@ client.on("message", async(message) => {
     */
 		if(command === "bot-info") {
 			message.channel.send(
-				"On " + client.guilds.size + " servers." +
+				"\n" +
+				"\n On " + client.guilds.size + " servers." +
 				"\n Serving " + client.users.size + " users." +
-				"\n Uptime: " + upmin  + " minutes."
+				"\n Uptime (minutes): " + upmin  + " minutes." +
+				"\n Uptime (hours): " + uphou  + " hours."
 			)
 		}
 
