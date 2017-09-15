@@ -5,22 +5,15 @@ try {
 	console.log(e.stack);
 	console.log(process.version);
 	console.log("Please run npm install and ensure it passes with no errors!");
-  hook.send(e.stack);
-	hook.send(process.version);
-	hook.send("Please run npm install and ensure it passes with no errors!");
 	process.exit();
 }
 console.log("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
-hook.send("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
 
 // Defining the Discord Client as "client".
 const client = new Discord.Client();
 
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
-
-// Loading "Missigno" hook for #console in pal-bot discord.
-const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
 
 // Loading "Venter" hook
 const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
@@ -36,7 +29,7 @@ client.on("ready", () => {
   console.log("-------------");
   console.log("Logged in!");
   hook.send(`Logged in!`);
-  console.log("Using discord.js version 11.2.0");
+  hook.send("Starting Pal\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
   console.log("-------------");
   console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
 	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
