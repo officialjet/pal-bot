@@ -109,17 +109,18 @@ client.on("message", async(message) => {
     // Make recived command all lower case.
     const command = args.shift().toLowerCase();
 
-		const upmin = client.uptime / 60;
-		const uphou = upmin /60;
-
-		const rupmin = Number(Math.round(upmin+'e2')+'e-2');
-		const ruphou = Number(Math.round(uphou+'e2')+'e-2');
-		String(rupmin);
-		String(ruphou);
 		/*
     Command: servers
     */
 		if(command === "bot-info") {
+			const upmin = client.uptime / 60;
+			const uphou = upmin /60;
+
+			const rupmin = Number(Math.round(upmin+'e2')+'e-2');
+			const ruphou = Number(Math.round(uphou+'e2')+'e-2');
+			String(rupmin);
+			String(ruphou);
+			
 			message.channel.send(
 				{
   	embed: {
