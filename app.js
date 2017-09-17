@@ -331,7 +331,7 @@ client.on("message", async(message) => {
 	if(command === "user"){
 	    const member = message.guild.member(message.mentions.members.first())
 
-	    let userCreatedDate = this.getDate(new Date(member.createdTimestamp));
+	    let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
 	    let guildJoinDate   = this.getDate(new Date(member.guild.joinedTimestamp));
 
 	    let userLookupEmbed = new Discord.RichEmbed()
