@@ -339,6 +339,8 @@ client.on("message", async(message) => {
 		.setDescription(member.user.toString() + ' (' + member.user.tag + ')')
 		.addField("Created at:", userCreatedDate)
 		.addField("Joined guild at:", guildJoinDate)
+		.setFooter(member.user.username, member.user.avatarURL)
+		.setTimestamp()
 		.setColor("AQUA");
 
 	    message.channel.send({embed: userLookupEmbed});
