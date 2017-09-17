@@ -140,7 +140,7 @@ client.on("message", async(message) => {
         inline: true
       },
 			{
-        name: "Uptime in seconds:",
+        name: "Uptime in milliseconds:",
         value: client.uptime,
       }
     ]
