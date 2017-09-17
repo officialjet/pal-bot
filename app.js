@@ -276,7 +276,7 @@ client.on("message", async(message) => {
                 },
           {
             name : "Latest release:",
-            value : "1.0.0",
+            value : "1.0.1",
                     inline: true
           }
         ]
@@ -337,8 +337,8 @@ client.on("message", async(message) => {
 	    let userLookupEmbed = new Discord.RichEmbed()
 		.setAuthor(member.user.username, member.user.avatarURL)
 		.setDescription(member.user.toString() + ' (' + member.user.tag + ')')
-		.addField("Created at:", userCreatedDate)
-		.addField("Joined guild at:", guildJoinDate)
+		.addField("Account created at:", userCreatedDate)
+		.addField("Joined this server on:", guildJoinDate)
 		.setFooter(member.user.username, member.user.avatarURL)
 		.setTimestamp()
 		.setColor("AQUA");
@@ -361,27 +361,29 @@ client.on("message", async(message) => {
 	}
 
 
-	/*
-	Command: help
-	*/
-	if(command === "help"){
-	    message.react('👌');
-	    message.channel.send("Check your private messages! :wink:");
-	    message.author.send(
-		"\n" + "**Available Commands:**" +
-		"\n" + config.prefix + " ``ping`` // Calculates ping." +
-		"\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
-		"\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed."+
-		"\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
-		"\n" + config.prefix + " ``say`` // Repeats what you say." +
-		"\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
-		"\n" + config.prefix + " ``me`` // Gives you a list of info about you. " +
-		"\n" + config.prefix + " ``user [@user]`` // Gives you information about a user of this guild " +
-		"\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
-		"\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
-		"\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
-	    );
-	}
+
+    /*
+    Command: help
+    */
+    if(command === "help"){
+        message.react('👌');
+        message.channel.send("Check your private messages! :wink:");
+        message.author.send(
+          "\n" + "**Available Commands:**" +
+          "\n" + config.prefix + " ``ping`` // Calculates ping." +
+          "\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
+          "\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed."+
+          "\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
+          "\n" + config.prefix + " ``say`` // Repeats what you say." +
+          "\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
+          "\n" + config.prefix + " ``me`` // Gives you a list of info about you. " +
+					"\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
+          "\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
+          "\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
+          "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
+        );
+    }
+
 
 	/*
 	Command: say
