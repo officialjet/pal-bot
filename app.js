@@ -361,7 +361,6 @@ client.on("message", async(message) => {
 	}
 
 
-
     /*
     Command: help
     */
@@ -383,7 +382,6 @@ client.on("message", async(message) => {
           "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
         );
     }
-
 
 	/*
 	Command: say
@@ -496,6 +494,6 @@ exports.getDate = function(date) {
     let hours = date.getHours();
     let minutes = "0" + date.getMinutes();
     let seconds = "0" + date.getSeconds();
-    let formattedTime = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+    let formattedTime = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
     return formattedTime;
 };
