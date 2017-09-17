@@ -284,57 +284,81 @@ client.on("message", async(message) => {
     })
   }
 
-  /*
-  Command: server
-  */
+  	/*
+  	Command: server
+  	*/
 	if(command === "server"){
 		message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
-    /*
-    Command: bot-invite
-    */
-    if(command === "bot-invite") {
-        message.react('👌');
-		message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
-    }
+    	/*
+	Command: bot-invite
+    	*/
+	if(command === "bot-invite") {
+	    message.react('👌');
+		    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+	}
 
-    /*
-    Command: invite
-    Description: Sends the first invite link which never expires.
-    */
-    if(command === "invite"){
-        try {
-            message.react('👌');
-            const invites = await message.guild.fetchInvites();
-            message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
-        } catch(err){
-            message.delete();
-            message.author.send("No invite link found! Create one yourself in Discord.")
-        }
-    }
+	/*
+	Command: invite
+	Description: Sends the first invite link which never expires.
+	*/
+	if(command === "invite"){
+	    try {
+		message.react('👌');
+		const invites = await message.guild.fetchInvites();
+		message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
+	    } catch(err){
+		message.delete();
+		message.author.send("No invite link found! Create one yourself in Discord.")
+	    }
+	}
 
-    /*
-    Command: count-discord-member (can be changed in the next time)
-    Description: Counting the members of the discord server where the command was called.
-    */
-    if(command === "count-discord-member"){
-        message.channel.send("On this discord server there are " + message.guild.memberCount + " members including yourself.");
-    }
 
-    if(command === "kill") {
-      if(message.author.id !== config.ownerID){
-        message.react("👎");
-      }else {
-        message.react('👌');
-        // Send a message using the webhook
-        hook.send("Killing bot...").then(function(){
-          client.destroy().then(function(){
-            process.exit();
-          })
-        })
-      }
-    }
+
+	/*
+	Command: count-discord-member (can be changed in the next time)
+	Description: Counting the members of the discord server where the command was called.
+	*/
+	if(command === "count-discord-member"){
+	    message.channel.send("On this discord server there are " + message.guild.memberCount + " members including yourself.");
+	}
+
+	/*
+	Command: user
+	Description: Lookup user data
+	*/
+	if(command === "user"){
+	    const member = message.guild.member(message.mentions.members.first())
+
+	    let userCreatedDate = this.getDate(new Date(member.joinedTimestamp));
+	    let guildJoinDate   = this.getDate(new Date(member.guild.joinedTimestamp));
+
+	    let userLookupEmbed = new Discord.RichEmbed()
+		.setAuthor(member.user.username, member.user.avatarURL)
+		.setDescription(member.user.toString() + ' (' + member.user.tag + ')')
+		.addField("Created at:", userCreatedDate)
+		.addField("Joined guild at:", guildJoinDate)
+		.setFooter(member.user.username, member.user.avatarURL)
+		.setTimestamp()
+		.setColor("AQUA");
+
+	    message.channel.send({embed: userLookupEmbed});
+	}
+
+	if(command === "kill") {
+	  if(message.author.id !== config.ownerID){
+	    message.react("👎");
+	  }else {
+	    message.react('👌');
+	    // Send a message using the webhook
+	    hook.send("Killing bot...").then(function(){
+	      client.destroy().then(function(){
+		process.exit();
+	      })
+	    })
+	  }
+	}
 
 
     /*
@@ -358,78 +382,78 @@ client.on("message", async(message) => {
         );
     }
 
-  /*
-  Command: say
-  */
-  if(command === "say") {
-    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
-    // To get the "message" itself we join the `args` back into a string with spaces:
-    const sayMessage = args.join(" ");
-    // Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-    message.delete().catch(O_o=>{});
-    // And we get the bot to say the thing:
-    message.channel.send(sayMessage);
-  }
-
-    /*
-    Command: me
-    */
-    if(command === "me"){
-      message.react('👌');
-      console.log("Reacted sending message now...");
-      message.channel.send({
-          embed: {
-            title: "User's info",
-            description: "--------------------------------------------------------",
-            color: 6814447,
-
-            footer: {
-              icon_url : client.user.avatarURL,
-              text: "© [slem]"
-            },
-            thumbnail: {
-              url: message.author.avatarURL
-            },
-            author: {
-              name: message.author.username,
-              icon_url: message.author.avatarURL
-            },
-            fields: [
-                    {
-                        name : "Username:",
-                        value : message.author.username,
-                        inline: true
-                    },
-              {
-                name : "ID:",
-                value : message.author.id,
-                        inline: true
-              },
-              {
-                name : "Account creation date:",
-                value : message.author.createdAt
-              },
-              {
-                name: "Profile picture link:",
-                value : message.author.displayAvatarURL
-              }
-            ]
-          }
-      });
-    }
+	/*
+	Command: say
+	*/
+	if(command === "say") {
+	// makes the bot say something and delete the message. As an example, it's open to anyone to use.
+	// To get the "message" itself we join the `args` back into a string with spaces:
+	const sayMessage = args.join(" ");
+	// Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+	message.delete().catch(O_o=>{});
+	// And we get the bot to say the thing:
+	message.channel.send(sayMessage);
+	}
 
 	/*
-	Hook Test
+	Command: me
 	*/
-	if(command === "hookme") {
-		if(message.author.id !== config.ownerID || config.benID){
-			message.react("👎");
-		}else {
-			message.react('👌');
-			const sayMessage = args.join(" ");
-			// Send a message using the webhook
-			hook.send(sayMessage);
-		}
+	if(command === "me"){
+	  message.react('👌');
+	  console.log("Reacted sending message now...");
+	  message.channel.send({
+	      embed: {
+		title: "User's info",
+		description: "--------------------------------------------------------",
+		color: 6814447,
+
+		footer: {
+		  icon_url : client.user.avatarURL,
+		  text: "© [slem]"
+		},
+		thumbnail: {
+		  url: message.author.avatarURL
+		},
+		author: {
+		  name: message.author.username,
+		  icon_url: message.author.avatarURL
+		},
+		fields: [
+			{
+			    name : "Username:",
+			    value : message.author.username,
+			    inline: true
+			},
+		  {
+		    name : "ID:",
+		    value : message.author.id,
+			    inline: true
+		  },
+		  {
+		    name : "Account creation date:",
+		    value : message.author.createdAt
+		  },
+		  {
+		    name: "Profile picture link:",
+		    value : message.author.displayAvatarURL
+		  }
+		]
+	      }
+	  });
+	}
+
+	    /*
+	    Hook Test
+	    */
+	    if(command === "hookme") {
+		    if(message.author.id !== config.ownerID || config.benID){
+			    message.react("👎");
+		    }else {
+			    message.react('👌');
+			    const sayMessage = args.join(" ");
+			    // Send a message using the webhook
+			    hook.send(sayMessage);
+		    }
 }
 
   /*
@@ -464,3 +488,11 @@ if(config.token){
     // Only will happpen is error. This should only happen if the error is you dont have a bot token.
     console.log("Bot token not found! Remember you cant log in with credentials anymore.");
 }
+
+exports.getDate = function(date) {
+    let hours = date.getHours();
+    let minutes = "0" + date.getMinutes();
+    let seconds = "0" + date.getSeconds();
+    let formattedTime = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+    return formattedTime;
+};
