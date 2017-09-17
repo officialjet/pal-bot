@@ -11,3 +11,6 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 - +help **|** Provides a list of commands.
 
 _And more!_
+
+
+github is good.
