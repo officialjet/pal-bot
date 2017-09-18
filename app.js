@@ -27,7 +27,7 @@ const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 const maintenance = 0
 
 // Random games
-const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool'];
+const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  '];
 setInterval(function(){
 const rangame = games[Math.floor(Math.random() * games.length)];
 client.user.setGame(rangame);
@@ -162,7 +162,7 @@ client.on("message", async(message) => {
 	Command: ping
 	*/
 	if(command === "ping") {
-		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th','digital ocean','the BBC','my mother','Mr. Meeseeks','pewdipie`s firewatch stream','uncensored hentai. `:warning: not found`','Julian Assange'];
+		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. `:warning: not found`','Julian Assange'];
 		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
 			// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 			// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
