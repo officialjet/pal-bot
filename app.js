@@ -27,8 +27,12 @@ const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 const maintenance = 0
 
 // Random games
+const rangam1m = setInterval(function() {
+    games[Math.floor(Math.random() * games.length)];
+}, 60 * 1000); // 60 * 1000 milsec
+
 const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool'];
-const rangame = games[Math.floor(Math.random() * games.length)];
+const rangame = rangam1m;
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
