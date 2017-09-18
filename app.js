@@ -28,7 +28,7 @@ const maintenance = 0
 
 // Random games
 const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'a baguette', 'you ;)', '[slem] is cool'];
-const rangame = pings[Math.floor(Math.random() * games.length)];
+const rangame = games[Math.floor(Math.random() * games.length)];
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
