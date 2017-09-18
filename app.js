@@ -127,7 +127,7 @@ client.on("message", async(message) => {
 	if(message.isMentioned(client.user)){	if(message.isMentioned(client.user)){
 			clbot.setNick("pal");
 			clbot.create(function (err, session) {
-			clbot.ask(msg.content, function (err, response) {
+			clbot.ask(message.content, function (err, response) {
 					message.channel.send(response)
 					console.error("Tried");
 			});
