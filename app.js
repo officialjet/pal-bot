@@ -28,7 +28,6 @@ const maintenance = 0
 
 // Random games
 const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool'];
-const rangame = games[Math.floor(Math.random() * games.length)];
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
@@ -53,7 +52,10 @@ client.on("ready", () => {
 	    console.log("-------------");
   	}else {
 	    // Setting bot's game and status.
-    	client.user.setGame(rangame);
+			setTimeout(function(){
+    const rangame = games[Math.floor(Math.random() * games.length)];
+    client.user.setGame(rangame);
+}, 60000)
 	    client.user.setStatus("online");
 
 	    // Logging changes.
