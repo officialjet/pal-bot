@@ -111,7 +111,7 @@ client.on("message", async(message) => {
 	// If the bot is being pinged, reply with "Hello?".
 	if(message.isMentioned(client.user)){
 
-		Cleverbot.ask(args, function (err, response) {
+		clbot.ask(args, function (err, response) {
       message.channel.startTyping();
       setTimeout(() => {
         message.channel.send(response).catch(console.error);
