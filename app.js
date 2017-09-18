@@ -152,7 +152,7 @@ client.on("message", async(message) => {
 	*/
 	if(command === "ping") {
 		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette'];
-		const ranQuote = pings[Math.floor(Math.random() * myArray.length)];
+		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
 			// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 			// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
 			const m = await message.channel.send("Ping?");
