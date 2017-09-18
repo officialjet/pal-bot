@@ -57,7 +57,7 @@ client.on("ready", () => {
   	}else {
 	    // Setting bot's game and status.
 			setInterval(function() {
-    	    client.user.setGame(rangame);
+    	    client.user.setGame(rangam1m);
 }, 10 * 10000); // 10 * 10000 milsec
 
 	    client.user.setStatus("online");
@@ -170,7 +170,7 @@ client.on("message", async(message) => {
 	}
 
 	if(command === "test"){
-		message.channel.send(rangame);
+		message.channel.send(rangam1m);
 	}
 
 	/*
