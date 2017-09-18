@@ -111,9 +111,9 @@ client.on("message", async(message) => {
 	var input = message.content;
 	// If the bot is being pinged, reply with "Hello?".
 	if(message.isMentioned(client.user)){
-		bot.setNick(message.author.user);
-		bot.create(function (err, session) {
-    bot.ask(input, function (err, response) {
+		clbot.setNick(message.author.user);
+		clbot.create(function (err, session) {
+    clbot.ask(input, function (err, response) {
         message.channel.send(session + ',', response)
     });
 });
