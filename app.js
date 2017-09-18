@@ -108,19 +108,6 @@ client.on("message", async(message) => {
 	// args = ["Is", "this", "the", "real", "life?"]
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
-	// If the bot is being pinged, reply with "Hello?".
-	if(message.isMentioned(client.user)){	if(message.isMentioned(client.user)){
-			clbot.setNick("pal");
-			clbot.create(function (err, session) {
-	    clbot.ask(input, function (err, response) {
-	        message.channel.send(response)
-					console.error("Tried");
-	    });
-	});
-	}
-}
-
-
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
 	if(message.author.bot) return;
 
@@ -135,6 +122,18 @@ client.on("message", async(message) => {
 
 	// Make recived command all lower case.
 	const command = args.shift().toLowerCase();
+
+	// If the bot is being pinged, reply with "Hello?".
+	if(message.isMentioned(client.user)){	if(message.isMentioned(client.user)){
+			clbot.setNick("pal");
+			clbot.create(function (err, session) {
+			clbot.ask(msg.content, function (err, response) {
+					message.channel.send(response)
+					console.error("Tried");
+			});
+	});
+	}
+}
 
 	/*
 	Command: servers
