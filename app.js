@@ -28,10 +28,9 @@ const maintenance = 0
 
 // Random games
 const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool'];
-const rangam1m = setInterval(function() {
-    games[Math.floor(Math.random() * games.length)];
+const rangame = setInterval(function() {
+    games[Math.floor(Math.random() * games.length)]
 }, 60 * 1000); // 60 * 1000 milsec
-const rangame = rangam1m
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
@@ -56,10 +55,7 @@ client.on("ready", () => {
 	    console.log("-------------");
   	}else {
 	    // Setting bot's game and status.
-			setInterval(function() {
-    	    client.user.setGame(rangam1m);
-}, 10 * 10000); // 10 * 10000 milsec
-
+    	client.user.setGame(rangame);
 	    client.user.setStatus("online");
 
 	    // Logging changes.
@@ -170,7 +166,8 @@ client.on("message", async(message) => {
 	}
 
 	if(command === "test"){
-		message.channel.send(rangam1m);
+		message.channel.send(rangame);
+		client.user.setGame(rangame);
 	}
 
 	/*
