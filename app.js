@@ -72,8 +72,8 @@ client.on("disconnected", function () {
 
 // This event triggers only when the bot joins a guild.
 client.on("guildCreate", guild => {
-  // Logging changes.
-  		console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  	// Logging changes.
+    	console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 	hook.send(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 });
 
@@ -88,7 +88,7 @@ client.on("guildDelete", guild => {
 client.on("message", async(message) => {
 
 	// If the bot is being pinged, reply with "Hello?".
-	if(message.isMentioned(client.user)) message.channel.send('Hello?');
+	if(message.isMentioned(client.user)) message.channel.send('Hello? To get all commands, use **' + config.prefix + "help**");
 
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
 	if(message.author.bot) return;
@@ -97,7 +97,7 @@ client.on("message", async(message) => {
 	if(message.content.indexOf(config.prefix) !== 0) return;
 
 	console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-	      hook.send("Recived " + message.content + ". Treating it as a command.");
+    	hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
 
 	// Here we separate our "command" name, and our "arguments" for the command.
@@ -206,46 +206,46 @@ client.on("message", async(message) => {
 	Command: update
 	*/
 	if(command === "update"){
-	if(message.author.id !== config.ownerID){
-	message.react("👎");
-	}else {
-	message.channel.send("Fetching updates...").then(function(sentmessage){
-		hook.send("Bot updating...");
-		var spawn = require('child_process').spawn;
-		var log = function(err,stdout,stderr){
-			if(stdout){console.log(stdout);}
-			if(stderr){console.log(stderr);}
-		};
-		var fetch = spawn('git', ['fetch']);
-		fetch.stdout.on('data',function(data){
-			console.log(data.toString());
-			sentmessage.edit("Fetching...")
-		});
-		fetch.on("close",function(code){
-		    var reset = spawn('git', ['reset','--hard','origin/master']);
-		    reset.stdout.on('data',function(data){
-			console.log(data.toString());
-			sentmessage.edit("I will be right back!")
-		    });
-		    reset.on("close",function(code){
-			var npm = spawn('npm', ['install']);
-			npm.stdout.on('data',function(data){
+	    if(message.author.id !== config.ownerID){
+		message.react("👎");
+	    }else {
+		message.channel.send("Fetching updates...").then(function(sentmessage){
+		    hook.send("Bot updating...");
+		    var spawn = require('child_process').spawn;
+		    var log = function(err,stdout,stderr){
+			    if(stdout){console.log(stdout);}
+			    if(stderr){console.log(stderr);}
+		    };
+		    var fetch = spawn('git', ['fetch']);
+		    fetch.stdout.on('data',function(data){
 			    console.log(data.toString());
-			    sentmessage.edit("I will be right back!");
+			    sentmessage.edit("Fetching...")
+		    });
+		    fetch.on("close",function(code){
+			var reset = spawn('git', ['reset','--hard','origin/master']);
+			reset.stdout.on('data',function(data){
+			    console.log(data.toString());
+			    sentmessage.edit("I will be right back!")
 			});
-			npm.on("close",function(code){
-			    console.log("Shutting down...");
-			    sentmessage.edit("I will be right back!").then(function(){
-				client.destroy().then(function(){
-				    sentmessage.edit("I will be right back!");
-				    process.exit();
+			reset.on("close",function(code){
+			    var npm = spawn('npm', ['install']);
+			    npm.stdout.on('data',function(data){
+				console.log(data.toString());
+				sentmessage.edit("I will be right back!");
+			    });
+			    npm.on("close",function(code){
+				console.log("Shutting down...");
+				sentmessage.edit("I will be right back!").then(function(){
+				    client.destroy().then(function(){
+					sentmessage.edit("I will be right back!");
+					process.exit();
+				    });
 				});
 			    });
 			});
 		    });
 		});
-	});
-	}
+	    }
 	}
 
 	/*
@@ -326,22 +326,34 @@ client.on("message", async(message) => {
 	Command: user
 	Description: Lookup user data
 	*/
-	if(command === "user"){
-	    const member = message.guild.member(message.mentions.members.first())
+	if(command === "user") {
 
-	    let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
-	    let guildJoinDate   = this.getDate(new Date(member.guild.joinedTimestamp));
+	    // Made a try-catch because if someone is funny and tries to get data from a user which he cannot mention but still tries lmao.
 
-	    let userLookupEmbed = new Discord.RichEmbed()
-		.setAuthor(member.user.username, member.user.avatarURL)
-		.setDescription(member.user.toString() + ' (' + member.user.tag + ')')
-		.addField("Account created at:", userCreatedDate)
-		.addField("Joined this server at:", guildJoinDate)
-		.setFooter(member.user.username, member.user.avatarURL)
-		.setTimestamp()
-		.setColor("AQUA");
+	    try {
 
-	    message.channel.send({embed: userLookupEmbed});
+		const member = message.guild.member(message.mentions.members.first())
+
+		let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
+		let guildJoinDate = this.getDate(new Date(member.guild.joinedTimestamp));
+
+		let userLookupEmbed = new Discord.RichEmbed()
+		    .setAuthor("Username: " + member.user.username, member.user.avatarURL)
+		    .setDescription(member.user.toString() + ' (' + member.user.tag + ')')
+		    .addField("Account created at:", userCreatedDate)
+		    .addField("Joined this server at:", guildJoinDate)
+		    .addField("ID:", member.user.id)
+		    .setFooter(member.user.username, member.user.avatarURL)
+		    .setTimestamp()
+		    .setColor("AQUA");
+
+		message.channel.send({embed: userLookupEmbed});
+
+	    }catch(e){
+		message.channel.send({embed: {
+		    title: "No user found in this guild with the name " + args[0]
+		}});
+	    }
 	}
 
 	if(command === "kill") {
@@ -366,18 +378,18 @@ client.on("message", async(message) => {
 	    message.react('👌');
 	    message.channel.send("Check your private messages! :wink:");
 	    message.author.send(
-	      "\n" + "**Available Commands:**" +
-	      "\n" + config.prefix + " ``ping`` // Calculates ping." +
-	      "\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
-	      "\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed."+
-	      "\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
-	      "\n" + config.prefix + " ``say`` // Repeats what you say." +
-	      "\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
-	      "\n" + config.prefix + " ``me`` // Gives you a list of info about you. " +
-					    "\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
-	      "\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
-	      "\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
-	      "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
+	      	"\n" + "**Available Commands:**" +
+	      	"\n" + config.prefix + " ``ping`` // Calculates ping." +
+	      	"\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
+	      	"\n" + config.prefix + " ``count-discord-member`` // Counting the discord member of the server where the command was executed."+
+	      	"\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
+	      	"\n" + config.prefix + " ``say`` // Repeats what you say." +
+	      	"\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
+	      	"\n" + config.prefix + " ``me`` // Gives you a list of info about you. " +
+		"\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
+	      	"\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
+	      	"\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
+	      	"\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
 	    );
 	}
 
@@ -385,22 +397,22 @@ client.on("message", async(message) => {
 	Command: say
 	*/
 	if(command === "say") {
-	// makes the bot say something and delete the message. As an example, it's open to anyone to use.
-	// To get the "message" itself we join the `args` back into a string with spaces:
-	const sayMessage = args.join(" ");
-	// Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-	message.delete().catch(O_o=>{});
-	// And we get the bot to say the thing:
-	message.channel.send(sayMessage);
+	    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
+	    // To get the "message" itself we join the `args` back into a string with spaces:
+	    const sayMessage = args.join(" ");
+	    // Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+	    message.delete().catch(O_o=>{});
+	    // And we get the bot to say the thing:
+	    message.channel.send(sayMessage);
 	}
 
 	/*
 	Command: me
 	*/
 	if(command === "me"){
-	  message.react('👌');
-	  console.log("Reacted sending message now...");
-	  message.channel.send({
+	    message.react('👌');
+	    console.log("Reacted sending message now...");
+	    message.channel.send({
 	      embed: {
 		title: "User's info",
 		description: "--------------------------------------------------------",
@@ -438,7 +450,7 @@ client.on("message", async(message) => {
 		  }
 		]
 	      }
-	  });
+	    });
 	}
 
 	/*
@@ -493,7 +505,7 @@ exports.getDate = function(date) {
 	let hours = date.getHours();
 	let minutes = "0" + date.getMinutes();
 	let seconds = "0" + date.getSeconds();
-	
+
 	*/
 	let formattedTime = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 	return formattedTime;
