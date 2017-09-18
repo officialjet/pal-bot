@@ -12,6 +12,7 @@
   "license": "MIT",
   "main": "app.js",
   "dependencies": {
+    "cleverbot.io": "^1.0.4",
     "discord.js": "^11.2.1"
   }
 }
