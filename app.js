@@ -162,12 +162,12 @@ client.on("message", async(message) => {
 	Command: ping
 	*/
 	if(command === "ping") {
-		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'you ;)', 'the netherlands'];
+		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th','digital ocean','the BBC','my mother','Mr. Meeseeks','pewdipie`s firewatch stream','uncensored hentai. `:warning: not found`','Julian Assange'];
 		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
 			// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 			// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
 			const m = await message.channel.send("One second...");
-			m.edit("It took ` " + (m.createdTimestamp - message.createdTimestamp) + "ms ` to ping " + ranQuote + "\nAlso, the API latency is `" + Math.round(client.ping) + " ms'");
+			m.edit("It took ` " + (m.createdTimestamp - message.createdTimestamp) + "ms ` to ping " + ranQuote + "\nAlso, the API latency is `" + Math.round(client.ping) + " ms`");
 	}
 
 	/*
