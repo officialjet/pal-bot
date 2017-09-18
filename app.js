@@ -108,17 +108,15 @@ client.on("message", async(message) => {
 	// args = ["Is", "this", "the", "real", "life?"]
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
+	var input = message.content;
 	// If the bot is being pinged, reply with "Hello?".
 	if(message.isMentioned(client.user)){
-
-		clbot.ask(args, function (err, response) {
-      message.channel.startTyping();
-      setTimeout(() => {
-        message.channel.send(response).catch(console.error);
-        message.channel.stopTyping();
-	}, Math.random() * (1 - 3) + 1 * 1000);
+		bot.setNick(message.author.user);
+		bot.create(function (err, session) {
+    bot.ask(input, function (err, response) {
+        message.channel.send(session + ',', response)
+    });
 });
-
 }
 
 
