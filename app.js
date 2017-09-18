@@ -26,6 +26,10 @@ const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0
 
+// Random games
+const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'a baguette', 'you ;)', '[slem] is cool'];
+const rangame = pings[Math.floor(Math.random() * games.length)];
+
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
 	console.log("-------------");
@@ -34,7 +38,7 @@ client.on("ready", () => {
   	hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
   	console.log("-------------");
   	console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
-	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+		hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
   	console.log("-------------");
 
   	// The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
@@ -49,7 +53,7 @@ client.on("ready", () => {
 	    console.log("-------------");
   	}else {
 	    // Setting bot's game and status.
-	    client.user.setGame(`Online! | +help`);
+	    client.user.setGame(rangame);
 	    client.user.setStatus("online");
 
 	    // Logging changes.
@@ -151,12 +155,12 @@ client.on("message", async(message) => {
 	Command: ping
 	*/
 	if(command === "ping") {
-		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette'];
+		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'you ;)', 'the netherlands'];
 		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
 			// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 			// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
-			const m = await message.channel.send("Ping?");
-			m.edit("It took ` " + (m.createdTimestamp - message.createdTimestamp) + "ms ` to ping " + ranQuote + "\n Also, API latency is `" + Math.round(client.ping) + "`");
+			const m = await message.channel.send("One second...");
+			m.edit("It took ` " + (m.createdTimestamp - message.createdTimestamp) + "ms ` to ping " + ranQuote + "\nAlso, the API latency is `" + Math.round(client.ping) + "` ms");
 	}
 
 	/*
