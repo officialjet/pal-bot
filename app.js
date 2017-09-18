@@ -26,10 +26,6 @@ const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0
 
-// Random games
-const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'a baguette', 'you ;)', '[slem] is cool'];
-const rangame = games[Math.floor(Math.random() * games.length)];
-
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
 	console.log("-------------");
@@ -43,6 +39,10 @@ client.on("ready", () => {
 
   	// The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
   	if (maintenance == 1) {
+			// Random games
+			const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'a baguette', 'you ;)', '[slem] is cool'];
+			const rangame = games[Math.floor(Math.random() * games.length)];
+			
 	    // Setting bot's game and status.
 	    client.user.setGame(`Under maintenance.`);
 	    client.user.setStatus("idle");
@@ -54,6 +54,7 @@ client.on("ready", () => {
   	}else {
 	    // Setting bot's game and status.
 	    client.user.setGame(rangame);
+
 	    client.user.setStatus("online");
 
 	    // Logging changes.
