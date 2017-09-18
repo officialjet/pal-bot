@@ -28,7 +28,7 @@ const maintenance = 0
 
 // Random games
 const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool'];
-setTimeout(function(){
+setInterval(function(){
 const rangame = games[Math.floor(Math.random() * games.length)];
 client.user.setGame(rangame);
 console.log('Changed game');
