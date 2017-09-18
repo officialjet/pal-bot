@@ -210,7 +210,11 @@ client.on("message", async(message) => {
 		message.react("👎");
 	    }else {
 		hook.send("Bot set online");
-		client.user.setGame(`Online! | +help`);
+		// Setting bot's game and status.
+		setTimeout(function(){
+	const rangame = games[Math.floor(Math.random() * games.length)];
+	client.user.setGame(rangame);
+}, 60000)
 		client.user.setStatus("online");
 	    }
 	}
