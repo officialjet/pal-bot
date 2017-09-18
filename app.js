@@ -110,10 +110,10 @@ client.on("message", async(message) => {
 
 	// If the bot is being pinged, reply with "Hello?".
 	if(message.isMentioned(client.user)){	if(message.isMentioned(client.user)){
-			clbot.setNick(message.author.user);
+			clbot.setNick("pal");
 			clbot.create(function (err, session) {
 	    clbot.ask(input, function (err, response) {
-	        message.channel.send(session + ',', response)
+	        message.channel.send(response)
 					console.error("Tried");
 	    });
 	});
