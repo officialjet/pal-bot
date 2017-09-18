@@ -110,7 +110,8 @@ client.on("message", async(message) => {
       setTimeout(() => {
         message.channel.send(response.output).catch(console.error);
         message.channel.stopTyping();
-	} //message.channel.send('Hello? To get all commands, use **' + config.prefix + "help**");
+	}
+
 
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
 	if(message.author.bot) return;
