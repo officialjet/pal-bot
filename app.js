@@ -124,16 +124,15 @@ client.on("message", async(message) => {
 	const command = args.shift().toLowerCase();
 
 	// If the bot is being pinged, reply with "Hello?".
-	if(message.isMentioned(client.user)){	if(message.isMentioned(client.user)){
+	if(message.isMentioned(client.user)){
 			clbot.setNick("pal");
 			clbot.create(function (err, session) {
 			clbot.ask(message.content, function (err, response) {
-					message.channel.send(response)
+					message.channel.send(err + response)
 					console.error("Tried");
 			});
 	});
 	}
-}
 
 	/*
 	Command: servers
