@@ -23,6 +23,11 @@ const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
+// Cleverbot
+var Cleverbot = require("cleverbot-node");
+const clbot = new Cleverbot;
+clbot.configure({botapi: "CC47yigUy8kcEFkyPeG7WuI2Dpw"});
+
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0
 
@@ -99,7 +104,13 @@ client.on("guildDelete", guild => {
 client.on("message", async(message) => {
 
 	// If the bot is being pinged, reply with "Hello?".
-	if(message.isMentioned(client.user)) message.channel.send('Hello? To get all commands, use **' + config.prefix + "help**");
+	if(message.isMentioned(client.user)){
+		clbot.write(message.content, (response) => {
+      message.channel.startTyping();
+      setTimeout(() => {
+        message.channel.send(response.output).catch(console.error);
+        message.channel.stopTyping();
+	} //message.channel.send('Hello? To get all commands, use **' + config.prefix + "help**");
 
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
 	if(message.author.bot) return;
