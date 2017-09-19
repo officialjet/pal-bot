@@ -1,9 +1,8 @@
 {
   "name": "Pal-Bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A bot",
   "readme": "README.md",
-  "maintainers": [],
   "author": "Biagio [slem] Santoro",
   "repository": {
     "type": "git",

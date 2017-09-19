@@ -1,0 +1,15 @@
+{
+  "token"  : "bot token",
+  "prefix" : "+",
+  "ownerID" : "owner user id",
+  "benID" : "ben id",
+  "client_id" : "bot id",
+  "hook_id" : "",
+  "hook_token" : "",
+  "vent_id" : "",
+  "vent_token" : "",
+  "sad_id" : "",
+  "sad_token" : "",
+  "admin_id" : "",
+  "admin_token" : ""
+}

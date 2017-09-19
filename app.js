@@ -36,7 +36,6 @@ const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', '
 setInterval(function(){
 const rangame = games[Math.floor(Math.random() * games.length)];
 client.user.setGame(rangame);
-console.log('Changed game');
 }, 60000)
 
 // The events under here will run if the bot starts, and logs in, successfully.
