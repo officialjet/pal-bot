@@ -2,3 +2,4 @@
 /start.command
 /.eslintrc.json
 /.gitattributes
+node_modules

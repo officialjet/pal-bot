@@ -24,15 +24,15 @@ const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
 // Cleverbot
-var Cleverbot = require("cleverbot-node");
+let Cleverbot = require("cleverbot-node");
 const clbot = new Cleverbot;
 clbot.configure({botapi: "CC47yigUy8kcEFkyPeG7WuI2Dpw"});
 
 // Here we define maintenance. (0 = off | 1 = on)
-const maintenance = 0
+const maintenance = 0;
 
 // Random games
-const games = ['with Dr. Freeman', 'Half Life 3', '+help', 'please send help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  '];
+const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  '];
 setInterval(function(){
 const rangame = games[Math.floor(Math.random() * games.length)];
 client.user.setGame(rangame);
@@ -46,11 +46,11 @@ client.on("ready", () => {
   	hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
   	console.log("-------------");
   	console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
-		hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+    	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
   	console.log("-------------");
 
   	// The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
-  	if (maintenance == 1) {
+  	if (maintenance === 1) {
 	    // Setting bot's game and status.
 	    client.user.setGame(`Under maintenance.`);
 	    client.user.setStatus("idle");
@@ -105,14 +105,14 @@ client.on("message", async(message) => {
 
 	// If the bot is being pinged, reply with "Hello?".
 	if(message.isMentioned(client.user)){
-		clbot.write(message.content, (response) => {
-      message.channel.startTyping();
-      setTimeout(() => {
-        message.channel.send(response.output).catch(console.error);
-        message.channel.stopTyping();
-      }, Math.random() * (1 - 3) + 1 * 1000);
-    });
-}
+	    clbot.write(message.content, (response) => {
+		message.channel.startTyping();
+		setTimeout(() => {
+		    message.channel.send(response.output).catch(console.error);
+		    message.channel.stopTyping();
+		}, Math.random() * (1 - 3) + 1000);
+	    });
+	}
 
 
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
@@ -206,7 +206,7 @@ client.on("message", async(message) => {
 	    message.delete().catch(O_o=>{});
 	    // And we get the bot to say the thing:
 	    sad.send(sayMessage +" - Anonymous");
-	    admin.send("Recived:  ' " + sayMessage +" ' From:"+ message.author);
+	    admin.send("Recieved:  ' " + sayMessage +" ' From:"+ message.author);
 	}
 
 	if(command === "maintenance-1"){
@@ -226,9 +226,9 @@ client.on("message", async(message) => {
 		hook.send("Bot set online");
 		// Setting bot's game and status.
 		setTimeout(function(){
-	const rangame = games[Math.floor(Math.random() * games.length)];
-	client.user.setGame(rangame);
-}, 60000)
+			const rangame = games[Math.floor(Math.random() * games.length)];
+			client.user.setGame(rangame);
+		}, 60000);
 		client.user.setStatus("online");
 	    }
 	}
@@ -242,24 +242,24 @@ client.on("message", async(message) => {
 	    }else {
 		message.channel.send("Fetching updates...").then(function(sentmessage){
 		    hook.send("Bot updating...");
-		    var spawn = require('child_process').spawn;
-		    var log = function(err,stdout,stderr){
+		    let spawn = require('child_process').spawn;
+		    let log = function(err,stdout,stderr){
 			    if(stdout){console.log(stdout);}
 			    if(stderr){console.log(stderr);}
 		    };
-		    var fetch = spawn('git', ['fetch']);
+		    let fetch = spawn('git', ['fetch']);
 		    fetch.stdout.on('data',function(data){
 			    console.log(data.toString());
 			    sentmessage.edit("Fetching...")
 		    });
 		    fetch.on("close",function(code){
-			var reset = spawn('git', ['reset','--hard','origin/master']);
+			let reset = spawn('git', ['reset','--hard','origin/master']);
 			reset.stdout.on('data',function(data){
 			    console.log(data.toString());
 			    sentmessage.edit("I will be right back!")
 			});
 			reset.on("close",function(code){
-			    var npm = spawn('npm', ['install']);
+			    let npm = spawn('npm', ['install']);
 			    npm.stdout.on('data',function(data){
 				console.log(data.toString());
 				sentmessage.edit("I will be right back!");
@@ -317,7 +317,7 @@ client.on("message", async(message) => {
   	Command: server
   	*/
 	if(command === "server"){
-		message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
+	    message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
     	/*
@@ -325,7 +325,7 @@ client.on("message", async(message) => {
     	*/
 	if(command === "bot-invite") {
 	    message.react('👌');
-		    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+	    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
 	}
 
 	/*
@@ -334,12 +334,14 @@ client.on("message", async(message) => {
 	*/
 	if(command === "invite"){
 	    try {
-		message.react('👌');
-		const invites = await message.guild.fetchInvites();
-		message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
-	    } catch(err){
 		message.delete();
-		message.author.send("No invite link found! Create one yourself in Discord.")
+		const invites = await message.guild.fetchInvites();
+		message.author.send("📬 You can invite your friend to this discord with this invite link 👉 " + invites.filter(invite => !invite.maxAge).first().toString());
+	    } catch(e){
+		message.delete();
+		message.channel.createInvite({maxAge: 0});
+		const invites = await message.guild.fetchInvites();
+		message.author.send("I created an invite link for you! 👍 Send this to your friends to invite them! 👉 " + invites.filter(invite => !invite.maxAge).first().toString())
 	    }
 	}
 
@@ -350,7 +352,7 @@ client.on("message", async(message) => {
 	Description: Counting the members of the discord server where the command was called.
 	*/
 	if(command === "count-discord-member"){
-	    message.channel.send("On this discord server there are " + message.guild.memberCount + " members including yourself.");
+	    message.channel.send("On this discord server there are **" + message.guild.memberCount + "** members including yourself.");
 	}
 
 	/*
@@ -363,16 +365,21 @@ client.on("message", async(message) => {
 
 	    try {
 
-		const member = message.guild.member(message.mentions.members.first())
+		const member = message.guild.member(message.mentions.members.first());
 
 		let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
 		let guildJoinDate = this.getDate(new Date(member.guild.joinedTimestamp));
+
+		let roles = member.roles.map((a) => {
+		    return a;
+		});
 
 		let userLookupEmbed = new Discord.RichEmbed()
 		    .setAuthor("Username: " + member.user.username, member.user.avatarURL)
 		    .setDescription(member.user.toString() + ' (' + member.user.tag + ')')
 		    .addField("Account created at:", userCreatedDate)
 		    .addField("Joined this server at:", guildJoinDate)
+		    .addField("Roles:", roles)
 		    .addField("ID:", member.user.id)
 		    .setFooter(member.user.username, member.user.avatarURL)
 		    .setTimestamp()
