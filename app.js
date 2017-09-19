@@ -227,9 +227,9 @@ client.on("message", async(message) => {
 		hook.send("Bot set online");
 		// Setting bot's game and status.
 		setTimeout(function(){
-	const rangame = games[Math.floor(Math.random() * games.length)];
-	client.user.setGame(rangame);
-}, 60000)
+			const rangame = games[Math.floor(Math.random() * games.length)];
+			client.user.setGame(rangame);
+		}, 60000);
 		client.user.setStatus("online");
 	    }
 	}
@@ -318,7 +318,7 @@ client.on("message", async(message) => {
   	Command: server
   	*/
 	if(command === "server"){
-		message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
+	    message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
     	/*
@@ -326,7 +326,7 @@ client.on("message", async(message) => {
     	*/
 	if(command === "bot-invite") {
 	    message.react('👌');
-		    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+	    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
 	}
 
 	/*
@@ -335,12 +335,14 @@ client.on("message", async(message) => {
 	*/
 	if(command === "invite"){
 	    try {
-		message.react('👌');
-		const invites = await message.guild.fetchInvites();
-		message.author.send(invites.filter(invite => !invite.maxAge).first().toString());
-	    } catch(err){
 		message.delete();
-		message.author.send("No invite link found! Create one yourself in Discord.")
+		const invites = await message.guild.fetchInvites();
+		message.author.send("📬 You can invite your friend to this discord with this invite link 👉 " + invites.filter(invite => !invite.maxAge).first().toString());
+	    } catch(e){
+		message.delete();
+		message.channel.createInvite({maxAge: 0});
+		const invites = await message.guild.fetchInvites();
+		message.author.send("I created an invite link for you! 👍 Send this to your friends to invite them! 👉 " + invites.filter(invite => !invite.maxAge).first().toString())
 	    }
 	}
 
