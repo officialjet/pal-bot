@@ -240,7 +240,7 @@ client.on("message", async(message) => {
 	    if(message.author.id !== config.ownerID){
 		message.react("👎");
 	    }else {
-				msg.channel.sendMessage("fetching updates...").then(function(sentMsg){
+				message.channel.sendMessage("fetching updates...").then(function(sentMsg){
 					console.log("updating...");
 					var spawn = require('child_process').spawn;
 					var log = function(err,stdout,stderr){
@@ -264,7 +264,7 @@ client.on("message", async(message) => {
 							npm.on("close",function(code){
 								console.log("goodbye");
 								sentMsg.edit("brb!").then(function(){
-									bot.destroy().then(function(){
+									client.destroy().then(function(){
 										process.exit();
 									});
 								});
