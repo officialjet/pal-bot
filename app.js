@@ -240,44 +240,40 @@ client.on("message", async(message) => {
 	    if(message.author.id !== config.ownerID){
 		message.react("👎");
 	    }else {
-		message.channel.send("Fetching updates...").then(function(sentmessage){
-		    hook.send("Bot updating...");
-		    let spawn = require('child_process').spawn;
-		    let log = function(err,stdout,stderr){
-			    if(stdout){console.log(stdout);}
-			    if(stderr){console.log(stderr);}
-		    };
-		    let fetch = spawn('git', ['fetch']);
-		    fetch.stdout.on('data',function(data){
-			    console.log(data.toString());
-			    sentmessage.edit("Fetching...")
-		    });
-		    fetch.on("close",function(code){
-			let reset = spawn('git', ['reset','--hard','origin/master']);
-			reset.stdout.on('data',function(data){
-			    console.log(data.toString());
-			    sentmessage.edit("I will be right back!")
-			});
-			reset.on("close",function(code){
-			    let npm = spawn('npm', ['install']);
-			    npm.stdout.on('data',function(data){
-				console.log(data.toString());
-				sentmessage.edit("I will be right back!");
-			    });
-			    npm.on("close",function(code){
-				console.log("Shutting down...");
-				sentmessage.edit("I will be right back!").then(function(){
-				    client.destroy().then(function(){
-					sentmessage.edit("I will be right back!");
-					process.exit();
-				    });
+				msg.channel.sendMessage("fetching updates...").then(function(sentMsg){
+					console.log("updating...");
+					var spawn = require('child_process').spawn;
+					var log = function(err,stdout,stderr){
+						if(stdout){console.log(stdout);}
+						if(stderr){console.log(stderr);}
+					};
+					var fetch = spawn('git', ['fetch']);
+					fetch.stdout.on('data',function(data){
+						console.log(data.toString());
+					});
+					fetch.on("close",function(code){
+						var reset = spawn('git', ['reset','--hard','origin/master']);
+						reset.stdout.on('data',function(data){
+							console.log(data.toString());
+						});
+						reset.on("close",function(code){
+							var npm = spawn('npm', ['install']);
+							npm.stdout.on('data',function(data){
+								console.log(data.toString());
+							});
+							npm.on("close",function(code){
+								console.log("goodbye");
+								sentMsg.edit("brb!").then(function(){
+									bot.destroy().then(function(){
+										process.exit();
+									});
+								});
+							});
+						});
+					});
 				});
-			    });
-			});
-		    });
-		});
+			}
 	    }
-	}
 
 	/*
 	Command: git
