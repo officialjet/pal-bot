@@ -207,7 +207,7 @@ client.on("message", async(message) => {
 	    message.delete().catch(O_o=>{});
 	    // And we get the bot to say the thing:
 	    sad.send(sayMessage +" - Anonymous");
-	    admin.send("Recived:  ' " + sayMessage +" ' From:"+ message.author);
+	    admin.send("Recieved:  ' " + sayMessage +" ' From:"+ message.author);
 	}
 
 	if(command === "maintenance-1"){
@@ -366,16 +366,21 @@ client.on("message", async(message) => {
 
 	    try {
 
-		const member = message.guild.member(message.mentions.members.first())
+		const member = message.guild.member(message.mentions.members.first());
 
 		let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
 		let guildJoinDate = this.getDate(new Date(member.guild.joinedTimestamp));
+
+		let roles = member.roles.map((a) => {
+		    return a;
+		});
 
 		let userLookupEmbed = new Discord.RichEmbed()
 		    .setAuthor("Username: " + member.user.username, member.user.avatarURL)
 		    .setDescription(member.user.toString() + ' (' + member.user.tag + ')')
 		    .addField("Account created at:", userCreatedDate)
 		    .addField("Joined this server at:", guildJoinDate)
+		    .addField("Roles:", roles)
 		    .addField("ID:", member.user.id)
 		    .setFooter(member.user.username, member.user.avatarURL)
 		    .setTimestamp()
