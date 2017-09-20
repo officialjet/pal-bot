@@ -350,7 +350,51 @@ client.on("message", async(message) => {
 	Description: Counting the members of the discord server where the command was called.
 	*/
 	if(command === "count-discord-member"){
-	    message.channel.send("On this discord server there are **" + message.guild.memberCount + "** members including yourself.");
+	    message.react('👌');
+
+	    let memberAmount = message.guild.memberCount;
+	    let memberAmountString = memberAmount.toString();
+	    let lengthNumber = memberAmount.toString().length;
+
+	    for(i = 0; i < lengthNumber; i++){
+		switch (memberAmountString[i]){
+		    case "0":
+			msg.react("0⃣");
+			break;
+		    case "1":
+			msg.react("1⃣");
+			break;
+		    case "2":
+			msg.react("2⃣");
+			break;
+		    case "3":
+			msg.react("3⃣ ");
+			break;
+		    case "4":
+			msg.react("4⃣");
+			break;
+		    case "5":
+			msg.react("5⃣");
+			break;
+		    case "6":
+			msg.react("6⃣");
+			break;
+		    case "7":
+			msg.react("7⃣");
+			break;
+		    case "8":
+			msg.react("8⃣");
+			break;
+		    case "9":
+			msg.react("9⃣");
+			break;
+		    default:
+			msg.react("⛔");
+		    // default cant happen but maybe it will anyway ok
+		}
+	    }
+
+	    message.channel.send("On this discord server there are **" + memberAmount + "** members including yourself.");
 	}
 
 	/*
