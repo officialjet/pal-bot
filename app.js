@@ -359,37 +359,37 @@ client.on("message", async(message) => {
 	    for(i = 0; i < lengthNumber; i++){
 		switch (memberAmountString[i]){
 		    case "0":
-			msg.react("0⃣");
+			message.react("0⃣");
 			break;
 		    case "1":
-			msg.react("1⃣");
+			message.react("1⃣");
 			break;
 		    case "2":
-			msg.react("2⃣");
+			message.react("2⃣");
 			break;
 		    case "3":
-			msg.react("3⃣ ");
+			message.react("3⃣ ");
 			break;
 		    case "4":
-			msg.react("4⃣");
+			message.react("4⃣");
 			break;
 		    case "5":
-			msg.react("5⃣");
+			message.react("5⃣");
 			break;
 		    case "6":
-			msg.react("6⃣");
+			message.react("6⃣");
 			break;
 		    case "7":
-			msg.react("7⃣");
+			message.react("7⃣");
 			break;
 		    case "8":
-			msg.react("8⃣");
+			message.react("8⃣");
 			break;
 		    case "9":
-			msg.react("9⃣");
+			message.react("9⃣");
 			break;
 		    default:
-			msg.react("⛔");
+			message.react("⛔");
 		    // default cant happen but maybe it will anyway ok
 		}
 	    }
