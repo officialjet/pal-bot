@@ -240,40 +240,40 @@ client.on("message", async(message) => {
 	    if(message.author.id !== config.ownerID){
 		message.react("👎");
 	    }else {
-				message.channel.sendMessage("fetching updates...").then(function(sentMsg){
-					console.log("updating...");
-					var spawn = require('child_process').spawn;
-					var log = function(err,stdout,stderr){
-						if(stdout){console.log(stdout);}
-						if(stderr){console.log(stderr);}
-					};
-					var fetch = spawn('git', ['fetch']);
-					fetch.stdout.on('data',function(data){
-						console.log(data.toString());
-					});
-					fetch.on("close",function(code){
-						var reset = spawn('git', ['reset','--hard','origin/master']);
-						reset.stdout.on('data',function(data){
-							console.log(data.toString());
-						});
-						reset.on("close",function(code){
-							var npm = spawn('npm', ['install']);
-							npm.stdout.on('data',function(data){
-								console.log(data.toString());
-							});
-							npm.on("close",function(code){
-								console.log("goodbye");
-								sentMsg.edit("brb!").then(function(){
-									client.destroy().then(function(){
-										process.exit();
-									});
-								});
-							});
-						});
-					});
+		message.channel.sendMessage("fetching updates...").then(function(sentMsg){
+		    console.log("updating...");
+		    var spawn = require('child_process').spawn;
+		    var log = function(err,stdout,stderr){
+			if(stdout){console.log(stdout);}
+			if(stderr){console.log(stderr);}
+		    };
+		    var fetch = spawn('git', ['fetch']);
+		    fetch.stdout.on('data',function(data){
+		        console.log(data.toString());
+		    });
+		    fetch.on("close",function(code){
+			var reset = spawn('git', ['reset','--hard','origin/master']);
+			reset.stdout.on('data',function(data){
+			    console.log(data.toString());
+			});
+			reset.on("close",function(code){
+			    var npm = spawn('npm', ['install']);
+			    npm.stdout.on('data',function(data){
+				console.log(data.toString());
+			    });
+			    npm.on("close",function(code){
+				console.log("goodbye");
+				sentMsg.edit("brb!").then(function(){
+				    client.destroy().then(function(){
+					process.exit();
+				    });
 				});
-			}
+			    });
+			});
+		    });
+		});
 	    }
+	}
 
 	/*
 	Command: git
@@ -313,6 +313,7 @@ client.on("message", async(message) => {
   	Command: server
   	*/
 	if(command === "server"){
+	    message.delete();
 	    message.author.send("You can join this bots discord server using this server invite link: https://discord.gg/k6qSHQs")
 	}
 
@@ -321,6 +322,7 @@ client.on("message", async(message) => {
     	*/
 	if(command === "bot-invite") {
 	    message.react('👌');
+	    message.react('🆗');
 	    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
 	}
 
@@ -491,14 +493,14 @@ client.on("message", async(message) => {
 	Hook Test
 	 */
 	if(command === "hookme") {
-		if(message.author.id !== config.ownerID || config.benID){
-		    message.react("👎");
-		}else {
-		    message.react('👌');
-		    const sayMessage = args.join(" ");
-		    // Send a message using the webhook
-		    hook.send(sayMessage);
-		}
+	    if(message.author.id !== config.ownerID || config.benID){
+		message.react("👎");
+	    }else {
+		message.react('👌');
+		const sayMessage = args.join(" ");
+		// Send a message using the webhook
+		hook.send(sayMessage);
+	    }
 	}
 
 	/*
