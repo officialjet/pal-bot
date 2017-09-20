@@ -240,7 +240,7 @@ client.on("message", async(message) => {
 	    if(message.author.id !== config.ownerID){
 		message.react("👎");
 	    }else {
-		message.channel.sendMessage("fetching updates...").then(function(sentMsg){
+		message.channel.send("fetching updates...").then(function(sentMsg){
 		    console.log("updating...");
 		    var spawn = require('child_process').spawn;
 		    var log = function(err,stdout,stderr){
