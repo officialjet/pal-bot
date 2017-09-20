@@ -350,48 +350,16 @@ client.on("message", async(message) => {
 	Description: Counting the members of the discord server where the command was called.
 	*/
 	if(command === "count-discord-member"){
-	    message.react('👌');
-
 	    let memberAmount = message.guild.memberCount;
 	    let memberAmountString = memberAmount.toString();
 	    let lengthNumber = memberAmount.toString().length;
+	    let msgChannel = message;
 
-	    for(i = 0; i < lengthNumber; i++){
-		switch (memberAmountString[i]){
-		    case "0":
-			message.react("0⃣");
-			break;
-		    case "1":
-			message.react("1⃣");
-			break;
-		    case "2":
-			message.react("2⃣");
-			break;
-		    case "3":
-			message.react("3⃣ ");
-			break;
-		    case "4":
-			message.react("4⃣");
-			break;
-		    case "5":
-			message.react("5⃣");
-			break;
-		    case "6":
-			message.react("6⃣");
-			break;
-		    case "7":
-			message.react("7⃣");
-			break;
-		    case "8":
-			message.react("8⃣");
-			break;
-		    case "9":
-			message.react("9⃣");
-			break;
-		    default:
-			message.react("⛔");
-		    // default cant happen but maybe it will anyway ok
-		}
+	    // Output the "10" emoji when the discord has exact 10 members
+	    if(memberAmount%10 === 0){
+	        message.react("🔟");
+	    }else{
+		this.loop(0, lengthNumber, memberAmountString, msgChannel);
 	    }
 
 	    message.channel.send("On this discord server there are **" + memberAmount + "** members including yourself.");
@@ -589,4 +557,53 @@ exports.getDate = function(date) {
 	*/
 	let formattedTime = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 	return formattedTime;
+};
+
+exports.loop = (statement, lengthNumber, memberAmountString, channel) => {
+    let newStatement = statement + 1;
+    setTimeout(function () {
+	if(statement < lengthNumber){
+	    exports.loop(newStatement, lengthNumber, memberAmountString, channel);
+	}else{
+	    return null;
+	}
+	let numberPart = memberAmountString[statement];
+	console.log(numberPart + " -> " + statement);
+	switch (numberPart) {
+	    case "0":
+		channel.react("0⃣");
+		break;
+	    case "1":
+		channel.react("1⃣");
+		break;
+	    case "2":
+		channel.react("2⃣");
+		break;
+	    case "3":
+		channel.react("3⃣");
+		break;
+	    case "4":
+		channel.react("4⃣");
+		break;
+	    case "5":
+		channel.react("5⃣");
+		break;
+	    case "6":
+		channel.react("6⃣");
+		break;
+	    case "7":
+		channel.react("7⃣");
+		break;
+	    case "8":
+		channel.react("8⃣");
+		break;
+	    case "9":
+		channel.react("9⃣");
+		break;
+	    default:
+		channel.react("⛔");
+	    // default cant happen but maybe it will anyway ok
+	}
+
+    }, 500);
 };
