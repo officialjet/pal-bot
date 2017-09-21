@@ -547,7 +547,15 @@ if(config.token){
 	console.log("Bot token not found! Remember you cant log in with credentials anymore.");
 }
 
-exports.getDate = function(date) {
+/**
+ * Returns a formatted time string with a millisecond timestamp.
+ *
+ * @param date - Game to be set for the bot.
+ * @since 1.0.1
+ *
+ * @public
+ */
+exports.getDate = function(/**Integer*/date) {
 	/* We can use this later
 
 	let hours = date.getHours();
@@ -559,7 +567,18 @@ exports.getDate = function(date) {
 	return formattedTime;
 };
 
-exports.loop = (statement, lengthNumber, memberAmountString, channel) => {
+/**
+ * A function which is looping a timeout which return the emoji reactions when a user want to count the discord members of a server.
+ *
+ * @param statement - Should be 0. 0 is the first part of a string.
+ * @param lengthNumber - Length of the count-discord-member string.
+ * @param memberAmountString - Discord member count number as a string.
+ * @param channel - Message parameter of a function when asking the bot client if the message event happened.
+ * @since 1.0.1
+ *
+ * @public
+ */
+exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/memberAmountString, channel) => {
     let newStatement = statement + 1;
     setTimeout(function () {
 	if(statement < lengthNumber){
