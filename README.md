@@ -20,6 +20,8 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
+## ToDos:
 
+* Here you will see some feature we´ve planned for the future. Maybe we´re going to create a Kanban Board for all new stuff we´ve planned!
 
 So easy ;)
