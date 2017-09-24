@@ -39,41 +39,35 @@ setInterval(function(){
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
-		// client.user.setUsername("Pal");
-		//client.user.setAvatar('avatar.png');
-		console.log("-------------");
-  	console.log("Logged in!");
-  	hook.send(`Logged in!`);
-  	hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
-  	console.log("-------------");
-  	console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
-    hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
-  	console.log("-------------");
-
-  	// The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
-  	if (maintenance === 1) {
-	    // Setting bot's game and status.
-	    client.user.setGame(`Under maintenance.`);
-	    client.user.setStatus("idle");
-
-	    // Logging changes.
-	    console.log("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
-	    hook.send("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
-	    console.log("-------------");
-  	}else {
-	    // Setting bot's game and status.
-			setTimeout(function(){
-    	const rangame = games[Math.floor(Math.random() * games.length)];
-    	client.user.setGame(rangame);
-			}, 60000)
-	    client.user.setStatus("online");
-
-	    // Logging changes.
-	    console.log("Bot's status and game set.");
-	    hook.send(`Bot's status and game set.`);
-	    console.log("-------------");
+	console.log("-------------");
+	console.log("Logged in!");
+	hook.send(`Logged in!`);
+	hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
+	console.log("-------------");
+	console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+	console.log("-------------");
+	// The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
+	if (maintenance === 1) {
+		 // Setting bot's game and status.
+		 client.user.setGame(`Under maintenance.`);
+		 client.user.setStatus("idle");
+		 // Logging changes.
+		 console.log("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
+	   hook.send("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
+	   console.log("-------------");
+	 }else {
+		 // Setting bot's game and status.
+		setTimeout(function(){
+    const rangame = games[Math.floor(Math.random() * games.length)];
+    client.user.setGame(rangame);
+	}, 60000)
+	client.user.setStatus("online");
+	// Logging changes.
+	 console.log("Bot's status and game set.");
+	 hook.send(`Bot's status and game set.`);
+	 console.log("-------------");
 	}
-
 });
 
 // This will run only if the bot has dissconnected, for whatever reason.
