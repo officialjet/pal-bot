@@ -41,15 +41,15 @@ setInterval(function(){
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
-	client.user.setUsername("Pal");
-	client.user.setAvatar('avatar.png');
-	console.log("-------------");
+		// client.user.setUsername("Pal");
+		//client.user.setAvatar('avatar.png');
+		console.log("-------------");
   	console.log("Logged in!");
   	hook.send(`Logged in!`);
   	hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
   	console.log("-------------");
   	console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
-    	hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
+    hook.send(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
   	console.log("-------------");
 
   	// The events under here will run if the bot starts, logs in successfully and maintenance is set to "ON".
@@ -80,18 +80,17 @@ client.on("ready", () => {
 
 // This will run only if the bot has dissconnected, for whatever reason.
 client.on("disconnected", function () {
-  	// Logging changes.
+	// Logging changes.
 	console.error("Disconnected!");
 	hook.send("Disconnected!");
-
-  	// This should exit node.js with an error.
+  // This should exit node.js with an error.
 	process.exit(1);
 });
 
 // This event triggers only when the bot joins a guild.
 client.on("guildCreate", guild => {
-  	// Logging changes.
-    	console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+	// Logging changes.
+  console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 	hook.send(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 });
 
@@ -99,7 +98,7 @@ client.on("guildCreate", guild => {
 client.on("guildDelete", guild => {
   	// Logging changes.
   	console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-	hook.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+		hook.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
 // This event will run on every single message received, from any channel or DM.
