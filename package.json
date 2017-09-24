@@ -11,6 +11,7 @@
   "license": "MIT",
   "main": "app.js",
   "dependencies": {
+    "apiai": "^4.0.3",
     "cleverbot.io": "^1.0.4",
     "discord.js": "^11.2.1"
   },
