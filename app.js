@@ -24,9 +24,9 @@ const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
 // Cleverbot
-let cleverbot = require("cleverbot.io");
-const clbot = new cleverbot("PlEMk3RBgzx9eZiu", "axz4NZD6v9O4WhiaH58LyuWoKiUaXn4a");
-clbot.create(function (err, session) {});
+var apiai = require('apiai');
+var app = apiai("15fe21ef7bd44c779026d42c97315c33");
+
 
 //clbot.configure({botapi: "CC47yigUy8kcEFkyPeG7WuI2Dpw"});
 
@@ -114,22 +114,29 @@ client.on("message", async(message) => {
 	// args = ["Is", "this", "the", "real", "life?"]
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
+	const messagea = message.content.replace(/<@300955174225051650>/g,'');
+
 	// Make recived command all lower case.
 	const command = args.shift().toLowerCase();
 
 	if(message.isMentioned(client.user)){
-			const Message = args.join(" ");
-			message.channel.send("response");
+		// Test
+		// message.channel.send("This test is working");
+		message.channel.startTyping();
 
-			message.channel.startTyping();
+		var request = app.textRequest(messagea, {
+			sessionId: '<unique session id>'
+		});
 
-			clbot.ask(Message, function (err, response) {
-
-				message.channel.send(response);
-				console.log(response, err);
-
-			});
-					message.channel.stopTyping();
+		request.on('response', function(response) {
+			console.log(response.result);
+			message.channel.send(response.result.fulfillment.speech);
+		});
+		request.on('error', function(error) {
+			console.log(error);
+		});
+		request.end();
+		message.channel.stopTyping();
 			}
 
 	// Ignore any message that does not start with our prefix, set in the configuration file.
@@ -331,7 +338,7 @@ client.on("message", async(message) => {
 	if(command === "bot-invite") {
 	    message.react('👌');
 	    message.react('🆗');
-	    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=470019135");
+	    message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=536980545");
 	}
 
 	/*
