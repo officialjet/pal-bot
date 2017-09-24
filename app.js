@@ -374,6 +374,22 @@ client.on("message", async(message) => {
 	}
 
 	/*
+	Command: wiki
+	Description: Get information from Wikipedia. Example: +wiki GitHub or +wiki Rocket League
+	*/
+	if(command === "wiki"){
+	    if(!args[0]){
+		message.react("👎");
+		message.reply("you forgot to send us something to get data.``" + config.prefix + "wiki [argument] | Example " + config.prefix + "wiki Rocket League``");
+	    } else{
+		let searchValue = args.toString().replace(/,/g, " ");
+		let url = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=" + searchValue;
+
+		this.getWikipediaSummary(url, message, searchValue);
+	    }
+	}
+
+	/*
 	Command: user
 	Description: Lookup user data
 	*/
@@ -633,4 +649,110 @@ exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/mem
 	}
 
     }, 500);
+};
+
+exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argument) => {
+
+    // HTTPS Request
+    http.get(url, (res) => {
+
+	// Data variable
+	let data = '';
+
+	// Receiving chunks of data
+	res.on('data', (chunk) => {
+	    data += chunk;
+	});
+
+	// Finishing Wikipedia Content Request
+	res.on('end', () => {
+
+	    // Try to give the results if there is one.
+	    // If not, the bot will react negative and send a error message (look at catch)
+	    try {
+
+
+		let pageContent = JSON.parse(data).query.pages;
+		let keys = Object.keys(pageContent);
+
+		let summary;
+
+		if(pageContent[keys[0]].extract.split(".", 2).length <= 1){
+		    summary = "Click on the Link above to see the Wikipedia article about " + pageContent[keys[0]].title;
+		}else{
+		    // First lines of the Wikipedia article
+		    summary = pageContent[keys[0]].extract.toString().match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+
+		    summary = summary[0] + summary[1];
+
+		    // console.log(summary);
+		    // console.log("-----");
+		    // let stringSplitting = pageContent[keys[0]].extract.toString().match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+		    // console.log(stringSplitting[0] + stringSplitting[1]);
+
+		    // Replacing all HTML Tags included in the text
+		    summary = summary.replace(/<(?:.|\n)*?>/gm, "");
+		}
+
+		// HTTPS Request for receiving the URL of the article by giving the page ID as the value for the pageids parameter in the API request to Wikipedia
+		http.get("https://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&inprop=url&pageids=" + pageContent[keys[0]].pageid, (res) => {
+
+		    // The whole page "meta" data
+		    let pagedata = '';
+
+		    // Receiving chunks of the page data
+		    res.on('data', (chunk) => {
+			pagedata += chunk;
+		    });
+
+		    // Finishing the last and final request
+		    res.on('end', () => {
+
+			// Try/Catch is actually unnecessary but no one knows if a error could happen
+			try {
+			    // JSON data of the page with the page id pageid
+			    let pageObject = JSON.parse(pagedata).query.pages;
+
+			    let key = Object.keys(pageObject);
+
+			    // Get the value of the fullurl parameter
+			    let wikipediaArticleLink = pageObject[key[0]].fullurl;
+
+			    // Sending the final result of the two requests as an embed to the channel where the command
+			    // was executed.
+			    msg.channel.send({
+				embed: {
+				    color: 3447003,
+				    author: {
+					name: "Wikipedia"
+				    },
+				    title: pageContent[keys[0]].title + " (wikipedia article)",
+				    url: wikipediaArticleLink,
+				    description: summary,
+				    timestamp: new Date(),
+				    footer: {
+					text: "by Wikipedia"
+				    }
+				}
+			    });
+
+			}catch(e){
+			    msg.react("⛔");
+			    msg.channel.send(
+				"You got a very rare error here, how did you get that? Write it to our GitHub Repository\n" +
+				"https://github.com/sleme/pal-bot");
+			}
+		    })
+
+		});
+
+	    }catch(e){
+		msg.react("⛔");
+		msg.channel.send(
+		    "Cannot get data from Wikipedia. Please check your spelling and upper and lower case. (Mostly it is upper and lower case because Wikipedia pay attention to it.)\n" +
+		    "```You´ve sent the value: " + argument + "```");
+	    }
+	});
+    });
+
 };
