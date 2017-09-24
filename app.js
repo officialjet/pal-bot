@@ -25,10 +25,7 @@ const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
 // Cleverbot
 var apiai = require('apiai');
-var app = apiai("15fe21ef7bd44c779026d42c97315c33");
-
-
-//clbot.configure({botapi: "CC47yigUy8kcEFkyPeG7WuI2Dpw"});
+var app = apiai(config.cbotapi);
 
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0;
@@ -42,6 +39,8 @@ setInterval(function(){
 
 // The events under here will run if the bot starts, and logs in, successfully.
 client.on("ready", () => {
+	client.user.setUsername("Pal");
+	client.user.setAvatar('avatar.png');
 	console.log("-------------");
   	console.log("Logged in!");
   	hook.send(`Logged in!`);
