@@ -24,9 +24,11 @@ const sad = new Discord.WebhookClient(config.sad_id, config.sad_token);
 const admin = new Discord.WebhookClient(config.admin_id, config.admin_token);
 
 // Cleverbot
-let Cleverbot = require("cleverbot-node");
-const clbot = new Cleverbot;
-clbot.configure({botapi: "CC47yigUy8kcEFkyPeG7WuI2Dpw"});
+let cleverbot = require("cleverbot.io");
+const clbot = new cleverbot("PlEMk3RBgzx9eZiu", "axz4NZD6v9O4WhiaH58LyuWoKiUaXn4a");
+clbot.create(function (err, session) {});
+
+//clbot.configure({botapi: "CC47yigUy8kcEFkyPeG7WuI2Dpw"});
 
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0;
@@ -103,27 +105,8 @@ client.on("guildDelete", guild => {
 client.on("message", async(message) => {
 
 
-	// If the bot is being pinged, reply with "Hello?".
-	if(message.isMentioned(client.user)){
-	    clbot.write(message.content, (response) => {
-		message.channel.startTyping();
-		setTimeout(() => {
-		    message.channel.send(response.output).catch(console.error);
-		    message.channel.stopTyping();
-		}, Math.random() * (1 - 3) + 1000);
-	    });
-	}
-
-
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
 	if(message.author.bot) return;
-
-	// Ignore any message that does not start with our prefix, set in the configuration file.
-	if(message.content.indexOf(config.prefix) !== 0) return;
-
-	console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-    	hook.send("Recived " + message.content + ". Treating it as a command.");
-	console.log("-------------");
 
 	// Here we separate our "command" name, and our "arguments" for the command.
 	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -133,6 +116,31 @@ client.on("message", async(message) => {
 
 	// Make recived command all lower case.
 	const command = args.shift().toLowerCase();
+
+	if(message.isMentioned(client.user)){
+			const Message = args.join(" ");
+			message.channel.send("response");
+
+			message.channel.startTyping();
+
+			clbot.ask(Message, function (err, response) {
+
+				message.channel.send(response);
+				console.log(response, err);
+
+			});
+					message.channel.stopTyping();
+			}
+
+	// Ignore any message that does not start with our prefix, set in the configuration file.
+	if(message.content.indexOf(config.prefix) !== 0) return;
+
+	console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
+    	hook.send("Recived " + message.content + ". Treating it as a command.");
+	console.log("-------------");
+
+
+
 
 	/*
 	Command: servers
