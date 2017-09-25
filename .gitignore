@@ -2,4 +2,5 @@
 /start.command
 /.eslintrc.json
 /.gitattributes
+package-lock.json
 node_modules
