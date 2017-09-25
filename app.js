@@ -43,7 +43,7 @@ setInterval(function(){
 client.on("ready", () => {
 	console.log("-------------");
 	console.log("Logged in!");
-	hook.send(`Logged in!`);
+	hook.send("Logged in!");
 	hook.send("Starting Pal-Bot:\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
 	console.log("-------------");
 	console.log(`Ready to serve in ${client.channels.size} channels on ${client.guilds.size} servers, for a total of ${client.users.size} users.`);
@@ -95,6 +95,7 @@ client.on("guildDelete", guild => {
 		hook.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
+
 // This event will run on every single message received, from any channel or DM.
 client.on("message", async(message) => {
 
@@ -123,7 +124,6 @@ client.on("message", async(message) => {
 		});
 
 		request.on('response', function(response) {
-			console.log(response.result);
 			message.channel.send(response.result.fulfillment.speech);
 		});
 		request.on('error', function(error) {
@@ -137,8 +137,17 @@ client.on("message", async(message) => {
 	if(message.content.indexOf(config.prefix) !== 0) return;
 
 	console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-    	hook.send("Recived " + message.content + ". Treating it as a command.");
+  hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
+
+	/*
+	Command: servers bot is on
+	*/
+	if(command === "list-servers") {
+	for (client.guilds.size) {
+                    message.channel.send(guild.name);
+                }
+  }
 
 
 	/*
