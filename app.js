@@ -144,10 +144,16 @@ client.on("message", async(message) => {
 	Command: servers bot is on
 	*/
 	if(command === "list-servers") {
-	for (client.guilds.size) {
-                    message.channel.send(guild.name);
-                }
-  }
+		if(message.author.id !== config.ownerID){
+			message.react("👎");
+		}else {
+			const guilds = client.guilds.array();
+			for(let guild in guilds) {
+			hook.send("I am in these servers:")
+			hook.send("```" + guilds[guild]["name"] + "```");
+		}
+	}
+}
 
 
 	/*
@@ -249,7 +255,7 @@ client.on("message", async(message) => {
 	    }
 	}
 
-    	/*
+  /*
 	Command: update
 	*/
 	if(command === "update"){
