@@ -12,6 +12,8 @@ console.log("Starting Pal\nNode version: " + process.version + "\nDiscord.js ver
 // Defining the Discord Client as "client".
 const client = new Discord.Client();
 
+const http = require('https');
+
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 
@@ -112,7 +114,7 @@ client.on("message", async(message) => {
 	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
 	// command = say
 	// args = ["Is", "this", "the", "real", "life?"]
-	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+	let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
 	const messagea = message.content.replace(/<@300955174225051650>/g,'');
 
@@ -137,7 +139,7 @@ client.on("message", async(message) => {
 		});
 		request.end();
 		message.channel.stopTyping();
-			}
+	}
 
 	// Ignore any message that does not start with our prefix, set in the configuration file.
 	if(message.content.indexOf(config.prefix) !== 0) return;
@@ -147,10 +149,8 @@ client.on("message", async(message) => {
 	console.log("-------------");
 
 
-
-
 	/*
-	Command: servers
+	Command: bot-info
 	*/
 	if(command === "bot-info") {
 	    const upmin = client.uptime / 60;
