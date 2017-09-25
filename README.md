@@ -22,6 +22,6 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 
 ## ToDos:
 
-* Here you will see some feature we´ve planned for the future. Maybe we´re going to create a Kanban Board for all new stuff we´ve planned!
+* Here you will see some feature we've planned for the future. Maybe we're going to create a Kanban Board for all new stuff we've planned!
 
 So easy ;) <3
