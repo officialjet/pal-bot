@@ -140,6 +140,10 @@ client.on("message", async(message) => {
   hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
 
+	if(command === "test"){
+		message.channel.send("pong")
+	}
+
 	/*
 	Command: servers bot is on
 	*/
@@ -149,7 +153,6 @@ client.on("message", async(message) => {
 		}else {
 			const guilds = client.guilds.array();
 			for(let guild in guilds) {
-			hook.send("I am in these servers:")
 			hook.send("```" + guilds[guild]["name"] + "```");
 		}
 	}
