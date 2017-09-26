@@ -26,8 +26,8 @@ const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
 const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 
 // API.AI's Cleverbot
-var apiai = require('apiai');
-var app = apiai(config.cbotapi);
+const apiai = require('apiai');
+const app = apiai(config.cbotapi);
 
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0;
@@ -37,7 +37,7 @@ const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'pleas
 setInterval(function(){
 	const rangame = games[Math.floor(Math.random() * games.length)];
 	client.user.setGame(rangame);
-}, 60000)
+}, 60000);
 
 
 // The events under here will run if the bot starts, and logs in, successfully.
@@ -62,14 +62,14 @@ client.on("ready", () => {
 	}else {
 		// Setting bot's game and status.
 		setTimeout(function(){
-    const rangame = games[Math.floor(Math.random() * games.length)];
-    client.user.setGame(rangame);
-	}, 60000)
-	client.user.setStatus("online");
-	// Logging changes.
-	console.log("Bot's status and game set.");
-	hook.send(`Bot's status and game set.`);
-	console.log("-------------");
+		    const rangame = games[Math.floor(Math.random() * games.length)];
+		    client.user.setGame(rangame);
+		}, 60000)
+		client.user.setStatus("online");
+		// Logging changes.
+		console.log("Bot's status and game set.");
+		hook.send(`Bot's status and game set.`);
+		console.log("-------------");
 }
 });
 
@@ -78,21 +78,21 @@ client.on("disconnected", function () {
 	// Logging changes.
 	console.error("Disconnected!");
 	hook.send("Disconnected!");
-  // This should exit node.js with an error.
+  	// This should exit node.js with an error.
 	process.exit(1);
 });
 
 // This event triggers only when the bot joins a guild.
 client.on("guildCreate", guild => {
 	// Logging changes.
-  console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  	console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 	hook.send(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
 });
 
 // This event triggers only when the bot is removed from a guild.
 client.on("guildDelete", guild => {
 	// Logging changes.
-  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  	console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 	hook.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
@@ -135,7 +135,7 @@ client.on("message", async(message) => {
 
 	// Logging every sent command.
 	console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-  hook.send("Recived " + message.content + ". Treating it as a command.");
+  	hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
 
 	/*
@@ -673,6 +673,7 @@ exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argumen
 				embed: {
 				    color: 3447003,
 				    author: {
+					icon_url: "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png",
 					name: "Wikipedia"
 				    },
 				    title: pageContent[keys[0]].title + " (wikipedia article)",
@@ -680,7 +681,8 @@ exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argumen
 				    description: summary,
 				    timestamp: new Date(),
 				    footer: {
-					text: "by Wikipedia"
+					icon_url: "https://upload.wikimedia.org/wikipedia/en/2/28/WikipediaMobileAppLogo.png",
+					text: "Information by Wikipedia. wikipedia.org"
 				    }
 				}
 			    });
