@@ -115,12 +115,12 @@ client.on("message", async(message) => {
 	const command = args.shift().toLowerCase();
 
 	if(message.isMentioned(client.user)){
-		message.channel.startTyping();
 		var request = app.textRequest(messagea, {
 			sessionId: '<unique session id>'
 		});
 
 		request.on('response', function(response) {
+			message.channel.startTyping();
 			message.channel.send(response.result.fulfillment.speech);
 			message.channel.stopTyping();
 		});
@@ -413,7 +413,7 @@ client.on("message", async(message) => {
 		// Made a try-catch because if someone is funny and tries to get data from a user which he cannot mention but still tries lmao.
 		try {
 			const member = message.guild.member(message.mentions.members.first());
-			
+
 			let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
 			let guildJoinDate = this.getDate(new Date(member.guild.joinedTimestamp));
 			let roles = member.roles.map((a) => {
