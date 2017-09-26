@@ -413,21 +413,24 @@ client.on("message", async(message) => {
 		// Made a try-catch because if someone is funny and tries to get data from a user which he cannot mention but still tries lmao.
 		try {
 			const member = message.guild.member(message.mentions.members.first());
+			
 			let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
 			let guildJoinDate = this.getDate(new Date(member.guild.joinedTimestamp));
 			let roles = member.roles.map((a) => {
 				return a;
 			});
+
 			let userLookupEmbed = new Discord.RichEmbed()
-			.setAuthor("Username: " + member.user.username, member.user.avatarURL)
-		  .setDescription(member.user.toString() + ' (' + member.user.tag + ')')
-		  .addField("Account created at:", userCreatedDate)
-		  .addField("Joined this server at:", guildJoinDate)
-		  .addField("Roles:", roles)
-		  .addField("ID:", member.user.id)
-		  .setFooter(member.user.username, member.user.avatarURL)
-		  .setTimestamp()
-		  .setColor("AQUA");
+			    .setAuthor("Username: " + member.user.username, member.user.avatarURL)
+			    .setDescription(member.user.toString() + ' (' + member.user.tag + ')')
+			    .addField("Account created at:", userCreatedDate)
+			    .addField("Joined this server at:", guildJoinDate)
+			    .addField("Roles:", roles)
+			    .addField("ID:", member.user.id)
+			    .setFooter(member.user.username, member.user.avatarURL)
+			    .setTimestamp()
+			    .setColor("AQUA");
+
 			message.channel.send({embed: userLookupEmbed});
 		}catch(e){
 			message.channel.send({embed: {
