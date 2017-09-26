@@ -120,9 +120,7 @@ client.on("message", async(message) => {
 		});
 
 		request.on('response', function(response) {
-			message.channel.startTyping();
 			message.channel.send(response.result.fulfillment.speech);
-			message.channel.stopTyping();
 		});
 		request.on('error', function(error) {
 			console.log(error);
