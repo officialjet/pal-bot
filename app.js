@@ -403,6 +403,20 @@ client.on("message", async(message) => {
 		}
 	}
 
+    	/*
+	Command: github
+	Description: Get information about the repository and contributors.
+	*/
+	if(command === "wiki"){
+	    if(!args[0]){
+		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/")
+	    } else{
+		if(args[0] === "contributors"){
+
+		}
+	    }
+	}
+
 	/*
 	Command: user
 	Description: Lookup user data
