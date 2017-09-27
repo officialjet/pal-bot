@@ -552,7 +552,7 @@ exports.getDate = function(/**Integer*/date) {
  *
  * @public
  */
-exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/memberAmountString, channel) => {
+exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/memberAmountString, /**Class*/channel) => {
     let newStatement = statement + 1;
     setTimeout(function () {
 	if(statement < lengthNumber){
@@ -600,7 +600,16 @@ exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/mem
 
     }, 500);
 };
-
+/**
+ * A function which is looping a timeout which return the emoji reactions when a user want to count the discord members of a server.
+ *
+ * @param url - URL for requesting data (Wikipedia)
+ * @param msg - Message class of Discord.js
+ * @param argument - Argument sent by the user -> !wiki [argument]
+ * @since 1.0.1
+ *
+ * @public
+ */
 exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argument) => {
 
     // HTTPS Request
