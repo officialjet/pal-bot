@@ -601,7 +601,8 @@ exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/mem
     }, 500);
 };
 /**
- * A function which is looping a timeout which return the emoji reactions when a user want to count the discord members of a server.
+ * Function which is receiving data from Wikipedia by giving a term to search in the Wikipedia Database and returns
+ * short summaries.
  *
  * @param url - URL for requesting data (Wikipedia)
  * @param msg - Message class of Discord.js
