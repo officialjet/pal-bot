@@ -701,8 +701,8 @@ exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argumen
 			}catch(e){
 			    msg.react("⛔");
 			    msg.channel.send(
-				"You got a very rare error here, how did you get that? Write it to our GitHub Repository\n" +
-				"https://github.com/sleme/pal-bot");
+				"You got a very rare error here. How did you get that? Write an issue to our GitHub Repository\n" +
+				"https://github.com/sleme/pal-bot/issues/new");
 			}
 		    })
 
