@@ -403,6 +403,74 @@ client.on("message", async(message) => {
 		}
 	}
 
+    	/*
+	Command: github
+	Description: Get information about the repository and contributors.
+	*/
+    	if(command === "github"){
+	    if(!args[0]){
+		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/")
+	    } else{
+		if(args[0] === "contributors"){
+		    http.get({host: "api.github.com", path: "/repos/sleme/pal-bot/contributors", headers: {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.38 Safari/537.36'} }, (res) => {
+
+			let data = '';
+
+			res.on('data', (chunk) => {
+			    data += chunk;
+			});
+
+			res.on('end', () => {
+
+			    let contributors = JSON.parse(data);
+
+			    let contData = [];
+
+			    for(let i = 0; i < contributors.length; i++){
+				console.log(contributors[i].login);
+				contData.push({name: "Contributor", value: contributors[i].login + " | " + contributors[i].html_url});
+			    }
+
+			    message.channel.send({
+				embed: {
+				    color: 3447003,
+				    title: "GitHub Contributors",
+				    fields: contData,
+				    timestamp: new Date()
+				}
+			    });
+
+			});
+
+		    });
+		}else if(args[0] === "help"){
+		    message.channel.send({
+			embed: {
+			    color: 3447003,
+			    title: "GitHub Bot Commands",
+			    fields: [
+			        {
+				    name: config.prefix + "github",
+				    value: "Sends to you a link to the repository of this bot."
+				},
+				{
+				    name: config.prefix + "github contributors",
+				    value: "Gives you a list of all contributors in the repository"
+				},
+				{
+				    name: config.prefix + "github issue",
+				    value: "Sends you a link where you can write an issue."
+				}
+			    ],
+			    timestamp: new Date()
+			}
+		    });
+		}else{
+
+		}
+	    }
+	}
+
 	/*
 	Command: user
 	Description: Lookup user data
