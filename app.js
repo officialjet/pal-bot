@@ -424,9 +424,21 @@ client.on("message", async(message) => {
 
 			    let contributors = JSON.parse(data);
 
+			    let contData = [];
+
 			    for(let i = 0; i < contributors.length; i++){
 				console.log(contributors[i].login);
+				contData.push({name: "Contributor", value: contributors[i].login + " | " + contributors[i].html_url});
 			    }
+
+			    message.channel.send({
+				embed: {
+				    color: 3447003,
+				    title: "GitHub Contributors",
+				    fields: contData,
+				    timestamp: new Date()
+				}
+			    });
 
 			});
 
