@@ -407,12 +407,30 @@ client.on("message", async(message) => {
 	Command: github
 	Description: Get information about the repository and contributors.
 	*/
-	if(command === "wiki"){
+    	if(command === "github"){
 	    if(!args[0]){
-		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/")
+		msg.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/")
 	    } else{
 		if(args[0] === "contributors"){
+		    http.get({host: "api.github.com", path: "/repos/sleme/pal-bot/contributors", headers: {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.38 Safari/537.36'} }, (res) => {
 
+			let data = '';
+    
+			res.on('data', (chunk) => {
+			    data += chunk;
+			});
+
+			res.on('end', () => {
+
+			    let contributors = JSON.parse(data);
+
+			    for(let i = 0; i < contributors.length; i++){
+				console.log(contributors[i].login);
+			    }
+
+			});
+
+		    });
 		}
 	    }
 	}
