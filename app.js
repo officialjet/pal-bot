@@ -433,7 +433,7 @@ client.on("message", async(message) => {
 			    message.channel.send({
 				embed: {
 				    color: 3447003,
-				    title: "GitHub Contributors",
+				    title: "GitHub > Contributors",
 				    fields: contData,
 				    timestamp: new Date()
 				}
@@ -446,7 +446,7 @@ client.on("message", async(message) => {
 		    message.channel.send({
 			embed: {
 			    color: 3447003,
-			    title: "GitHub Bot Commands",
+			    title: "GitHub > Bot commands",
 			    fields: [
 			        {
 				    name: config.prefix + "github",
@@ -459,6 +459,10 @@ client.on("message", async(message) => {
 				{
 				    name: config.prefix + "github issue",
 				    value: "Sends you a link where you can write an issue."
+				},
+				{
+				    name: config.prefix + "github contribute",
+				    value: "Returns information about to contribute in the repo of this bot."
 				}
 			    ],
 			    timestamp: new Date()
@@ -468,13 +472,22 @@ client.on("message", async(message) => {
 		    message.channel.send({
 			embed: {
 			    color: 3447003,
-			    title: "GitHub Issues",
+			    title: "GitHub > Issues",
 			    fields: [
 				{
 				    name: "You´ve found a bug or have some suggestions for the bot?",
 				    value: "Write it to our repository: https://github.com/sleme/pal-bot/issues/new"
 				}
 			    ],
+			    timestamp: new Date()
+			}
+		    });
+		}else if(args[0] === "contribute"){
+		    message.channel.send({
+			embed: {
+			    color: 3447003,
+			    title: "GitHub > Contribute",
+			    description: "You want to contribute in our project? Check out our repo by typing " + config.prefix + "github to get a lookup of the project and to see what we´re planning and what we´re currently working on.",
 			    timestamp: new Date()
 			}
 		    });
