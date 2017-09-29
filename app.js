@@ -427,7 +427,6 @@ client.on("message", async(message) => {
 			    let contData = [];
 
 			    for(let i = 0; i < contributors.length; i++){
-				console.log(contributors[i].login);
 				contData.push({name: "Contributor", value: contributors[i].login + " | " + contributors[i].html_url});
 			    }
 
@@ -474,6 +473,29 @@ client.on("message", async(message) => {
 				{
 				    name: "You´ve found a bug or have some suggestions for the bot?",
 				    value: "Write it to our repository: https://github.com/sleme/pal-bot/issues/new"
+				}
+			    ],
+			    timestamp: new Date()
+			}
+		    });
+		}else{
+		    message.channel.send({
+			embed: {
+			    color: 3447003,
+			    title: "GitHub Bot Commands",
+			    description: "You´ve sent a command which I can´t handle. Here you see a full list of the github commands.",
+			    fields: [
+				{
+				    name: config.prefix + "github",
+				    value: "Sends to you a link to the repository of this bot."
+				},
+				{
+				    name: config.prefix + "github contributors",
+				    value: "Gives you a list of all contributors in the repository"
+				},
+				{
+				    name: config.prefix + "github issue",
+				    value: "Sends you a link where you can write an issue."
 				}
 			    ],
 			    timestamp: new Date()
