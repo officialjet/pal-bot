@@ -465,8 +465,20 @@ client.on("message", async(message) => {
 			    timestamp: new Date()
 			}
 		    });
-		}else{
-
+		}else if(args[0] === "issue"){
+		    message.channel.send({
+			embed: {
+			    color: 3447003,
+			    title: "GitHub Issues",
+			    fields: [
+				{
+				    name: "You´ve found a bug or have some suggestions for the bot?",
+				    value: "Write it to our repository: https://github.com/sleme/pal-bot/issues/new"
+				}
+			    ],
+			    timestamp: new Date()
+			}
+		    });
 		}
 	    }
 	}
