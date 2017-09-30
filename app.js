@@ -196,7 +196,7 @@ client.on("message", async(message) => {
 	Description: Helps check if bot is alive, returns ping of bot.
 	*/
 	if(command === "ping") {
-		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. `:warning: not found`','Julian Assange'];
+		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th, 2001','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. `:warning: not found`','Julian Assange'];
 		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
 		// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 		// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
@@ -216,6 +216,7 @@ client.on("message", async(message) => {
 		message.delete().catch(O_o=>{});
 		// And we get the bot to say the thing:
 		vent.send(rant +" - Anonymous");
+		message.author.send("Message sent to #vent successfully.")
 	}
 
 	/*
