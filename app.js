@@ -219,6 +219,23 @@ client.on("message", async(message) => {
 		message.author.send("Message sent to #vent successfully.")
 	}
 
+	if(command === "poll"){
+		const sayMessage = args.join(" ");
+		// Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+		message.delete().catch(O_o=>{});
+		message.channel.send({
+	embed: {
+			color: 3447003,
+			title: "Poll by" + message.author,
+			fields: sayMessage + "Vote by adding to the reactions.",
+			timestamp: new Date()
+	}
+		});
+		message.react("👎");
+		message.react("👍");
+
+	}
+
 	/*
 	Command: maintenance-1
 	Description: Sets the bot under mainetance
