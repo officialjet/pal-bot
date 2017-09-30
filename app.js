@@ -219,7 +219,7 @@ client.on("message", async(message) => {
 		message.author.send("Message sent to #vent successfully.")
 	}
 
-	if(command === "poll"){
+	/* if(command === "poll"){
 		const sayMessage = args.join(" ");
 		// Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
 		message.delete().catch(O_o=>{});
@@ -234,7 +234,7 @@ client.on("message", async(message) => {
 		message.react("👎");
 		message.react("👍");
 
-	}
+	} */
 
 	/*
 	Command: maintenance-1
