@@ -29,6 +29,8 @@ const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 const apiai = require('apiai');
 const app = apiai(config.cbotapi);
 
+const got = require("got");
+
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0;
 
@@ -259,137 +261,137 @@ client.on("message", async(message) => {
 	    if(message.author.id !== config.ownerID){
 		message.react("👎");
 	    }else {
-				message.channel.send("Fetching updates...").then(function(sentMsg){
-					console.log("Bot updating...");
-					var spawn = require('child_process').spawn;
-					var log = function(err,stdout,stderr){
-						if(stdout){console.log(stdout);}
-						if(stderr){console.log(stderr);}
-					};
+		message.channel.send("Fetching updates...").then(function(sentMsg){
+			console.log("Bot updating...");
+			var spawn = require('child_process').spawn;
+			var log = function(err,stdout,stderr){
+				if(stdout){console.log(stdout);}
+				if(stderr){console.log(stderr);}
+			};
 
-					var fetch = spawn('git', ['fetch']);
-					fetch.stdout.on('data',function(data){
+			var fetch = spawn('git', ['fetch']);
+			fetch.stdout.on('data',function(data){
+				console.log(data.toString());
+				console.log("Fetch Defined");
+			});
+
+			fetch.on("close",function(code){
+				var reset = spawn('git', ['reset','--hard','origin/master']);
+				reset.stdout.on('data',function(data){
+					console.log(data.toString());
+					console.log("Fetch Close Executed");
+				});
+
+				reset.on("close",function(code){
+					var npm = spawn('npm', ['install']);
+					npm.stdout.on('data',function(data){
 						console.log(data.toString());
-						console.log("Fetch Defined");
+						console.log("reset.on Executed");
 					});
 
-					fetch.on("close",function(code){
-						var reset = spawn('git', ['reset','--hard','origin/master']);
-						reset.stdout.on('data',function(data){
-							console.log(data.toString());
-							console.log("Fetch Close Executed");
-						});
-
-						reset.on("close",function(code){
-							var npm = spawn('npm', ['install']);
-							npm.stdout.on('data',function(data){
-								console.log(data.toString());
-								console.log("reset.on Executed");
-							});
-
-							npm.on("close",function(code){
-								console.log("Bot restarting...");
-								sentMsg.edit("Restarting...").then(function(){
-									client.destroy().then(function(){
-										process.exit();
-									});
-								});
+					npm.on("close",function(code){
+						console.log("Bot restarting...");
+						sentMsg.edit("Restarting...").then(function(){
+							client.destroy().then(function(){
+								process.exit();
 							});
 						});
 					});
 				});
-			}
-		}
-
-		if (command === "clap"){
-			const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join(':clap:');
-			if(!args[0]){
-        message.channel.send('Please provide some text to clapify');
-			}
-			message.channel.send(args.map(randomizeCase).join(':clap:'));
-		}
-
-
-
-
-		if (command === "weather"){
-			const got = require('got');
-			const makeURL = (city) => `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22${encodeURIComponent(city)}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
-			const celsius = (fahrenheit) => Math.round(((fahrenheit - 32) * 5) / 9);
-			const kph = (mph) => Math.round(mph * 1.61);
-
-			const spacer = {
-				name: '\u200b',
-				value: '\u200b',
-			};
-
-				if(!args[0]){
-					message.react("👎");
-	        message.channel.send("Please provide a city.");
+			});
+		});
 	    }
+	}
 
-	    const city = args.join(' ');
-	    const res = await got(makeURL(city), { json: true });
-
-	    if (!res || !res.body || !res.body.query || !res.body.query.results || !res.body.query.results.channel) {
-					message.react("👎");
-	        message.channel.send('Failed to load weather info!');
-	    }
-
-	    const weatherInfo = res.body.query.results.channel;
-	    const forecast = weatherInfo.item.forecast[0];
-
-	    const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F/${celsius(weatherInfo.item.condition.temp)}°C`;
-
-	    const embed = {
-					"title": weatherInfo.item.title,
-					"description": "",
-    			color: 3447003,
-
-					"footer": {
-						"icon_url": client.user.avatarURL,
-      			"text": "© [slem] / Yahoo! Weather"
-					},
-					"author": {
-						"name": "Weather",
-						"icon_url": "https://lh6.ggpht.com/AQgEWq9WMSMD1MPd2RDqS6HJCzq8nu-iRFW3PvKqTb1IglzRh5DChrruWlcJmvoQ_zo=w300"
-					},
-					"fields": [
-						spacer,
-						{
-							"name": ":cloud: Condition",
-        			"value": weatherInfo.item.condition.text,
-        			"inline": true
-						},
-						{
-							"name": ":sweat_drops: Humidity",
-        			"value": weatherInfo.atmosphere.humidity + "%",
-        			"inline": true
-						},
-						{
-							"name": ":wind_blowing_face: Wind",
-        			"value": `*${weatherInfo.wind.speed}mph* / *${kph(weatherInfo.wind.speed)}kph* ; direction: *${weatherInfo.wind.direction}°*`
-      			},
-      			{
-        			"name": `Forecast for today is: ${forecast.text}`,
-        			"value": `\n Highest temperature is ${forecast.high}°F / ${celsius(forecast.high)}°C \n Lowest temperature is ${forecast.low}°F / ${celsius(forecast.low)}°C`
-      			},
-						spacer,
-      			{
-							"name": ':sunny: Sunrise',
-        			"value": weatherInfo.astronomy.sunrise,
-        			"inline": true
-						},
-      			{
-        			"name": ':full_moon: Sunset',
-        			"value": weatherInfo.astronomy.sunset,
-        			"inline": true
-      			},
-						spacer
-					]
-				}
-			message.channel.send({embed});
+	if (command === "clap"){
+		const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join(':clap:');
+		if(!args[0]){
+			message.channel.send('Please provide some text to clapify');
 		}
+		message.channel.send(args.map(randomizeCase).join(':clap:'));
+	}
+
+
+
+
+	if (command === "weather"){
+		const makeURL = (city) => `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22${encodeURIComponent(city)}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
+		const celsius = (fahrenheit) => Math.round(((fahrenheit - 32) * 5) / 9);
+		const kph = (mph) => Math.round(mph * 1.61);
+
+		const spacer = {
+			name: '\u200b',
+			value: '\u200b',
+		};
+
+		if(!args[0]){
+		    message.react("👎");
+		    message.channel.send("Please provide a city.");
+		}
+
+		const city = args.join(' ');
+		const res = await got(makeURL(city), { json: true });
+
+		if (!res || !res.body || !res.body.query || !res.body.query.results || !res.body.query.results.channel) {
+					    message.react("👎");
+		    message.channel.send('Failed to load weather info!');
+		}
+
+		const weatherInfo = res.body.query.results.channel;
+		const forecast = weatherInfo.item.forecast[0];
+
+		const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F/${celsius(weatherInfo.item.condition.temp)}°C`;
+
+		const embed = {
+		    "title": weatherInfo.item.title,
+		    "description": "",
+		    color: 3447003,
+
+		    "footer": {
+			"icon_url": client.user.avatarURL,
+			"text": "© [slem] / Yahoo! Weather"
+		    },
+		    "author": {
+			"name": "Weather",
+			"icon_url": "https://lh6.ggpht.com/AQgEWq9WMSMD1MPd2RDqS6HJCzq8nu-iRFW3PvKqTb1IglzRh5DChrruWlcJmvoQ_zo=w300"
+		    },
+		    "fields": [
+			spacer,
+			{
+			    "name": ":cloud: Condition",
+			    "value": weatherInfo.item.condition.text,
+			    "inline": true
+			},
+			{
+			    "name": ":sweat_drops: Humidity",
+			    "value": weatherInfo.atmosphere.humidity + "%",
+			    "inline": true
+			},
+			{
+			    "name": ":wind_blowing_face: Wind",
+			    "value": `*${weatherInfo.wind.speed}mph* / *${kph(weatherInfo.wind.speed)}kph* ; direction: *${weatherInfo.wind.direction}°*`
+			},
+			{
+			    "name": `Forecast for today is: ${forecast.text}`,
+			    "value": `\n Highest temperature is ${forecast.high}°F / ${celsius(forecast.high)}°C \n Lowest temperature is ${forecast.low}°F / ${celsius(forecast.low)}°C`
+			},
+			spacer,
+			{
+			    "name": ':sunny: Sunrise',
+			    "value": weatherInfo.astronomy.sunrise,
+			    "inline": true
+			},
+			{
+			    "name": ':full_moon: Sunset',
+			    "value": weatherInfo.astronomy.sunset,
+			    "inline": true
+			},
+			spacer
+		    ]
+		};
+
+		message.channel.send({embed});
+	}
 
 
 
@@ -400,31 +402,29 @@ client.on("message", async(message) => {
 	if(command === "git"){
 		message.channel.send({
 			embed: {
-				title: "GitHub Repo",
-		    description: "--------------------------------------------------------",
-		    color: 6814447,
-
-				footer: {
-					icon_url : client.user.avatarURL,
-			    text: "© [slem]"
-		    },
-
-				author: {
-					name: client.user.username,
-					icon_url: client.user.avatarURL
+			    title: "GitHub Repo",
+			    description: "--------------------------------------------------------",
+			    color: 6814447,
+			    footer: {
+				icon_url : client.user.avatarURL,
+				text: "© [slem]"
+			    },
+			    author: {
+				name: client.user.username,
+				icon_url: client.user.avatarURL
+			    },
+			    fields: [
+				{
+				    name : "Repo link:",
+				    value : "https://github.com/sleme/pal-bot",
+				    inline: true
 				},
-				fields: [
-					{
-						name : "Repo link:",
-			    	value : "https://github.com/sleme/pal-bot",
-			    	inline: true
-					},
-					{
-						name : "Latest release:",
-			    	value : "1.0.1",
-			    	inline: true
-					}
-				]
+				{
+				    name : "Latest release:",
+				    value : "1.0.1",
+				    inline: true
+				}
+			    ]
 			}
 		})
 	}
@@ -468,10 +468,10 @@ client.on("message", async(message) => {
 	Description: Counting the members of the discord server where the command was called.
 	*/
 	if(command === "server-members"){
-		let memberAmount = message.guild.memberCount;
-	  let memberAmountString = memberAmount.toString();
-	  let lengthNumber = memberAmount.toString().length;
-	  let msgChannel = message;
+	    	let memberAmount = message.guild.memberCount;
+	  	let memberAmountString = memberAmount.toString();
+	  	let lengthNumber = memberAmount.toString().length;
+	  	let msgChannel = message;
 
 		// Output the "10" emoji when the discord has exact 10 members
 		if(memberAmount%10 === 0){
@@ -506,35 +506,31 @@ client.on("message", async(message) => {
 		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/")
 	    } else{
 		if(args[0] === "contributors"){
-		    http.get({host: "api.github.com", path: "/repos/sleme/pal-bot/contributors", headers: {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.38 Safari/537.36'} }, (res) => {
+		    got({
+			host: "api.github.com",
+			path: "/repos/sleme/pal-bot/contributors",
+			headers: {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.38 Safari/537.36'}
+		    }).then(res => {
+			let contributors = JSON.parse(res.body);
 
-			let data = '';
+			let contData = [];
 
-			res.on('data', (chunk) => {
-			    data += chunk;
-			});
+			for(let i = 0; i < contributors.length; i++){
+			    console.log(contributors[i].login);
+			    contData.push({name: "Contributor", value: contributors[i].login + " | " + contributors[i].html_url});
+			}
 
-			res.on('end', () => {
-
-			    let contributors = JSON.parse(data);
-
-			    let contData = [];
-
-			    for(let i = 0; i < contributors.length; i++){
-				contData.push({name: "Contributor", value: contributors[i].login + " | " + contributors[i].html_url});
+			message.channel.send({
+			    embed: {
+				color: 3447003,
+				title: "GitHub Contributors",
+				fields: contData,
+				timestamp: new Date()
 			    }
-
-			    message.channel.send({
-				embed: {
-				    color: 3447003,
-				    title: "GitHub > Contributors",
-				    fields: contData,
-				    timestamp: new Date()
-				}
-			    });
-
 			});
 
+		    }).catch(error => {
+			console.log(error.response.body);
 		    });
 		}else if(args[0] === "help"){
 		    message.channel.send({
@@ -824,108 +820,80 @@ exports.loop = (/**integer*/statement, /**integer*/lengthNumber, /**integer*/mem
  */
 exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argument) => {
 
-    // HTTPS Request
-    http.get(url, (res) => {
+    got(url).then(res => {
 
-	// Data variable
-	let data = '';
+	try {
 
-	// Receiving chunks of data
-	res.on('data', (chunk) => {
-	    data += chunk;
-	});
+	    let pageContent = JSON.parse(res.body).query.pages;
+	    let keys = Object.keys(pageContent);
 
-	// Finishing Wikipedia Content Request
-	res.on('end', () => {
+	    let summary;
 
-	    // Try to give the results if there is one.
-	    // If not, the bot will react negative and send a error message (look at catch)
-	    try {
+	    if(pageContent[keys[0]].extract.split(".", 2).length <= 1){
+		summary = "Click on the Link above to see the Wikipedia article about " + pageContent[keys[0]].title;
+	    }else{
+		// First lines of the Wikipedia article
+		summary = pageContent[keys[0]].extract.toString().match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
 
+		summary = summary[0] + summary[1];
 
-		let pageContent = JSON.parse(data).query.pages;
-		let keys = Object.keys(pageContent);
+		// console.log(summary);
+		// console.log("-----");
+		// let stringSplitting = pageContent[keys[0]].extract.toString().match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+		// console.log(stringSplitting[0] + stringSplitting[1]);
 
-		let summary;
+		// Replacing all HTML Tags included in the text
+		summary = summary.replace(/<(?:.|\n)*?>/gm, "");
+	    }
 
-		if(pageContent[keys[0]].extract.split(".", 2).length <= 1){
-		    summary = "Click on the Link above to see the Wikipedia article about " + pageContent[keys[0]].title;
-		}else{
-		    // First lines of the Wikipedia article
-		    summary = pageContent[keys[0]].extract.toString().match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+	    // HTTPS Request for receiving the URL of the article by giving the page ID as the value for the pageids parameter in the API request to Wikipedia
+	    got("https://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&inprop=url&pageids=" + pageContent[keys[0]].pageid).then(pageres => {
+		try {
+		    // JSON data of the page with the page id pageid
+		    let pageObject = JSON.parse(pageres.body).query.pages;
 
-		    summary = summary[0] + summary[1];
+		    let key = Object.keys(pageObject);
 
-		    // console.log(summary);
-		    // console.log("-----");
-		    // let stringSplitting = pageContent[keys[0]].extract.toString().match(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
-		    // console.log(stringSplitting[0] + stringSplitting[1]);
+		    // Get the value of the fullurl parameter
+		    let wikipediaArticleLink = pageObject[key[0]].fullurl;
 
-		    // Replacing all HTML Tags included in the text
-		    summary = summary.replace(/<(?:.|\n)*?>/gm, "");
-		}
-
-		// HTTPS Request for receiving the URL of the article by giving the page ID as the value for the pageids parameter in the API request to Wikipedia
-		http.get("https://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&inprop=url&pageids=" + pageContent[keys[0]].pageid, (res) => {
-
-		    // The whole page "meta" data
-		    let pagedata = '';
-
-		    // Receiving chunks of the page data
-		    res.on('data', (chunk) => {
-			pagedata += chunk;
+		    // Sending the final result of the two requests as an embed to the channel where the command
+		    // was executed.
+		    msg.channel.send({
+			embed: {
+			    color: 3447003,
+			    author: {
+				icon_url: "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png",
+				name: "Wikipedia"
+			    },
+			    title: pageContent[keys[0]].title + " (wikipedia article)",
+			    url: wikipediaArticleLink,
+			    description: summary,
+			    timestamp: new Date(),
+			    footer: {
+				icon_url: "https://upload.wikimedia.org/wikipedia/en/2/28/WikipediaMobileAppLogo.png",
+				text: "Information by Wikipedia. wikipedia.org"
+			    }
+			}
 		    });
 
-		    // Finishing the last and final request
-		    res.on('end', () => {
+		}catch(e){
+		    msg.react("⛔");
+		    msg.channel.send(
+			"You got a very rare error here, how did you get that? Write it to our GitHub Repository\n" +
+			"https://github.com/sleme/pal-bot");
+		}
+	    });
 
-			// Try/Catch is actually unnecessary but no one knows if a error could happen
-			try {
-			    // JSON data of the page with the page id pageid
-			    let pageObject = JSON.parse(pagedata).query.pages;
+	}catch(e){
+	    msg.react("⛔");
+	    msg.channel.send(
+		"Cannot get data from Wikipedia. Please check your spelling and upper and lower case. (Mostly it is upper and lower case because Wikipedia pay attention to it.)\n" +
+		"```You´ve sent the value: " + argument + "```");
+	}
 
-			    let key = Object.keys(pageObject);
-
-			    // Get the value of the fullurl parameter
-			    let wikipediaArticleLink = pageObject[key[0]].fullurl;
-
-			    // Sending the final result of the two requests as an embed to the channel where the command
-			    // was executed.
-			    msg.channel.send({
-				embed: {
-				    color: 3447003,
-				    author: {
-					icon_url: "https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png",
-					name: "Wikipedia"
-				    },
-				    title: pageContent[keys[0]].title + " (wikipedia article)",
-				    url: wikipediaArticleLink,
-				    description: summary,
-				    timestamp: new Date(),
-				    footer: {
-					icon_url: "https://upload.wikimedia.org/wikipedia/en/2/28/WikipediaMobileAppLogo.png",
-					text: "Information by Wikipedia. wikipedia.org"
-				    }
-				}
-			    });
-
-			}catch(e){
-			    msg.react("⛔");
-			    msg.channel.send(
-				"You got a very rare error here. How did you get that? Write an issue to our GitHub Repository\n" +
-				"https://github.com/sleme/pal-bot/issues/new");
-			}
-		    })
-
-		});
-
-	    }catch(e){
-		msg.react("⛔");
-		msg.channel.send(
-		    "Cannot get data from Wikipedia. Please check your spelling and upper and lower case. (Mostly it is upper and lower case because Wikipedia pay attention to it.)\n" +
-		    "```You´ve sent the value: " + argument + "```");
-	    }
-	});
+    }).catch(error => {
+	console.log(error.response.body)
     });
 
 };
