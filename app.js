@@ -135,7 +135,7 @@ client.on("message", async(message) => {
 
 	// Logging every sent command.
 	console.log("Recived " + message.content + " from " + message.author + ". Treating it as a command.");
-  	hook.send("Recived " + message.content + ". Treating it as a command.");
+  	// hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
 
 	/*
@@ -340,7 +340,7 @@ client.on("message", async(message) => {
 		const weatherInfo = res.body.query.results.channel;
 		const forecast = weatherInfo.item.forecast[0];
 
-		const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F/${celsius(weatherInfo.item.condition.temp)}°C`;
+		const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F / ${celsius(weatherInfo.item.condition.temp)}°C`;
 
 		const embed = {
 		    "title": weatherInfo.item.title,
