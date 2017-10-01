@@ -196,7 +196,7 @@ client.on("message", async(message) => {
 	Description: Helps check if bot is alive, returns ping of bot.
 	*/
 	if(command === "ping") {
-		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th, 2001','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. `:warning: not found`','Julian Assange'];
+		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th, 2001','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. :warning: `not found`','Julian Assange','african food supplies, jk'];
 		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
 		// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 		// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
@@ -218,23 +218,6 @@ client.on("message", async(message) => {
 		vent.send(rant +" - Anonymous");
 		message.author.send("Message sent to #vent successfully.")
 	}
-
-	/* if(command === "poll"){
-		const sayMessage = args.join(" ");
-		// Then delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-		message.delete().catch(O_o=>{});
-		message.channel.send({
-	embed: {
-			color: 3447003,
-			title: "Poll by" + message.author,
-			fields: sayMessage + "Vote by adding to the reactions.",
-			timestamp: new Date()
-	}
-		});
-		message.react("👎");
-		message.react("👍");
-
-	} */
 
 	/*
 	Command: maintenance-1
@@ -317,6 +300,99 @@ client.on("message", async(message) => {
 				});
 			}
 		}
+
+		if (command === "clap"){
+			const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join(':clap:');
+			if(!args[0]){
+        message.channel.send('Please provide some text to clapify');
+			}
+			message.channel.send(args.map(randomizeCase).join(':clap:'));
+		}
+
+
+
+
+		if (command === "weather"){
+			const got = require('got');
+			const makeURL = (city) => `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22${encodeURIComponent(city)}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
+			const celsius = (fahrenheit) => Math.round(((fahrenheit - 32) * 5) / 9);
+			const kph = (mph) => Math.round(mph * 1.61);
+
+			const spacer = {
+				name: '\u200b',
+				value: '\u200b',
+			};
+
+				if(!args[0]){
+					message.react("👎");
+	        message.channel.send("Please provide a city.");
+	    }
+
+	    const city = args.join(' ');
+	    const res = await got(makeURL(city), { json: true });
+
+	    if (!res || !res.body || !res.body.query || !res.body.query.results || !res.body.query.results.channel) {
+					message.react("👎");
+	        message.channel.send('Failed to load weather info!');
+	    }
+
+	    const weatherInfo = res.body.query.results.channel;
+	    const forecast = weatherInfo.item.forecast[0];
+
+	    const description = `The current temperature in ${weatherInfo.location.city} is ${weatherInfo.item.condition.temp}°F/${celsius(weatherInfo.item.condition.temp)}°C`;
+
+	    const embed = {
+					"title": weatherInfo.item.title,
+					"description": "",
+    			color: 3447003,
+
+					"footer": {
+						"icon_url": client.user.avatarURL,
+      			"text": "© [slem] / Yahoo! Weather"
+					},
+					"author": {
+						"name": "Weather",
+						"icon_url": "https://lh6.ggpht.com/AQgEWq9WMSMD1MPd2RDqS6HJCzq8nu-iRFW3PvKqTb1IglzRh5DChrruWlcJmvoQ_zo=w300"
+					},
+					"fields": [
+						spacer,
+						{
+							"name": ":cloud: Condition",
+        			"value": weatherInfo.item.condition.text,
+        			"inline": true
+						},
+						{
+							"name": ":sweat_drops: Humidity",
+        			"value": weatherInfo.atmosphere.humidity + "%",
+        			"inline": true
+						},
+						{
+							"name": ":wind_blowing_face: Wind",
+        			"value": `*${weatherInfo.wind.speed}mph* / *${kph(weatherInfo.wind.speed)}kph* ; direction: *${weatherInfo.wind.direction}°*`
+      			},
+      			{
+        			"name": `Forecast for today is: ${forecast.text}`,
+        			"value": `\n Highest temperature is ${forecast.high}°F / ${celsius(forecast.high)}°C \n Lowest temperature is ${forecast.low}°F / ${celsius(forecast.low)}°C`
+      			},
+						spacer,
+      			{
+							"name": ':sunny: Sunrise',
+        			"value": weatherInfo.astronomy.sunrise,
+        			"inline": true
+						},
+      			{
+        			"name": ':full_moon: Sunset',
+        			"value": weatherInfo.astronomy.sunset,
+        			"inline": true
+      			},
+						spacer
+					]
+				}
+			message.channel.send({embed});
+		}
+
+
+
 
 	/*
 	Command: git
@@ -606,6 +682,8 @@ client.on("message", async(message) => {
 	    "\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
 			"\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
 	    "\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
+			"\n" + config.prefix + " ``clap`` // Clapify your text. " +
+			"\n" + config.prefix + " ``weather 'city' `` // Gives you the weather info of that city. " +
 	    "\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
 	    "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
 		);
