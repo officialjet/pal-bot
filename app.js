@@ -618,7 +618,7 @@ client.on("message", async(message) => {
 			const member = message.guild.member(message.mentions.members.first());
 
 			let userCreatedDate = this.getDate(new Date(member.user.createdTimestamp));
-			let guildJoinDate = this.getDate(new Date(member.guild.joinedTimestamp));
+			let guildJoinDate = this.getDate(new Date(member.joinedTimestamp));
 			let roles = member.roles.map((a) => {
 				return a;
 			});
@@ -666,23 +666,22 @@ client.on("message", async(message) => {
 	Description: Gives user a list of commands the bot can do.
 	*/
 	if(command === "help"){
-		message.react('👌');
-		message.channel.send("Check your private messages! :wink:");
-	  message.author.send(
-			"\n" + "**Available Commands:**" +
-	    "\n" + config.prefix + " ``ping`` // Calculates ping." +
-	    "\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
-	    "\n" + config.prefix + " ``server-members`` // Counting the discord member of the server where the command was executed."+
-	    "\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
-	    "\n" + config.prefix + " ``say`` // Repeats what you say." +
-	    "\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
-			"\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
-	    "\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
-			"\n" + config.prefix + " ``clap`` // Clapify your text. " +
-			"\n" + config.prefix + " ``weather 'city' `` // Gives you the weather info of that city. " +
-	    "\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
-	    "\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
-		);
+	    message.delete();
+	    message.author.send(
+		"\n" + "**Available Commands:**" +
+		"\n" + config.prefix + " ``ping`` // Calculates ping." +
+		"\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
+		"\n" + config.prefix + " ``server-members`` // Counting the discord member of the server where the command was executed."+
+		"\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
+		"\n" + config.prefix + " ``say`` // Repeats what you say." +
+		"\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
+		"\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
+		"\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
+		"\n" + config.prefix + " ``clap`` // Clapify your text. " +
+		"\n" + config.prefix + " ``weather 'city' `` // Gives you the weather info of that city. " +
+		"\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
+		"\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
+	    );
 	}
 
 	/*
@@ -736,7 +735,7 @@ if(config.token){
  *
  * @public
  */
-exports.getDate = function(/**Integer*/date) {
+exports.getDate = function(/**Object*/date) {
 	/* We can use this later
 
 	let hours = date.getHours();
