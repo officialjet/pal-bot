@@ -393,42 +393,6 @@ client.on("message", async(message) => {
 		message.channel.send({embed});
 	}
 
-
-
-
-	/*
-	Command: git
-	*/
-	if(command === "git"){
-		message.channel.send({
-			embed: {
-			    title: "GitHub Repo",
-			    description: "--------------------------------------------------------",
-			    color: 6814447,
-			    footer: {
-				icon_url : client.user.avatarURL,
-				text: "© [slem]"
-			    },
-			    author: {
-				name: client.user.username,
-				icon_url: client.user.avatarURL
-			    },
-			    fields: [
-				{
-				    name : "Repo link:",
-				    value : "https://github.com/sleme/pal-bot",
-				    inline: true
-				},
-				{
-				    name : "Latest release:",
-				    value : "1.0.1",
-				    inline: true
-				}
-			    ]
-			}
-		})
-	}
-
 	/*
 	Command: server
 	*/
@@ -502,7 +466,20 @@ client.on("message", async(message) => {
 	*/
     	if(command === "github"){
 	    if(!args[0]){
-		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/")
+		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/");
+		message.channel.send({
+		    embed: {
+			title: "GitHub Repository",
+			color: 6814447,
+			fields: [
+			    {
+				name : "Latest release:",
+				value : "1.0.1",
+				inline: true
+			    }
+			]
+		    }
+		});
 	    } else{
 		if(args[0] === "contributors"){
 		    got({
@@ -522,7 +499,7 @@ client.on("message", async(message) => {
 			message.channel.send({
 			    embed: {
 				color: 3447003,
-				title: "GitHub Contributors",
+				title: "GitHub -> Contributors",
 				fields: contData,
 				timestamp: new Date()
 			    }
@@ -535,7 +512,7 @@ client.on("message", async(message) => {
 		    message.channel.send({
 			embed: {
 			    color: 3447003,
-			    title: "GitHub > Bot commands",
+			    title: "GitHub -> Bot commands",
 			    fields: [
 			        {
 				    name: config.prefix + "github",
@@ -561,7 +538,7 @@ client.on("message", async(message) => {
 		    message.channel.send({
 			embed: {
 			    color: 3447003,
-			    title: "GitHub > Issues",
+			    title: "GitHub -> Issues",
 			    fields: [
 				{
 				    name: "You´ve found a bug or have some suggestions for the bot?",
@@ -575,7 +552,7 @@ client.on("message", async(message) => {
 		    message.channel.send({
 			embed: {
 			    color: 3447003,
-			    title: "GitHub > Contribute",
+			    title: "GitHub -> Contribute",
 			    description: "You want to contribute in our project? Check out our repo by typing " + config.prefix + "github to get a lookup of the project and to see what we´re planning and what we´re currently working on.",
 			    timestamp: new Date()
 			}
