@@ -143,15 +143,15 @@ client.on("message", async(message) => {
 	Description: Provides a list of names of servers the bot is on. Only for debug.
 	*/
 	if(command === "list-servers") {
-		if(message.author.id !== config.ownerID){
+	    if(message.author.id !== config.ownerID){
 		message.react("👎");
-	}else {
-		const guilds = client.guilds.array();
-		for(let guild in guilds) {
-		hook.send("```" + guilds[guild]["name"] + "```");
+	    }else {
+		    const guilds = client.guilds.array();
+		    for(let guild in guilds) {
+			    hook.send("```" + guilds[guild]["name"] + "```");
+		    }
+	    }
 	}
-}
-}
 
 
 	/*
@@ -159,8 +159,8 @@ client.on("message", async(message) => {
 	Description: Provides info about the bot.
 	*/
 	if(command === "bot-info") {
-	    const upmin = client.uptime / 60;
-	    const uphou = upmin /60;
+	    // const upmin = client.uptime / 60;
+	    // const uphour = upmin /60;
 	    message.channel.send({
 		embed: {
 		    title: "Bot-Info",
@@ -441,8 +441,7 @@ client.on("message", async(message) => {
 	Command: bot-invite
   */
 	if(command === "bot-invite") {
-		message.react('👌');
-		message.react('🆗');
+		message.delete();
 		message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=536980545");
 	}
 
