@@ -643,21 +643,68 @@ client.on("message", async(message) => {
 	*/
 	if(command === "help"){
 	    message.delete();
-	    message.author.send(
-		"\n" + "**Available Commands:**" +
-		"\n" + config.prefix + " ``ping`` // Calculates ping." +
-		"\n" + config.prefix + " ``invite`` // Gives you an invite link to this discord server." +
-		"\n" + config.prefix + " ``server-members`` // Counting the discord member of the server where the command was executed."+
-		"\n" + config.prefix + " ``bot-invite`` // Gives you a bot invite link." +
-		"\n" + config.prefix + " ``say`` // Repeats what you say." +
-		"\n" + config.prefix + " ``purge`` // This command removes all messages from all users in the channel, up to 100. " +
-		"\n" + config.prefix + " ``user @user`` // Gives you a list of info about the tagged user. " +
-		"\n" + config.prefix + " ``server`` // Gives an invite to the bot's discord. " +
-		"\n" + config.prefix + " ``clap`` // Clapify your text. " +
-		"\n" + config.prefix + " ``weather 'city' `` // Gives you the weather info of that city. " +
-		"\n" + config.prefix + " ``vent 'your vent here' `` // Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg " +
-		"\n" + "You can also join this bots discord server for more help using https://discord.gg/k6qSHQs"
-	    );
+	    message.author.send({
+		embed: {
+		    color: 3447003,
+		    title: "Available commands",
+		    description: "Here you have a list of all commands of the bot: ",
+		    footer: {
+		        text : "- by Pal (who want to help humans :) )"
+		    },
+		    fields: [
+			{
+			    name: config.prefix + "ping",
+			    value: "Calculates ping."
+			},
+			{
+			    name: config.prefix + "invite",
+			    value: "Gives you an invite link to this discord server."
+			},
+			{
+			    name: config.prefix + "server-members",
+			    value: "Counting the discord member of the server where the command was executed."
+			},
+			{
+			    name: config.prefix + "bot-invite",
+			    value: "Gives you a bot invite link."
+			},
+			{
+			    name: config.prefix + "say",
+			    value: "Repeats what you say."
+			},
+			{
+			    name: config.prefix + "purge",
+			    value: "This command removes all messages from all users in the channel, up to 100. "
+			},
+			{
+			    name: config.prefix + "user @user",
+			    value: "Gives you information about the mentioned user."
+			},
+			{
+			    name: config.prefix + "server",
+			    value: "Gives an invite to the bot's discord."
+			},
+			{
+			    name: config.prefix + "github",
+			    value: "```!github [help | contributors | issue | contribute ]```\n **!github** sends you the link to the repository."
+			},
+			{
+			    name: config.prefix + "clap",
+			    value: "Clapify your text."
+			},
+			{
+			    name: config.prefix + "weather 'city'",
+			    value: "Gives you the weather info of the given city."
+			},
+			{
+			    name: config.prefix + "vent 'your vent here'",
+			    value: "Uploads a vent to the vent server, vent server can be found here https://discord.gg/EBTkQHg"
+			}
+		    ]
+		}
+	    });
+	    message.author.send("**__Vent Server:__** https://discord.gg/EBTkQHg");
+	    message.author.send("You can also join this bots discord server for more help using this invite link: https://discord.gg/k6qSHQs");
 	}
 
 	/*
