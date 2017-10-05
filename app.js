@@ -471,7 +471,7 @@ client.on("message", async(message) => {
 		    embed: {
 			title: "Latest stable release:",
 			color: 3447003,
-			description: "1.0.1"
+			description: "1.2.0"
 		    }
 		});
 	    } else{
