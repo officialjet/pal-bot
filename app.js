@@ -469,15 +469,9 @@ client.on("message", async(message) => {
 		message.reply("here you can find the repository from this bot: https://github.com/sleme/pal-bot/");
 		message.channel.send({
 		    embed: {
-			title: "GitHub Repository",
-			color: 6814447,
-			fields: [
-			    {
-				name : "Latest release:",
-				value : "1.0.1",
-				inline: true
-			    }
-			]
+			title: "Latest stable release:",
+			color: 3447003,
+			description: "1.0.1"
 		    }
 		});
 	    } else{
