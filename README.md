@@ -9,7 +9,10 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 - +invite **|** Send you a invite link of the discord server where this command was executed.
 - +count-discord-member **|** Counting the discord member of the server where the command was executed.
 - +user ```user``` **|** Gives you information about a user of your guild. (i.e. when the account was created and more)
-- +help **|** Provides a list of commands.
+- +help **|** Provides a list of commands via DM.
+- +server-members **|** Returns a number containing the amount of members on your discord server.
+- +wiki ```[any term like Google or Rocket League]``` **|** Gives you a short summary of the given term + the link to the wikipedia article
+- +github ```[help | contributors | issue | contribute]``` **|** Returns the link to this repository
 
 
 ## Contributing
