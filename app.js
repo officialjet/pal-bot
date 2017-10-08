@@ -110,6 +110,8 @@ client.on("message", async(message) => {
 	// args = ["Is", "this", "the", "real", "life?"]
 	let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
+	let content = message.content;
+
 	// Message used for api.ai, this removes the bots id to make the bot work better.
 	const messagea = message.content.replace(/<@300955174225051650>/g,'');
 
@@ -133,7 +135,7 @@ client.on("message", async(message) => {
 	if(message.channel.type === "dm"){
 	    console.log("Discord -> Bot -> Direct Message: DM by " + message.author.tag + " (" + message.author.id + " | Content: " + message.content + ")");
 
-	    if(message.content === "hello"){
+	    if(content.toLowerCase() === "hello"){
 	        message.react("👋");
 	        message.channel.send("Yo, what´s up!" +
 		    "\nLater, I´ll be able to answer questions and to do some good things which I don´t know what it will be but I know it will be good (I hope)." +
@@ -155,9 +157,9 @@ client.on("message", async(message) => {
 		    "\nOr just write an issue in the repository which I already sent to you!");
 
 		hook.send("Got a DM which I already can handle!");
+	    }else {
+		hook.send("Got a DM!");
 	    }
-
-	    hook.send("Got a DM!");
 	}
 
 	// Ignore any message that does not start with our prefix, set in the configuration file.
