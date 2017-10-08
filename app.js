@@ -130,6 +130,36 @@ client.on("message", async(message) => {
 		request.end();
 	}
 
+	if(message.channel.type === "dm"){
+	    console.log("Discord -> Bot -> Direct Message: DM by " + message.author.tag + " (" + message.author.id + " | Content: " + message.content + ")");
+
+	    if(message.content === "hello"){
+	        message.react("👋");
+	        message.channel.send("Yo, what´s up!" +
+		    "\nLater, I´ll be able to answer questions and to do some good things which I don´t know what it will be but I know it will be good (I hope)." +
+		    "\nBut you can check out the repository here and maybe contribute to it to help us developing and evolving myself: https://github.com/sleme/pal-bot/");
+		message.channel.send({
+		    embed: {
+			title: "Repository on GitHub:",
+			color: 3447003,
+			description: "Bot on version 1.2.0",
+			fields: [
+			    {
+			        name: "Link:",
+				value: "https://github.com/sleme/pal-bot/"
+			    }
+			]
+		    }
+		});
+		message.channel.send("On my discord server, you can get some news about the development state of this bot and where we need help: https://discord.gg/fz7q53e" +
+		    "\nOr just write an issue in the repository which I already sent to you!");
+
+		hook.send("Got a DM which I already can handle!");
+	    }
+
+	    hook.send("Got a DM!");
+	}
+
 	// Ignore any message that does not start with our prefix, set in the configuration file.
 	if(message.content.indexOf(config.prefix) !== 0) return;
 
