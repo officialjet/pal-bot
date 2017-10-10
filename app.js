@@ -168,6 +168,10 @@ client.on("message", async(message) => {
 			    {
 				name: "version",
 				value: "Sends you just the version of this bot"
+			    },
+			    {
+				name: "'Coming Soon'",
+				value: "Sends you a list of features which will come very soon!"
 			    }
 			]
 		    }
@@ -176,6 +180,37 @@ client.on("message", async(message) => {
 	    if(content === "version"){
 	        message.react("🆗");
 	        message.channel.send("I am currently in version 1.2.0. You can check the changelog of this version here: https://github.com/sleme/pal-bot/releases/tag/1.2.0");
+	    }
+	    if(content === "coming soon"){
+	        message.react("💬");
+	        message.channel.send("Here is a list of features and enhancements I´ll get in the near future:");
+		message.channel.send({
+		    embed: {
+			title: "List of features and enhancements in the near future",
+			color: 3447003,
+			fields: [
+			    {
+				name: "- Adding more direct message commands",
+				value: "I´ll be able to make a better conservation with you with more DM commands"
+			    },
+			    {
+				name: "- Enhance already existing direct message commands",
+				value: "The DM commands I already have will be enhanced with more special stuff"
+			    },
+			    {
+				name: "- Enhance direct message communication with the bot with AI",
+				value: "With an AI-powered communication system, I´ll be able to give you more intelligent answers (maybe)"
+			    },
+			    {
+				name: "- Adding more and enhance discord server related commands",
+				value: "There are some commands planned for the bot which you can use on your discord server. " +
+				"Currently there is nothing which we have fully planned but to know what we´re going to add, you should use this DM command often beacuse we´re going to refresh this list regularly. " +
+				"If you have some features in mind we should add or anything we can enhance, just write an issue to our repository. Just write the " + config.prefix + "github ``issue`` command in a discord " +
+				"server or just write 'hello' to this bot to get a link to the repository. Pull requests to the repository are appreciated! :) "
+			    }
+			]
+		    }
+		});
 	    }
 	}
 
