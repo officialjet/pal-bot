@@ -110,7 +110,7 @@ client.on("message", async(message) => {
 	// args = ["Is", "this", "the", "real", "life?"]
 	let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 
-	let content = message.content;
+	let content = message.content.toLowerCase();
 
 	// Message used for api.ai, this removes the bots id to make the bot work better.
 	const messagea = message.content.replace(/<@300955174225051650>/g,'');
@@ -135,7 +135,7 @@ client.on("message", async(message) => {
 	if(message.channel.type === "dm"){
 	    console.log("Discord -> Bot -> Direct Message: DM by " + message.author.tag + " (" + message.author.id + " | Content: " + message.content + ")");
 
-	    if(content.toLowerCase() === "hello"){
+	    if(content === "hello"){
 	        message.react("👋");
 	        message.channel.send("Yo, what´s up!" +
 		    "\nLater, I´ll be able to answer questions and to do some good things which I don´t know what it will be but I know it will be good (I hope)." +
@@ -155,10 +155,27 @@ client.on("message", async(message) => {
 		});
 		message.channel.send("On my discord server, you can get some news about the development state of this bot and where we need help: https://discord.gg/fz7q53e" +
 		    "\nOr just write an issue in the repository which I already sent to you!");
-
-		hook.send("Got a DM which I already can handle!");
-	    }else {
-		hook.send("Got a DM!");
+	    }
+	    if(content === "help"){
+	        message.react("👌");
+	        message.channel.send("Ok, here you go:");
+		message.channel.send({
+		    embed: {
+			title: "Bot commands you can use in a direct message conservation:",
+			color: 3447003,
+			description: "(You dont need to use any prefix or other special character before the command!)",
+			fields: [
+			    {
+				name: "version",
+				value: "Sends you just the version of this bot"
+			    }
+			]
+		    }
+		});
+	    }
+	    if(content === "version"){
+	        message.react("🆗");
+	        message.channel.send("I am currently in version 1.2.0. You can check the changelog of this version here: https://github.com/sleme/pal-bot/releases/tag/1.2.0");
 	    }
 	}
 
