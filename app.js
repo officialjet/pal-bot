@@ -37,7 +37,7 @@ const maintenance = 0;
 const users = client.users.size;
 
 // Random games
-const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  ','with' + users + 'users'];
+const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  ','with ' + users + ' users'];
 setInterval(function(){
 	const rangame = games[Math.floor(Math.random() * games.length)];
 	client.user.setGame(rangame);
