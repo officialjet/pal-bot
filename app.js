@@ -35,7 +35,7 @@ const got = require("got");
 const maintenance = 0;
 
 // Random games
-const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  ',`with ${client.users.size}`];
+const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  ', 'with' + {client.users.size} + 'users'];
 setInterval(function(){
 	const rangame = games[Math.floor(Math.random() * games.length)];
 	client.user.setGame(rangame);
