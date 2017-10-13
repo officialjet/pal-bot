@@ -12,7 +12,7 @@ This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/disco
 - +help **|** Provides a list of commands via DM.
 - +server-members **|** Returns a number containing the amount of members on your discord server.
 - +wiki ```[any term like Google or Rocket League]``` **|** Gives you a short summary of the given term + the link to the wikipedia article
-- +github ```[help | contributors | issue | contribute]``` **|** Returns the link to this repository
+- +github **|** Returns the link to this repository | Usage: ```[help | contributors | issue | contribute]```
 
 
 ## Contributing
