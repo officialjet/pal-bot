@@ -26,8 +26,8 @@ const hook = new Discord.WebhookClient(config.hook_id, config.hook_token);
 const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 
 // API.AI's Cleverbot
-const apiai = require('apiai');
-const app = apiai(config.cbotapi);
+const dialogflow = require('apiai');
+const dialogflowApp = dialogflow(config.cbotapi);
 
 const got = require("got");
 
@@ -121,7 +121,7 @@ client.on("message", async(message) => {
 	const command = args.shift().toLowerCase();
 
 	if(message.isMentioned(client.user)){
-		var request = app.textRequest(messagea, {
+		var request = dialogflowApp.textRequest(messagea, {
 			sessionId: '<unique session id>'
 		});
 
