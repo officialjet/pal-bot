@@ -287,9 +287,6 @@ client.on("message", async(message) => {
 	}
 
 	if (command === "sad"){
-		if(!args[0]){
-			return;
-		}
 		message.channel.startTyping()
 		var url = message.author.avatarURL;
 		Jimp.read(url).then(function (image) {
