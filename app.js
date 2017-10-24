@@ -302,7 +302,7 @@ client.on("message", async(message) => {
 				let outputfile = "./output/" + Math.random().toString(36).substr(2, 5) + "sad." + image.getExtension(); // create a random name for the output file
 				image.write(outputfile, function() {
 					// upload file
-					message.channel.sendMessage({file:outputfile}).then(function() {
+					message.channel.sendMessage({[file:outputfile]};).then(function() {
 					// delete file
 					fs.unlink(outputfile);
 					console.log("SUCCESS: " + message.author.username);
