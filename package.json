@@ -11,8 +11,11 @@
   "license": "MIT",
   "main": "app.js",
   "dependencies": {
+    "api.ai": "^1.0.3",
     "apiai": "^4.0.3",
     "discord.js": "^11.2.1",
-    "got": "^7.1.0"
+    "figlet": "^1.2.0",
+    "got": "^7.1.0",
+    "jimp": "^0.2.28"
   }
 }
