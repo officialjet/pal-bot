@@ -31,6 +31,10 @@ const dialogflowApp = dialogflow(config.cbotapi);
 
 const got = require("got");
 
+PNG = require('pngjs').PNG;
+var Jimp = require("jimp");
+
+
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0;
 
@@ -277,6 +281,111 @@ client.on("message", async(message) => {
 		    ]
 		}
 	    });
+	}
+
+	if(command === "image") {
+		// on string found
+	if ( message.content.substring(0,8) == "/corrupt" ) {
+
+		// if there is an attachment
+		if ( message.attachments.length > 0 ) {
+
+			var fileURL = message.attachments[0].url //gets file URL from attachments
+			processImage(message, fileURL) //calls processor
+
+		}
+		else if ( message.content.split(" ").length > 1) {
+
+			var fileURL = message.content.split(" ")[1] //gets file URL from post
+
+			if ( fileURL.match(/\.(jpg|png|PNG|JPG)$/) && fileURL.match("http") ) {
+				processImage(message, fileURL) //calls processor
+			}
+			else if ( fileURL == "user" && message.mentions.length > 0 ) {
+				processImage(message, message.mentions[0].avatarURL);
+			}
+		}
+		else {
+			message.channel.send("**ERR:** Unknown parser error")
+		};
+	}
+
+	// processes image
+function processImage(message, FileName) {
+
+	// if file is PNG
+	if ( FileName.match(/\.(jpg|png|PNG|JPG)$/) && FileName.match("http") ) {
+
+		var fileNewName = Math.random().toString(36).substr(2, 5) + ".png" // create a random name for the file
+
+		// if file is on a HTTP server or HTTPS.
+		if (FileName.match("https:")) { var protocol = https} else { var protocol = http};
+
+		//downloads file
+		var file = fs.createWriteStream("./in/" + fileNewName);
+		var request = protocol.get(FileName, function(response) {
+
+			// when done downloading
+			response.pipe(file).on("finish", function() {
+
+				// convert to PNG
+				Jimp.read("./in/" + fileNewName, function (err, image) {
+					if (err) { bot.sendMessage(message.channel, "**ERR:** Image convert fail!") };
+					image.write("./in/" + fileNewName, function() {
+						corrupt(message, fileNewName); // pass image to corruptor
+					}); // save
+				});
+			});
+		});
+	}
+	else {
+		message.channel.send( "**ERR:** File type unknown! Only PNG, JPG files are supported at the moment.")
+	};
+}
+
+
+// corrupts image color data
+function corrupt(message, file) {
+
+	var newR = Math.floor(Math.random() * 254) + -254
+	var newG = Math.floor(Math.random() * 254) + -254
+	var newB = Math.floor(Math.random() * 254) + -254
+
+	fs.createReadStream("./in/" + file)
+    .pipe(new PNG({
+        filterType: 4
+    }))
+    .on('parsed', function() {
+
+        for (var y = 0; y < this.height; y++) {
+            for (var x = 0; x < this.width; x++) {
+                var idx = (this.width * y + x) << 2;
+
+                // Do pixel data changes
+                this.data[idx] = this.data[idx] + newR;
+                this.data[idx+1] = this.data[idx+1] + newG;
+                this.data[idx+2] = this.data[idx+2] + newB;
+
+            }
+        }
+
+		// pipes data to new image
+        this.pack().pipe(fs.createWriteStream("./out/" + file)).on("finish", function() {
+
+			fs.unlink("./in/" + file); //deletes original
+
+			// sends image and deltes image
+			bot.sendFile( message.channel, "./out/" + file, file, function() {
+				 fs.unlink("./out/" + file);
+				 if ( message.author.id == bot.user.id ) {
+					 bot.deleteMessage(message)
+				 }
+			});
+		});
+    });
+
+}
+
 	}
 
 	/*
