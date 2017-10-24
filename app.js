@@ -16,6 +16,9 @@ const client = new Discord.Client();
 // Make sure the bot is using Secure HTTP.
 const http = require('https');
 
+let fs = require('fs') // file manager
+
+
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
 
