@@ -284,22 +284,60 @@ client.on("message", async(message) => {
 		    ]
 		}
 	    });
+
+
 	}
 
+	function doRandomSize(){
+		var rand = [Jimp.FONT_SANS_64_BLACK]
+		return rand[Math.floor(Math.random()*rand.length)];
+	}
+
+	if(command === "invert"){
+		var url = message.author.avatarURL;
+		Jimp.read(url).then(function (image) {
+			image.resize(1024, 1024, Jimp.RESIZE_BEZIER)
+			image.invert();
+			let outputfile = "./output/" + Math.random().toString(36).substr(2, 5) + "sad." + image.getExtension(); // create a random name for the output file
+			image.write(outputfile, function() {
+				// upload file
+				message.channel.send({
+			"files": [outputfile]
+	}).then(function() {
+				// delete file
+				fs.unlink(outputfile);
+				console.log("SUCCESS: " + message.author.username);
+				message.channel.stopTyping()
+			});
+		});
+	}).catch(function (err) {
+		console.error(err);
+	})
+	function onBuffer(err, buffer) {
+		if (err) throw err;
+		console.log(buffer);
+	}
+}
+
+
 	if (command === "sad"){
+		if(!args[0]){
+			message.channel.send("Please provide text")
+			return;
+		}
 		message.channel.startTyping()
 		var url = message.author.avatarURL;
 		Jimp.read(url).then(function (image) {
-			image.resize(1024, 1024, Jimp.RESIZE_BEZIER);
 			Jimp.loadFont(doRandomSize()).then(function (font) { // load font from .fnt file
 				// print a message on an image
-				image.print(font, 2, 2, args.join(" "), Jimp.ALIGN_FONT_CENTER); // print a message on an image with text wrapped at width
-				image.greyscale()
-				/**image.greyscale()**/image.print(font, 20, 960, args.join(" "), Jimp.ALIGN_FONT_CENTER).getBuffer(Jimp.MIME_JPEG, onBuffer)
+				//image.print(font, 2, 2, args.join(" "), Jimp.ALIGN_FONT_CENTER); // print a message on an image with text wrapped at width
+				image.resize(1024, 1024, Jimp.RESIZE_BEZIER)
+						 .greyscale()
+				     .print(font, 20, 960, args.join(" "), Jimp.ALIGN_FONT_CENTER).getBuffer(Jimp.MIME_JPEG, onBuffer)
 				let outputfile = "./output/" + Math.random().toString(36).substr(2, 5) + "sad." + image.getExtension(); // create a random name for the output file
 				image.write(outputfile, function() {
 					// upload file
-					message.channel.sendMessage({
+					message.channel.send({
         "files": [outputfile]
     }).then(function() {
 					// delete file
