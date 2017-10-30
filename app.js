@@ -338,38 +338,38 @@ Description: Adds custom black text to image and turns it gray
 
 if (command === "sad-black"){
 	if(!args[0]){
-		message.channel.send("Please provide text")
+		message.channel.send("Please provide text");
 		return;
 	}
-	message.channel.startTyping()
-	var url = message.author.avatarURL;
+	message.channel.startTyping();
+	let url = message.author.avatarURL;
 	Jimp.read(url).then(function (image) {
 		Jimp.loadFont(doRandomSizeBlack()).then(function (font) { // load font from .fnt file
 			// print a message on an image
 			//image.print(font, 2, 2, args.join(" "), Jimp.ALIGN_FONT_CENTER); // print a message on an image with text wrapped at width
 			image.resize(1024, 1024, Jimp.RESIZE_BEZIER)
 					 .greyscale()
-					 .print(font, 20, 960, args.join(" "), Jimp.ALIGN_FONT_CENTER).getBuffer(Jimp.MIME_JPEG, onBuffer)
+					 .print(font, 20, 960, args.join(" "), Jimp.ALIGN_FONT_CENTER).getBuffer(Jimp.MIME_JPEG, onBuffer);
 			let outputfile = "./output/" + Math.random().toString(36).substr(2, 5) + "sad." + image.getExtension(); // create a random name for the output file
 			image.write(outputfile, function() {
 				// upload file
 				message.channel.send({
 			"files": [outputfile]
-	}).then(function() {
-				// delete file
-				fs.unlink(outputfile);
-				console.log("SUCCESS: " + message.author.username);
-				message.channel.stopTyping()
+		}).then(function() {
+				    // delete file
+				    fs.unlink(outputfile);
+				    console.log("SUCCESS: " + message.author.username);
+				    message.channel.stopTyping()
+				});
 			});
 		});
+	}).catch(function (err) {
+		console.error(err);
 	});
-}).catch(function (err) {
-	console.error(err);
-})
-function onBuffer(err, buffer) {
-	if (err) throw err;
-	console.log(buffer);
-}
+	function onBuffer(err, buffer) {
+	    if (err) throw err;
+	    console.log(buffer);
+	}
 }
 
 /*
@@ -397,14 +397,14 @@ Description: Adds custom white text to image and turns it gray
 				image.write(outputfile, function() {
 					// upload file
 					message.channel.send({
-        "files": [outputfile]
-    }).then(function() {
+					"files": [outputfile]
+				    }).then(function() {
 					// delete file
 					fs.unlink(outputfile);
 					console.log("SUCCESS: " + message.author.username);
-					message.channel.stopTyping()
+					message.channel.stopTyping();
+				    });
 				});
-			});
 		});
 	}).catch(function (err) {
 		console.error(err);

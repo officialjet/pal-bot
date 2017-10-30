@@ -39,4 +39,10 @@ Gives you a short summary of the given term + the link to the wikipedia article
 #### +github 
 Returns the link to this repository 
 
+#### +invert
+Inverts the profile picture of the user which sent the command.
+
+#### +sad-black / +sad-white
+Adds text in black / white to your profile picture.
+
 **Usage:** ```+github [help | contributors | issue | contribute]```
