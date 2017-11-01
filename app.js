@@ -111,7 +111,8 @@ client.on("guildDelete", guild => {
 // This event will run on every single message received, from any channel or DM.
 client.on("message", async(message) => {
 	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
-	if(message.author.bot) return;
+    	// And ignoring commands sent via dm to the bot
+	if(message.author.bot || message.channel.type === "dm") return;
 
 	// Here we separate our "command" name, and our "arguments" for the command.
 	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
