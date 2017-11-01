@@ -110,26 +110,31 @@ client.on("guildDelete", guild => {
 
 // This event will run on every single message received, from any channel or DM.
 client.on("message", async(message) => {
-	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
-    	// And ignoring commands sent via dm to the bot
-	if(message.author.bot || message.channel.type === "dm") return;
 
 	// Here we separate our "command" name, and our "arguments" for the command.
 	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
 	// command = say
 	// args = ["Is", "this", "the", "real", "life?"]
 	let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-
-	let content = message.content.toLowerCase();
-
-	// Message used for api.ai, this removes the bots id to make the bot work better.
-	const messagea = message.content.replace(/<@300955174225051650>/g,'');
-
 	// Make recived command all lower case.
 	const command = args.shift().toLowerCase();
 
+	// Content of the message in lower cases.
+    	// Attention: not usable for, for example, replacing message.content in splittedContentArgs
+    	// because there could be arguments which should not be in lower cases.
+	let content = message.content.toLowerCase();
+
+	// Message used for DialogFlow, this removes the bots id to make the bot work better.
+	const messageDialogFlow = message.content.replace(/<@300955174225051650>/g,'');
+
+	// This is actually the same like the splitting of the command content into arguments.
+    	// This here is more optimized for usages without using the command prefix like in DM conservations
+    	// --> ToDO: Find a better name for these variables. They sound too bad. :/
+	let splittedContentArgs = message.content.trim().split(/ +/g);
+	let splittedContentCommand = splittedContentArgs.shift().toLowerCase();
+
 	if(message.isMentioned(client.user)){
-		var request = dialogflowApp.textRequest(messagea, {
+		var request = dialogflowApp.textRequest(messageDialogFlow, {
 			sessionId: '<unique session id>'
 		});
 
@@ -222,7 +227,39 @@ client.on("message", async(message) => {
 		    }
 		});
 	    }
+
+	    /*
+	    Vent command for DM conservations & optimized for DM conservations (able to use with or without prefix)
+	    (so you are able to use vent in a DM conservation where nobody can read it and to be able to send fully anonymously)
+	    Description: Sends an anonymous message to a webhook in a log server.
+	    */
+
+	    if(command === "vent" || splittedContentCommand === "vent"){
+		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
+		// To get the "message" itself we join the `args` back into a string with spaces:
+
+		// Explanation why we use args and not splittedContentArgs
+		// The reason is: you would only allow content which are not containing a prefix.
+		// It should be allowed that you can write a command with and without the prefix.
+		// command and splittedContentCommand are the same but in command, the first character (the prefix) will be cut out
+		// so instead of !vent you have only vent. When you now sending this command without a prefix, you get "ent" but not the command you want to check.
+		// splittedContentCommand does not slice the first character out. But splittedContentArgs works like args, just without the slicing (.slice()).
+		// TL;DR: Just let it like it should be. :D
+
+		const rant = args.join(" ");
+
+		// Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+		message.delete().catch(O_o=>{});
+
+		// And we get the bot to say the thing:
+		vent.send(rant +" - Anonymous");
+		message.channel.send("Message sent to #vent successfully.")
+	    }
 	}
+
+	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
+	// And ignoring commands sent via dm to the bot
+	if(message.author.bot || message.channel.type === "dm") return;
 
 	// Ignore any message that does not start with our prefix, set in the configuration file.
 	if(message.content.indexOf(config.prefix) !== 0) return;
@@ -435,7 +472,7 @@ Description: Adds custom white text to image and turns it gray
 	*/
 	if(command === "vent"){
 		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
-	  // To get the "message" itself we join the `args` back into a string with spaces:
+	  	// To get the "message" itself we join the `args` back into a string with spaces:
 		const rant = args.join(" ");
 		// Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
 		message.delete().catch(O_o=>{});
@@ -451,12 +488,12 @@ Description: Adds custom white text to image and turns it gray
 	if(command === "maintenance-1"){
 		if(message.author.id !== config.ownerID){
 			message.react("👎");
-	    }else {
-				hook.send("Bot set under maintenance!");
-				client.user.setGame(`Under maintenance.`);
-				client.user.setStatus("idle");
-			}
+		}else {
+		    hook.send("Bot set under maintenance!");
+		    client.user.setGame(`Under maintenance.`);
+		    client.user.setStatus("idle");
 		}
+	}
 
 	/*
 	Command: maintenance-0
