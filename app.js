@@ -67,9 +67,9 @@ client.on("ready", () => {
 		client.user.setGame(`Under maintenance.`);
 		client.user.setStatus("idle");
 		// Logging changes.
-		console.log("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
-	  hook.send("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
-	  console.log("-------------");
+	    console.log("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
+	      hook.send("Maintenance set to 'ON'. This means the status has been set to idle and presence set to 'Under maintenance'.");
+	      console.log("-------------");
 	}else {
 		// Setting bot's game and status.
 		setTimeout(function(){
@@ -353,7 +353,7 @@ client.on("message", async(message) => {
 		});
 	}).catch(function (err) {
 		console.error(err);
-	})
+	});
 	function onBuffer(err, buffer) {
 		if (err) throw err;
 		console.log(buffer);
@@ -361,12 +361,12 @@ client.on("message", async(message) => {
 }
 
 function doRandomSizeBlack(){
-	var rand = [Jimp.FONT_SANS_64_BLACK]
+	var rand = [Jimp.FONT_SANS_64_BLACK];
 	return rand[Math.floor(Math.random()*rand.length)];
 }
 
 function doRandomSizeWhite(){
-	var rand = [Jimp.FONT_SANS_64_WHITE]
+	var rand = [Jimp.FONT_SANS_64_WHITE];
 	return rand[Math.floor(Math.random()*rand.length)];
 }
 
@@ -418,12 +418,10 @@ Command: sad-white
 Description: Adds custom white text to image and turns it gray
 */
 
-
-
 	if (command === "sad-white"){
 		if(!args[0]){
-			message.channel.send("Please provide text")
-			return;
+		    message.channel.send("Please provide text")
+		    return;
 		}
 		message.channel.startTyping()
 		var url = message.author.avatarURL;
@@ -446,13 +444,14 @@ Description: Adds custom white text to image and turns it gray
 					message.channel.stopTyping();
 				    });
 				});
+			});
+		}).catch(function (err) {
+		    console.error(err);
 		});
-	}).catch(function (err) {
-		console.error(err);
-	})
+
 	function onBuffer(err, buffer) {
-		if (err) throw err;
-		console.log(buffer);
+	    if (err) throw err;
+	    console.log(buffer);
 	}
 }
 
@@ -461,12 +460,12 @@ Description: Adds custom white text to image and turns it gray
 	Description: Helps check if bot is alive, returns ping of bot.
 	*/
 	if(command === "ping") {
-		const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th, 2001','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. :warning: `not found`','Julian Assange','african food supplies, jk'];
-		const ranQuote = pings[Math.floor(Math.random() * pings.length)];
-		// Calculates ping between sending a message and editing it, giving a nice round-trip latency.
-		// The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
-		const m = await message.channel.send("One second...");
-		m.edit("It took ` " + (m.createdTimestamp - message.createdTimestamp) + " ms ` to ping " + ranQuote + "\nAlso, the API latency is `" + Math.round(client.ping) + " ms`");
+	    const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands','September 11th, 2001','digital ocean','the BBC','my mother','Mr. Meeseeks',"pewdipie's firewatch stream",'uncensored hentai. :warning: `not found`','Julian Assange','african food supplies, jk'];
+	    const ranQuote = pings[Math.floor(Math.random() * pings.length)];
+	    // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
+	    // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
+	    const m = await message.channel.send("One second...");
+	    m.edit("It took ` " + (m.createdTimestamp - message.createdTimestamp) + " ms ` to ping " + ranQuote + "\nAlso, the API latency is `" + Math.round(client.ping) + " ms`");
 	}
 
 	/*
@@ -474,14 +473,16 @@ Description: Adds custom white text to image and turns it gray
 	Description: Sends an anonymous message to a webhook in a log server.
 	*/
 	if(command === "vent"){
-		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
-	  	// To get the "message" itself we join the `args` back into a string with spaces:
-		const rant = args.join(" ");
-		// Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-		message.delete().catch(O_o=>{});
-		// And we get the bot to say the thing:
-		vent.send(rant +" - Anonymous");
-		message.author.send("Message sent to #vent successfully.")
+	    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
+	    // To get the "message" itself we join the `args` back into a string with spaces:
+	    const rant = args.join(" ");
+
+	    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+	    message.delete().catch(O_o=>{});
+
+	    // And we get the bot to say the thing:
+	    vent.send(rant +" - Anonymous");
+	    message.author.send("Message sent to #vent successfully.")
 	}
 
 	/*
@@ -489,13 +490,13 @@ Description: Adds custom white text to image and turns it gray
 	Description: Sets the bot under mainetance
 	*/
 	if(command === "maintenance-1"){
-		if(message.author.id !== config.ownerID){
-			message.react("👎");
-		}else {
-		    hook.send("Bot set under maintenance!");
-		    client.user.setGame(`Under maintenance.`);
-		    client.user.setStatus("idle");
-		}
+	    if(message.author.id !== config.ownerID){
+		message.react("👎");
+	    }else {
+		hook.send("Bot set under maintenance!");
+		client.user.setGame(`Under maintenance.`);
+		client.user.setStatus("idle");
+	    }
 	}
 
 	/*
@@ -503,18 +504,18 @@ Description: Adds custom white text to image and turns it gray
 	Description: Removes the bot from being under mainetance
 	*/
 	if(command === "maintenance-0"){
-		if(message.author.id !== config.ownerID){
+	    if(message.author.id !== config.ownerID){
 		message.react("👎");
-	}else {
+	    }else {
 		hook.send("Bot set online");
 		// Setting bot's game and status.
 		setTimeout(function(){
-			const rangame = games[Math.floor(Math.random() * games.length)];
-			client.user.setGame(rangame);
+		    const rangame = games[Math.floor(Math.random() * games.length)];
+		    client.user.setGame(rangame);
 		}, 60000);
 		client.user.setStatus("online");
+	    }
 	}
-}
 
   /*
 	Command: update
@@ -993,6 +994,15 @@ Description: Adds custom white text to image and turns it gray
 		message.channel.bulkDelete(fetched)
 		.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 	}
+
+	/*
+	Command: bitcoin / bitcoin-price
+	Description: Echos the current bitcoin value.
+	*/
+	if(command === "bitcoin" || command === "bitcoin-price"){
+	    this.getBitcoinPrice(message);
+	}
+
 });
 
 // This checks if bot is using a bot token to log in.
@@ -1173,6 +1183,33 @@ exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argumen
 
     }).catch(error => {
 	console.log(error.response.body)
+    });
+
+};
+
+/**
+ * With this function, you´ll get the current price of 1 Bitcoin (BTC) in US dollar ($) and Euro (€).
+ *
+ * @param msg - Message class of Discord.js
+ * @since masterBranch-after-1.2
+ *
+ * @public
+ */
+exports.getBitcoinPrice = (/**Class*/msg) => {
+
+    got("https://blockchain.info/de/ticker").then(res => {
+
+	try{
+	    let priceResults = JSON.parse(res.body);
+
+	    msg.channel.send("Currently, 1 Bitcoin ( *1 BTC* ) is **" + priceResults["USD"]["last"] + priceResults["USD"]["symbol"] + " / " + priceResults["EUR"]["last"] + priceResults["EUR"]["symbol"] + "** worth.")
+	}catch(e){
+	    console.log(e);
+	    msg.channel.send("⛔️ There was an error. Please inform the developer about this by writing an issue. Write the command ``+github issue`` to get more information.")
+	}
+
+    }).catch(error => {
+	console.log(error);
     });
 
 };
