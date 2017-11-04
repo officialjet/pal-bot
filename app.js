@@ -83,6 +83,10 @@ client.on("ready", () => {
 		// Logging changes.
 		console.log("Bot's status and game set.");
 		hook.send(`Bot's status and game set.`);
+
+		// Re adding profile picture
+		client.user.setAvatar('/root/pal-bot/avatar.png');
+
 		console.log("-------------");
 }
 });
