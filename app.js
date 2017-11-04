@@ -579,21 +579,24 @@ Description: Adds custom white text to image and turns it gray
 		});
 	    }
 	}
-
+  /*
+  Command: clap
+  Description: Replaces spaces in your text with clapping emojis.
+  */
 	if (command === "clap"){
     if(!args[0]){
       message.channel.send('Please :clap: provide :clap: some :clap: text :clap: to :clap: clapify');
 		}
-    const str = args.join("");
+    const str = args.join(" ");
     const clapstr = str.split(' ').join(' :clap: ');
     message.channel.send(clapstr);
-		//const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join(':clap:');
-		//message.channel.send(args.map(randomizeCase).join(':clap:'));
 	}
 
 
-
-
+  /*
+  Command: weather
+  Description: Gives weather information for a city.
+  */
 	if (command === "weather"){
 		const makeURL = (city) => `https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22${encodeURIComponent(city)}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys`;
 		const celsius = (fahrenheit) => Math.round(((fahrenheit - 32) * 5) / 9);
