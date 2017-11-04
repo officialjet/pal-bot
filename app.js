@@ -246,7 +246,7 @@ client.on("message", async(message) => {
 
 	    if(command === "vent" || splittedContentCommand === "vent"){
 		if(!args[0]){
-		    message.channel.send("Please provide text");
+		    message.channel.send("Please provide text to send.");
 		    return;
 		}
 		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
