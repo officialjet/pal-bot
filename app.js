@@ -581,11 +581,14 @@ Description: Adds custom white text to image and turns it gray
 	}
 
 	if (command === "clap"){
-		const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join(':clap:');
-		if(!args[0]){
-			message.channel.send('Please provide some text to clapify');
+    if(!args[0]){
+      message.channel.send('Please :clap: provide :clap: some :clap: text :clap: to :clap: clapify');
 		}
-		message.channel.send(args.map(randomizeCase).join(':clap:'));
+    const str = args.join("");
+    const clapstr = str.split(' ').join(' :clap: ');
+    message.channel.send(clapstr);
+		//const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join(':clap:');
+		//message.channel.send(args.map(randomizeCase).join(':clap:'));
 	}
 
 
