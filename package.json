@@ -6,7 +6,7 @@
   "author": "Biagio Santoro",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sleme/pal-bot.git"
+    "url": "https://github.com/sleme/pal-bot.git"
   },
   "license": "MIT",
   "main": "app.js",
