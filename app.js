@@ -238,6 +238,10 @@ client.on("message", async(message) => {
 	    */
 
 	    if(command === "vent" || splittedContentCommand === "vent"){
+				if(!args[0]){
+					message.channel.send("Please provide text")
+					return;
+				}
 		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
 		// To get the "message" itself we join the `args` back into a string with spaces:
 
@@ -473,16 +477,18 @@ Description: Adds custom white text to image and turns it gray
 	Description: Sends an anonymous message to a webhook in a log server.
 	*/
 	if(command === "vent"){
-	    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
-	    // To get the "message" itself we join the `args` back into a string with spaces:
-	    const rant = args.join(" ");
-
-	    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-	    message.delete().catch(O_o=>{});
-
-	    // And we get the bot to say the thing:
-	    vent.send(rant +" - Anonymous");
-	    message.author.send("Message sent to #vent successfully.")
+		if(!args[0]){
+			message.channel.send("Please provide text")
+			return;
+		}
+		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
+		// To get the "message" itself we join the `args` back into a string with spaces:
+	  const rant = args.join(" ");
+	  // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+	  message.delete().catch(O_o=>{});
+		// And we get the bot to say the thing:
+		vent.send(rant +" - Anonymous");
+	  message.author.send("Message sent to #vent successfully.")
 	}
 
 	/*
