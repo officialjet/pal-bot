@@ -238,10 +238,10 @@ client.on("message", async(message) => {
 	    */
 
 	    if(command === "vent" || splittedContentCommand === "vent"){
-				if(!args[0]){
-					message.channel.send("Please provide text")
-					return;
-				}
+		if(!args[0]){
+		    message.channel.send("Please provide text");
+		    return;
+		}
 		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
 		// To get the "message" itself we join the `args` back into a string with spaces:
 
@@ -477,18 +477,18 @@ Description: Adds custom white text to image and turns it gray
 	Description: Sends an anonymous message to a webhook in a log server.
 	*/
 	if(command === "vent"){
-		if(!args[0]){
-			message.channel.send("Please provide text")
-			return;
-		}
-		// makes the bot say something and delete the message. As an example, it's open to anyone to use.
-		// To get the "message" itself we join the `args` back into a string with spaces:
-	  const rant = args.join(" ");
-	  // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-	  message.delete().catch(O_o=>{});
-		// And we get the bot to say the thing:
-		vent.send(rant +" - Anonymous");
-	  message.author.send("Message sent to #vent successfully.")
+	    if(!args[0]){
+		message.channel.send("Please provide text")
+		return;
+	    }
+	    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
+	    // To get the "message" itself we join the `args` back into a string with spaces:
+	    const rant = args.join(" ");
+	    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+	    message.delete().catch(O_o=>{});
+	    // And we get the bot to say the thing:
+	    vent.send(rant +" - Anonymous");
+	    message.author.send("Message sent to #vent successfully.")
 	}
 
 	/*
@@ -1208,7 +1208,8 @@ exports.getBitcoinPrice = (/**Class*/msg) => {
 	try{
 	    let priceResults = JSON.parse(res.body);
 
-	    msg.channel.send("Currently, 1 Bitcoin ( *1 BTC* ) is **" + priceResults["USD"]["last"] + priceResults["USD"]["symbol"] + " / " + priceResults["EUR"]["last"] + priceResults["EUR"]["symbol"] + " / " + priceResults["GBP"]["last"] + priceResults["GBP"]["symbol"] + "** worth.")
+	    msg.channel.send("Currently, 1 Bitcoin ( *1 BTC* ) is **" + priceResults["USD"]["last"] + priceResults["USD"]["symbol"] + " / " + priceResults["EUR"]["last"] + priceResults["EUR"]["symbol"] + " / " + priceResults["GBP"]["last"] + priceResults["GBP"]["symbol"] + "** worth. \n" +
+		"Get the market price chart here: https://blockchain.info/charts/market-price - And for more information, look at this page: https://blockchain.info/charts");
 	}catch(e){
 	    console.log(e);
 	    msg.channel.send("⛔️ There was an error. Please inform the developer about this by writing an issue. Write the command ``+github issue`` to get more information.")
