@@ -1208,7 +1208,7 @@ exports.getBitcoinPrice = (/**Class*/msg) => {
 	try{
 	    let priceResults = JSON.parse(res.body);
 
-	    msg.channel.send("Currently, 1 Bitcoin ( *1 BTC* ) is **" + priceResults["USD"]["last"] + priceResults["USD"]["symbol"] + " / " + priceResults["EUR"]["last"] + priceResults["EUR"]["symbol"] + " / " + priceResults["GBP"]["last"] + priceResults["GBP"]["symbol"] + "** worth.")
+	    msg.channel.send("Currently, 1 Bitcoin ( *1 BTC* ) is **" + priceResults["USD"]["last"] + priceResults["USD"]["symbol"] + " / " + priceResults["EUR"]["last"] + priceResults["EUR"]["symbol"] + " / " + priceResults["GBP"]["symbol"] + priceResults["GBP"]["last"] + "** worth.")
 	}catch(e){
 	    console.log(e);
 	    msg.channel.send("⛔️ There was an error. Please inform the developer about this by writing an issue. Write the command ``+github issue`` to get more information.")
