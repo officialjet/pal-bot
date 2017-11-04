@@ -1,11 +1,14 @@
 // Load up the discord.js library. Else throw an error.
 try {
-	var Discord = require("discord.js");
+    var Discord = require("discord.js");
+    if(process.version.slice(1).split('.')[0] < 8){
+	throw new Error('Node 8.0.0 or higher is required. Please upgrade / update Node.js on your computer / server.')
+    }
 } catch (e){
-	console.log(e.stack);
-	console.log(process.version);
-	console.log("Please run 'npm install' and ensure it passes with no errors!");
-	process.exit();
+    console.log(e.stack);
+    console.log("Current Node.js version: " + process.version);
+    console.log("In case you´ve not installed any required module: \nPlease run 'npm install' and ensure it passes with no errors!");
+    process.exit();
 }
 // Log what node version the bot is using and what discord.js verion its using.
 console.log("Starting Pal...\nNode version: " + process.version + "\nDiscord.js version: " + Discord.version);
@@ -16,7 +19,7 @@ const client = new Discord.Client();
 // Make sure the bot is using Secure HTTP.
 const http = require('https');
 
-let fs = require('fs') // file manager
+let fs = require('fs'); // file manager
 
 
 // Here we load the config.json file that contains our token and our prefix values.
