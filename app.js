@@ -40,7 +40,6 @@ const got = require("got");
 PNG = require('pngjs').PNG;
 var Jimp = require("jimp");
 
-
 // Here we define maintenance. (0 = off | 1 = on)
 const maintenance = 0;
 
@@ -51,7 +50,7 @@ const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'pleas
 setInterval(function(){
 	const rangame = games[Math.floor(Math.random() * games.length)];
 	client.user.setGame(rangame);
-}, 60000);
+}, 60000 * 5);
 
 
 // The events under here will run if the bot starts, and logs in, successfully.
@@ -84,8 +83,6 @@ client.on("ready", () => {
 		console.log("Bot's status and game set.");
 		hook.send(`Bot's status and game set.`);
 
-		// Re adding profile picture
-		client.user.setAvatar('/root/pal-bot/avatar.png');
 
 		console.log("-------------");
 }
@@ -297,6 +294,8 @@ client.on("message", async(message) => {
 		    }
 	    }
 	}
+
+
 
 
 	/*
@@ -689,7 +688,7 @@ Description: Adds custom white text to image and turns it gray
   */
 	if(command === "bot-invite") {
 		message.delete();
-		message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=536980545");
+		message.author.send("Bot invite link: https://discordapp.com/oauth2/authorize?&client_id=" + config.client_id + "&scope=bot&permissions=1878522945");
 	}
 
 	/*
@@ -860,6 +859,26 @@ Description: Adds custom white text to image and turns it gray
 		}
 	    }
 	}
+
+// o boi this took a lot of time.
+  if(command === "embarrass"){
+    try {
+      const things = ['I have been a bad person :(','I stole kitkats from the store','My daddy still makes my bed ;(','I pee my trousers when i get excited :( ','i watch bnha unironically'];
+	    const ranactions = things[Math.floor(Math.random() * things.length)];
+			const member = message.guild.member(message.mentions.members.first());
+      message.channel.createWebhook(member.user.username,member.user.avatarURL)
+      .then(webhook => {
+        const emb = new Discord.WebhookClient(`${webhook.id}`,`${webhook.token}`)
+        emb.send(ranactions)
+        emb.delete()
+      })
+      .catch(console.error);
+    }catch(e){
+			message.channel.send({embed: {
+				title: ":warning: No user found in this guild with the name: ' " + args[0] + "'"
+			}});
+		}
+  }
 
 	/*
 	Command: user
