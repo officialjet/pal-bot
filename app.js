@@ -135,7 +135,7 @@ client.on("message", async(message) => {
 	let content = message.content.toLowerCase();
 
 	// Message used for DialogFlow, this removes the bots id to make the bot work better.
-	const messageDialogFlow = message.content.replace('<@300955174225051650>','');
+	const messageDialogFlow = message.content.replace('<@300955174225051650> ','');
 
 	// This is actually the same like the splitting of the command content into arguments.
     	// This here is more optimized for usages without using the command prefix like in DM conservations
@@ -485,7 +485,7 @@ Description: Adds custom white text to image and turns it gray
 	*/
 	if(command === "vent"){
 	    if(!args[0]){
-		message.channel.send("Please provide text")
+		message.channel.send(":warning: **Please provide text to send.**")
 		return;
 	    }
 	    // makes the bot say something and delete the message. As an example, it's open to anyone to use.
