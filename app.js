@@ -860,25 +860,24 @@ Description: Adds custom white text to image and turns it gray
 	    }
 	}
 
-// o boi this took a lot of time.
-  if(command === "embarrass"){
-    try {
-      const things = ['I have been a bad person :(','I stole kitkats from the store','My daddy still makes my bed ;(','I pee my trousers when i get excited :( ','i watch bnha unironically'];
-	    const ranactions = things[Math.floor(Math.random() * things.length)];
-			const member = message.guild.member(message.mentions.members.first());
-      message.channel.createWebhook(member.user.username,member.user.avatarURL)
-      .then(webhook => {
-        const emb = new Discord.WebhookClient(`${webhook.id}`,`${webhook.token}`)
-        emb.send(ranactions)
-        emb.delete()
-      })
-      .catch(console.error);
-    }catch(e){
-			message.channel.send({embed: {
-				title: ":warning: No user found in this guild with the name: ' " + args[0] + "'"
-			}});
-		}
-  }
+	// o boi this took a lot of time.
+    	if(command === "embarrass"){
+    	    try {
+    	        const things = ['I have been a bad person :(','I stole kitkats from the store','My daddy still makes my bed ;(','I pee my trousers when i get excited :( ','i watch bnha unironically'];
+		const ranactions = things[Math.floor(Math.random() * things.length)];
+		const member = message.guild.member(message.mentions.members.first());
+	      	message.channel.createWebhook(member.user.username,member.user.avatarURL)
+	      	.then(webhook => {
+			const emb = new Discord.WebhookClient(`${webhook.id}`,`${webhook.token}`)
+			emb.send(ranactions);
+			emb.delete();
+	      	}).catch(console.error);
+	    }catch(e){
+		message.channel.send({embed: {
+		    title: ":warning: No user found in this guild with the name: ' " + args[0] + "'"
+		}});
+	    }
+    	}
 
 	/*
 	Command: user
@@ -1038,7 +1037,28 @@ Description: Adds custom white text to image and turns it gray
 	Description: Echos the current bitcoin value.
 	*/
 	if(command === "bitcoin" || command === "bitcoin-price"){
-	    this.getBitcoinPrice(message);
+	    if(args[0]){
+		this.getCryptoCurrencyPrice(message, "Bitcoin", args[0]);
+	    }else{
+		this.getCryptoCurrencyPrice(message, "Bitcoin", "USD");
+	    }
+	}
+
+    	/*
+	Command: crypto / crypto-price
+	Description: Echos the current price of a crypto currency.
+	*/
+	if(command === "crypto" || command === "crypto-price"){
+	    if(!args[0]){
+		message.reply("please give me a currency to check like '__**Bitcoin**__' or '__**Ethereum-Classic**__'. \n\n" +
+		    "Usage: ``" + config.prefix + "crypto [crypto currency] (e.g. Bitcoin or Ethereum-Classic) [currency] (default: USD; example: EUR, PLN, BTC, ETH ...)``");
+	    }else {
+		if (args[1]) {
+		    this.getCryptoCurrencyPrice(message, args[0], args[1]);
+		} else {
+		    this.getCryptoCurrencyPrice(message, args[0], "USD");
+		}
+	    }
 	}
 
 });
@@ -1226,29 +1246,83 @@ exports.getWikipediaSummary = (/**String*/url, /**Class*/msg, /**String*/argumen
 };
 
 /**
- * With this function, you´ll get the current price of 1 Bitcoin (BTC) in US dollar ($) and Euro (€).
+ * With this function, you´ll get the current price of any crypto currency you want to have. Currencies with a whitespace must be changed to a "-".
  *
- * @param msg - Message class of Discord.js
- * @since masterBranch-after-1.2
+ * @param {Class} msg - Message class of Discord.js
+ * @param {String} [cryptoCurrency=Bitcoin] - The crypto currency to check for. (No symbol but full name of the currency)
+ * @param {String} [convertCurrency=USD] - The currency to show the current price. (Symbol required, NOT full name of the currency)
+ * @since 1.3
  *
  * @public
  */
-exports.getBitcoinPrice = (/**Class*/msg) => {
+exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 
-    got("https://blockchain.info/de/ticker").then(res => {
+    // ToDO: Find out why the convertCurrency default value is undefined... (idk why but it is undefined, try it without giving this argument).
+
+    got("https://api.coinmarketcap.com/v1/ticker/" + cryptoCurrency + "/?convert=" + convertCurrency).then(res => {
 
 	try{
-	    let priceResults = JSON.parse(res.body);
 
-	    msg.channel.send("Currently, 1 Bitcoin ( *1 BTC* ) is **" + priceResults["USD"]["last"] + priceResults["USD"]["symbol"] + " / " + priceResults["EUR"]["last"] + priceResults["EUR"]["symbol"] + " / " + priceResults["GBP"]["symbol"] + priceResults["GBP"]["last"] + "** worth. \n" +
-		"Get the market price chart here: https://blockchain.info/charts/market-price - And for more information, look at this page: https://blockchain.info/charts");
+	    // Results as JSON
+	    let priceResults = JSON.parse(res.body);
+	    // convertCurrency in lower case for getting the value of the price property. (To get an example, just look in the for-loop)
+	    let currency = convertCurrency.toLowerCase();
+
+	    // A list of currencies which are allowed to make a request to the API of CoinMarketCap.
+	    let allowedCurrencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD", "ZAR"];
+
+	    // This console.log is just for development purposes.
+	    // console.log("convertCurrency: " + convertCurrency + "; cryptoCurrency: " + cryptoCurrency + "; currency: " + currency);
+
+	    // convertCurrency is in uppercase. currency MUST be in lower case.
+
+	    if(currency === "usd") {
+		// Default currency is the US dollar.
+
+		// Checking if crypto currency is Bitcoin so we can send a message which looks right.
+		if(cryptoCurrency.toLowerCase() === "bitcoin"){
+		    msg.channel.send("Currently, 1 " + priceResults[0]["name"] + " (__**1 " + priceResults[0]["symbol"] + "**__) is **" + this.roundNumber(priceResults[0]["price_usd"], 2) + " " + convertCurrency.toUpperCase() + "** worth.");
+		}else{
+		    msg.channel.send("Currently, 1 " + priceResults[0]["name"] + " (__**1 " + priceResults[0]["symbol"] + "**__) is **" + this.roundNumber(priceResults[0]["price_" + currency], 2) + " " + convertCurrency.toUpperCase() + "** worth " +
+			"which is equal to **" + priceResults[0]["price_btc"] + " Bitcoins**.");
+		}
+	    }else{
+
+		// Checking if there is any result for the given currency.
+		if(priceResults[0]["price_" + currency] !== undefined) {
+		    if(currency === "btc" || cryptoCurrency.toLowerCase() === "bitcoin"){
+			msg.channel.send("Currently, 1 " + priceResults[0]["name"] + " (__**1 " + priceResults[0]["symbol"] + "**__) is **" + this.roundNumber(priceResults[0]["price_" + currency], 2) + " " + convertCurrency.toUpperCase() + "** worth.");
+		    }else {
+			msg.channel.send("Currently, 1 " + priceResults[0]["name"] + " (__**1 " + priceResults[0]["symbol"] + "**__) is **" + this.roundNumber(priceResults[0]["price_" + currency], 2) + " " + convertCurrency.toUpperCase() + "** worth " +
+			    "which is equal to **" + priceResults[0]["price_btc"] + " Bitcoins**.");
+		    }
+		}else{
+		    // If there is no result (caused by the fact that the given currency does not exist), it will throw an error.
+		    throw new Error("No currency found...");
+		}
+	    }
+
+
 	}catch(e){
+	    // Logging the exception
 	    console.log(e);
-	    msg.channel.send("⛔️ There was an error. Please inform the developer about this by writing an issue. Write the command ``+github issue`` to get more information.")
+	    console.log("Currency to check: " + cryptoCurrency + "; Currency: " + convertCurrency);
+
+	    // Sending a message
+	    msg.channel.send("⛔️ Please check your given arguments. If you have currencies like '**Bitcoin Cash**' you must write a **-** between the two words. Please check the exchange currency you wrote. \n" +
+		"__For example__: Bitcoin**-**Cash or Ethereum**-**Classic\n\n" +
+		"Here is a list with supported 'real' currencies (you can convert into crypto currencies too like BTC or ETH and so on): \n" +
+		"```Real currencies: AUD, BRL, CAD, CHF, CLP, CNY, CZK, DKK, EUR, GBP, HKD, HUF, IDR, ILS, INR, JPY, KRW, MXN, MYR, NOK, NZD, PHP, PKR, PLN, RUB, SEK, SGD, THB, TRY, TWD, ZAR```");
 	}
 
     }).catch(error => {
+	console.log("Currency to check: " + cryptoCurrency + "; Currency: " + convertCurrency);
 	console.log(error);
+
+	// Sending a message for the user so he knows what to do next.
+	msg.channel.send("Please check your given arguments. Check if your currency exists or if you wrote it wrong. If you have a currency like '**Bitcoin Cash**' you must write a **-** between the two words and replace the whitespace.\n" +
+	    "__For example__: Bitcoin**-**Cash or Ethereum**-**Classic \n\n" +
+	    "Usage: ``" + config.prefix + "crypto [crypto currency] (e.g. Bitcoin or Ethereum-Classic) [currency] (default: USD; example: EUR, PLN, BTC, ETH, ...)``");
     });
 
 };
