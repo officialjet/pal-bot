@@ -33,7 +33,7 @@ const vent = new Discord.WebhookClient(config.vent_id, config.vent_token);
 
 // API.AI's Cleverbot
 const dialogflow = require('apiai');
-const dialogflowApp = dialogflow(config.cbotapi);
+const dialogflowApp = dialogflow(config.dialogAPI);
 
 const got = require("got");
 
@@ -135,7 +135,7 @@ client.on("message", async(message) => {
 	let content = message.content.toLowerCase();
 
 	// Message used for DialogFlow, this removes the bots id to make the bot work better.
-	const messageDialogFlow = message.content.replace(/<@300955174225051650>/g,'');
+	const messageDialogFlow = message.content.replace('<@300955174225051650>','');
 
 	// This is actually the same like the splitting of the command content into arguments.
     	// This here is more optimized for usages without using the command prefix like in DM conservations
