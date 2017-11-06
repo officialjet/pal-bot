@@ -1096,6 +1096,21 @@ exports.getDate = function(/**Object*/date) {
 };
 
 /**
+ * Returns a formatted time string with a millisecond timestamp.
+ *
+ * @param value - The number you want to round.
+ * @param precision - Precision of the decimal number.
+ * @since masterAfter-1.3
+ *
+ * @public
+ */
+// Thanks Billy Moon for giving the answer how to make a more precise round function: https://stackoverflow.com/a/7343013
+exports.roundNumber = (/**Number*/ value, /**Integer*/ precision) => {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+};
+
+/**
  * A function which is looping a timeout which return the emoji reactions when a user want to count the discord members of a server.
  *
  * @param statement - Should be 0. 0 is the first part of a string.
