@@ -19,6 +19,12 @@ const client = new Discord.Client();
 // Make sure the bot is using Secure HTTP.
 const http = require('https');
 
+const yt = require('ytdl-core');
+
+var opus = require('opusscript');
+
+let queue = {};
+
 let fs = require('fs'); // file manager
 
 
@@ -295,6 +301,78 @@ client.on("message", async(message) => {
 	}
 
 
+
+
+  if(command === "play"){
+    if (queue[message.guild.id] === undefined) return message.channel.send(`Add some songs to the queue first with ${config.prefix}add`);
+    if (queue[message.guild.id].playing) return message.channel.send('Already Playing');
+    let dispatcher;
+    queue[message.guild.id].playing = true;
+    console.log(queue);
+    (function play(song) {
+      console.log(song);
+      if (song === undefined) return message.channel.send('Queue is empty').then(() => {
+        queue[message.guild.id].playing = false;
+        message.member.voiceChannel.leave();
+      });
+      message.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
+      dispatcher = message.guild.voiceConnection.playStream(yt(song.url, { audioonly: true }), { passes : config.passes });
+      let collector = message.channel.createCollector(m => m);
+      collector.on("message", async(message) => {
+        if (message.content.startsWith(config.prefix + 'pause')) {
+          message.channel.send(':white_check_mark: Song paused.').then(() => {dispatcher.pause();});
+        }
+        if (message.content.startsWith(config.prefix + 'resume')){
+          message.channel.send(':white_check_mark: Song resumed.').then(() => {dispatcher.resume();});
+        }
+        if (message.content.startsWith(config.prefix + 'skip')){
+          message.channel.send(':white_check_mark: Song skipped.').then(() => {dispatcher.end();});
+        }
+        if (message.content.startsWith(config.prefix + 'time')){
+          message.channel.send(`Time in song: ${Math.floor(dispatcher.time / 60000)}:${Math.floor((dispatcher.time % 60000)/1000) <10 ? '0'+Math.floor((dispatcher.time % 60000)/1000) : Math.floor((dispatcher.time % 60000)/1000)}.`);
+        }
+      });
+      dispatcher.on('end', () => {
+        collector.stop();
+        play(queue[message.guild.id].songs.shift());
+      });
+      dispatcher.on('error', (err) => {
+        return message.channel.send(':warning: Oh no error: ' + err).then(() => {
+          collector.stop();
+          play(queue[message.guild.id].songs.shift());
+        });
+      });
+    })(queue[message.guild.id].songs.shift());
+  };
+
+  if(command === "join"){
+      const voiceChannel = message.member.voiceChannel;
+      if (!voiceChannel){
+        return message.reply(":x: You must be in a voice channel first!");
+      }
+      voiceChannel.join();
+      message.channel.send(":white_check_mark: I joined the channel successfully!");
+    };
+
+  if(command === "leave"){
+    const voiceChannel = message.member.voiceChannel;
+    if (!voiceChannel){
+      return message.reply(":x: You must be in a voice channel first!");
+    }
+    voiceChannel.leave();
+    message.channel.send(":white_check_mark: I left the voice channel!");
+  }
+
+
+  if(command === "add"){
+    let url = message.content.split(' ')[1];
+    if (url == '' || url === undefined) return message.channel.send(`:x: You must add a YouTube video url, or id after ${config.prefix}add`);
+    yt.getInfo(url, (err, info) => {
+      if(err) return message.channel.send(':x: Invalid YouTube Link: ' + err);
+      if (!queue.hasOwnProperty(message.guild.id)) queue[message.guild.id] = {}, queue[message.guild.id].playing = false, queue[message.guild.id].songs = [];
+      queue[message.guild.id].songs.push({url: url, title: info.title, requester: message.author.username});
+      message.channel.send(`:musical_note: Added **${info.title}** to the queue`);
+    })};
 
 
 	/*
