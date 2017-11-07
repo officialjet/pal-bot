@@ -1273,6 +1273,7 @@ exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 
     // ToDO: Find out why the convertCurrency default value is undefined... (idk why but it is undefined, try it without giving this argument).
 
+    // Making request to the CoinMarketCap API.
     got("https://api.coinmarketcap.com/v1/ticker/" + cryptoCurrency + "/?convert=" + convertCurrency).then(res => {
 
 	try{
@@ -1282,9 +1283,6 @@ exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 	    // convertCurrency in lower case for getting the value of the price property. (To get an example, just look in the for-loop)
 	    let currency = convertCurrency.toLowerCase();
 
-	    // A list of currencies which are allowed to make a request to the API of CoinMarketCap.
-	    let allowedCurrencies = ["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD", "ZAR"];
-
 	    // This console.log is just for development purposes.
 	    // console.log("convertCurrency: " + convertCurrency + "; cryptoCurrency: " + cryptoCurrency + "; currency: " + currency);
 
@@ -1293,7 +1291,7 @@ exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 	    if(currency === "usd") {
 		// Default currency is the US dollar.
 
-		// Checking if crypto currency is Bitcoin so we can send a message which looks right.
+		// Checking if crypto currency is Bitcoin so we can send a message which does not contain two bitcoin values (so it would send that 1 BTC is equal to 1 BTC, wow, what a miracle)
 		if(cryptoCurrency.toLowerCase() === "bitcoin"){
 		    msg.channel.send("Currently, 1 " + priceResults[0]["name"] + " (__**1 " + priceResults[0]["symbol"] + "**__) is **" + this.roundNumber(priceResults[0]["price_usd"], 2) + " " + convertCurrency.toUpperCase() + "** worth.");
 		}else{
@@ -1303,6 +1301,7 @@ exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 	    }else{
 
 		// Checking if there is any result for the given currency.
+		// The price property can be undefined if there is no value because this key does not exists.
 		if(priceResults[0]["price_" + currency] !== undefined) {
 		    if(currency === "btc" || cryptoCurrency.toLowerCase() === "bitcoin"){
 			msg.channel.send("Currently, 1 " + priceResults[0]["name"] + " (__**1 " + priceResults[0]["symbol"] + "**__) is **" + this.roundNumber(priceResults[0]["price_" + currency], 2) + " " + convertCurrency.toUpperCase() + "** worth.");
@@ -1311,18 +1310,18 @@ exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 			    "which is equal to **" + priceResults[0]["price_btc"] + " Bitcoins**.");
 		    }
 		}else{
-		    // If there is no result (caused by the fact that the given currency does not exist), it will throw an error.
+		    // If there is no result (caused by the fact that the given currency does not exist), it will throw an error that the currency does not exist.
 		    throw new Error("No currency found...");
 		}
 	    }
 
 
 	}catch(e){
-	    // Logging the exception
+	    // Logging the exception, for development and production usage reasons.
 	    console.log(e);
 	    console.log("Currency to check: " + cryptoCurrency + "; Currency: " + convertCurrency);
 
-	    // Sending a message
+	    // Sending a message that shows the user, how to use the command correctly
 	    msg.channel.send("⛔️ Please check your given arguments. If you have currencies like '**Bitcoin Cash**' you must write a **-** between the two words. Please check the exchange currency you wrote. \n" +
 		"__For example__: Bitcoin**-**Cash or Ethereum**-**Classic\n\n" +
 		"Here is a list with supported 'real' currencies (you can convert into crypto currencies too like BTC or ETH and so on): \n" +
