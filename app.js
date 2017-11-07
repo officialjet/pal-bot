@@ -117,14 +117,13 @@ client.on("message", async(message) => {
     	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
     	// We´re preventing DM command spams with this too.
     	if(message.author.bot) return;
-
     	// Here we separate our "command" name, and our "arguments" for the command.
-	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
-	// command = say
-	// args = ["Is", "this", "the", "real", "life?"]
-	let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-	// Make recived command all lower case.
-	const command = args.shift().toLowerCase();
+	    // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
+	    // command = say
+	    // args = ["Is", "this", "the", "real", "life?"]
+	    let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+	    // Make recived command all lower case.
+	    const command = args.shift().toLowerCase();
 
 	// Content of the message in lower cases.
     	// Attention: not usable for, for example, replacing message.content in splittedContentArgs
@@ -863,7 +862,7 @@ Description: Adds custom white text to image and turns it gray
 	// o boi this took a lot of time.
     	if(command === "embarrass"){
     	    try {
-    	        const things = ['I have been a bad person :(','I stole kitkats from the store','My daddy still makes my bed ;(','I pee my trousers when i get excited :( ','i watch bnha unironically'];
+    	        const things = ['I have been a bad person :(','I stole kitkats from the store','My daddy still makes my bed ;(','I pee my trousers when i get excited :( ','i watch bnha unironically','my mom checks my phone',`Shoot! It's past my bed time!`];
 		const ranactions = things[Math.floor(Math.random() * things.length)];
 		const member = message.guild.member(message.mentions.members.first());
 	      	message.channel.createWebhook(member.user.username,member.user.avatarURL)
