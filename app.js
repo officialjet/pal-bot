@@ -44,6 +44,7 @@ const dialogflowApp = dialogflow(config.dialogAPI);
 const got = require("got");
 
 PNG = require('pngjs').PNG;
+
 var Jimp = require("jimp");
 
 // Here we define maintenance. (0 = off | 1 = on)
@@ -52,7 +53,7 @@ const maintenance = 0;
 const users = client.users.size;
 
 // Random games
-const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  '];
+const games = ['with Dr. Freeman', 'Half Life 3', config.prefix + 'help', 'please send ' + config.prefix + 'help', 'with a baguette', 'with you ;)', 'with [slem], he is cool', 'with some code','with like 2 people idfk man','i am not funny','🤔 🔫  ','stop using other bots.','Stop using mee6 and actually right clikc and ban people you lazy fuck','Litteraly the best bot out there.','gradientforest.com','sleme.github.com/porn','pineappledoesnotgoonpizza.com',`Okay, let's get this straight. If you put pineapple on your pizza you deserve to be punished.`,`STOP PUTTING PINEAPPLE ON PIZZA`,`I didn't think I would neeed to uh, touch on this subject or even mention it. I obviously don't want to touch on sensitive subjects, politics, social movements or religion, but this has gone too far. Please uhh, take it as a life lesson.`];
 setInterval(function(){
 	const rangame = games[Math.floor(Math.random() * games.length)];
 	client.user.setGame(rangame);
@@ -171,7 +172,7 @@ client.on("message", async(message) => {
 		    embed: {
 			title: "Repository on GitHub:",
 			color: 3447003,
-			description: "Bot on version 1.2.0",
+			description: `Bot on version ${config.version}`,
 			fields: [
 			    {
 			        name: "Link:",
@@ -206,7 +207,7 @@ client.on("message", async(message) => {
 	    }
 	    if(content === "version"){
 	        message.react("🆗");
-	        message.channel.send("I am currently in version 1.2.0. You can check the changelog of this version here: https://github.com/sleme/pal-bot/releases/tag/1.2.0");
+	        message.channel.send(`I am currently in version ${config.version}. You can check the changelog of this version here: https://github.com/sleme/pal-bot/releases/tag/${config.version}`);
 	    }
 	    if(content === "coming soon"){
 	        message.react("💬");
@@ -304,6 +305,8 @@ client.on("message", async(message) => {
 
 
   if(command === "play"){
+    const voiceChannel = message.member.voiceChannel;
+    voiceChannel.join();
     if (queue[message.guild.id] === undefined) return message.channel.send(`Add some songs to the queue first with ${config.prefix}add`);
     if (queue[message.guild.id].playing) return message.channel.send('Already Playing');
     let dispatcher;
@@ -372,7 +375,8 @@ client.on("message", async(message) => {
       if (!queue.hasOwnProperty(message.guild.id)) queue[message.guild.id] = {}, queue[message.guild.id].playing = false, queue[message.guild.id].songs = [];
       queue[message.guild.id].songs.push({url: url, title: info.title, requester: message.author.username});
       message.channel.send(`:musical_note: Added **${info.title}** to the queue`);
-    })};
+
+    })}
 
 
 	/*
@@ -830,7 +834,7 @@ Description: Adds custom white text to image and turns it gray
 		    embed: {
 			title: "Latest stable release:",
 			color: 3447003,
-			description: "1.2.0"
+			description: `${config.version}`
 		    }
 		});
 	    } else{
@@ -1067,6 +1071,30 @@ Description: Adds custom white text to image and turns it gray
 			{
 			    name: config.prefix + "weather 'city'",
 			    value: "Gives you the weather info of the given city."
+			},
+      {
+			    name: config.prefix + "invert",
+			    value: "Inverts the profile picture of the user."
+			},
+      {
+			    name: config.prefix + "embarrass @user",
+			    value: "Tries to embarrass the mentioned user."
+			},
+      {
+			    name: config.prefix + "add",
+			    value: "Adds a youtube link to the queue."
+			},
+      {
+			    name: config.prefix + "join",
+			    value: "Joins your vioce channel."
+			},
+      {
+			    name: config.prefix + "leave",
+			    value: "Leaves your voice channel."
+			},
+      {
+			    name: config.prefix + "play",
+			    value: "Plays the songs in the queue."
 			},
 			{
 			    name: config.prefix + "vent 'your vent here'",
