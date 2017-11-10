@@ -27,6 +27,7 @@ let queue = {};
 
 let fs = require('fs'); // file manager
 
+const talkedRecently = new Set();
 
 // Here we load the config.json file that contains our token and our prefix values.
 const config = require("./config.json");
@@ -121,16 +122,17 @@ client.on("guildDelete", guild => {
 
 // This event will run on every single message received, from any channel or DM.
 client.on("message", async(message) => {
-    	// Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
-    	// We´re preventing DM command spams with this too.
-    	if(message.author.bot) return;
-    	// Here we separate our "command" name, and our "arguments" for the command.
-	    // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
-	    // command = say
-	    // args = ["Is", "this", "the", "real", "life?"]
-	    let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-	    // Make recived command all lower case.
-	    const command = args.shift().toLowerCase();
+
+  // Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
+  // We´re preventing DM command spams with this too.
+  if(message.author.bot) return;
+  // Here we separate our "command" name, and our "arguments" for the command.
+	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
+	// command = say
+	// args = ["Is", "this", "the", "real", "life?"]
+	let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+	// Make recived command all lower case.
+	const command = args.shift().toLowerCase();
 
 	// Content of the message in lower cases.
     	// Attention: not usable for, for example, replacing message.content in splittedContentArgs
@@ -145,6 +147,20 @@ client.on("message", async(message) => {
     	// --> ToDO: Find a better name for these variables. They sound too bad. :/
 	let splittedContentArgs = message.content.trim().split(/ +/g);
 	let splittedContentCommand = splittedContentArgs.shift().toLowerCase();
+
+  if (talkedRecently.has(message.author.id)){
+    //message.reply(":warning: You used the command `" + command +"` too many times. Wait `2.5` seconds to send the command again.");
+    return;
+  }
+
+  // Adds the user to the set so that they can't talk for 2.5 seconds
+  talkedRecently.add(message.author.id);
+  setTimeout(() => {
+    //message.reply(":warning: You used the command `" + command +"` too many times. Wait `2.5` seconds to send the command again.")
+    // Removes the user from the set after 2.5 seconds
+    talkedRecently.delete(message.author.id);
+  }, 2500);
+
 
 	if(message.isMentioned(client.user)){
 		var request = dialogflowApp.textRequest(messageDialogFlow, {
