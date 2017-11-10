@@ -1232,7 +1232,7 @@ Description: Adds custom white text to image and turns it gray
 	if(command === "gif" || command === "giphy"){
 	    if(!args[0]){
 		message.react("👎");
-		message.reply("you forgot to send us a search tag to use for searching for a gif.``" + commandPrefix + "gif [argument]``");
+		message.reply("you forgot to send us a search tag to use for searching for a gif.``" + config.prefix + "gif [argument]``");
 	    } else{
 		let query = args.toString().replace(/,/g, " ");
 		this.getGifFromGIPHY(message, query);
