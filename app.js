@@ -302,6 +302,7 @@ client.on("message", async(message) => {
   	// hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
 
+/*
   if(command === "clear"){
     const user = message.mentions.users.first();
     const amount = !!parseInt(message.content.split(' ')[1]) ? parseInt(message.content.split(' ')[1]) : parseInt(message.content.split(' ')[2])
@@ -317,7 +318,7 @@ client.on("message", async(message) => {
       message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
     });
   }
-
+*/
 
 	/*
 	Command: list-servers
