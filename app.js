@@ -316,24 +316,24 @@ client.on("message", async(message) => {
     else {
       message.reply("I choose " + ranbaction + "!");
       // User wins
-      if(ranbaction === "rock" and paction === "paper"){
+      if(ranbaction === "rock" && paction === "paper"){
         message.reply("You win!");
       }
-      if(ranbaction === "scissors" and paction === "rock"){
+      if(ranbaction === "scissors" && paction === "rock"){
         message.reply("You win!");
       }
-      if(ranbaction === "paper" and paction === "scissors"){
+      if(ranbaction === "paper" && paction === "scissors"){
         message.reply("You win!");
       }
 
       // User looses
-      if(ranbaction === "rock" and paction === "scissors"){
+      if(ranbaction === "rock" && paction === "scissors"){
         message.reply("You lose!");
       }
-      if(ranbaction === "scissors" and paction === "paper"){
+      if(ranbaction === "scissors" && paction === "paper"){
         message.reply("You lose!");
       }
-      if(ranbaction === "paper" and paction === "rock"){
+      if(ranbaction === "paper" && paction === "rock"){
         message.reply("You lose!");
       }
 
@@ -363,7 +363,8 @@ client.on("message", async(message) => {
       message.channel.send(`Playing: **${song.title}** as requested by: **${song.requester}**`);
       dispatcher = message.guild.voiceConnection.playStream(yt(song.url, { audioonly: true }), { passes : config.passes });
       let collector = message.channel.createCollector(m => m);
-      collector.on("message", async(message) => {
+      // Message won't work soon use collect it said
+      collector.on("collect", async(message) => {
         if (message.content.startsWith(config.prefix + 'pause')) {
           message.channel.send(':white_check_mark: Song paused.').then(() => {dispatcher.pause();});
         }
