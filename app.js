@@ -302,6 +302,23 @@ client.on("message", async(message) => {
   	// hook.send("Recived " + message.content + ". Treating it as a command.");
 	console.log("-------------");
 
+  if(command === "clear"){
+    const user = message.mentions.users.first();
+    const amount = !!parseInt(message.content.split(' ')[1]) ? parseInt(message.content.split(' ')[1]) : parseInt(message.content.split(' ')[2])
+    if (!amount) return message.reply(':warning: Must specify an amount to delete!');
+    if (!amount && !user) return message.reply(':warning: Must specify a user and amount, or just an amount, of messages to purge!');
+    message.channel.fetchMessages({
+      limit: amount,
+    }).then((messages) => {
+      if (user) {
+        const filterBy = user ? user.id : Client.user.id;
+        messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
+      }
+      message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+    });
+  }
+
+
 	/*
 	Command: list-servers
 	Description: Provides a list of names of servers the bot is on. Only for debug.
@@ -325,44 +342,42 @@ client.on("message", async(message) => {
 		    message.channel.send("Please provide an action, this can be `rock` `paper` or `scissors`.");
 		    return;
 		}
-    //if(!(args[0] in bactions)){
-      //message.reply("Please use `rock` `paper` or `scissors`.")
-    //}else{
-    if(paction === ranbaction){
+    else if(paction === ranbaction){
       message.channel.send("I choose `" + ranbaction + "`!");
       message.reply(":necktie: It's a tie!")
-    }
-    else {
-      message.channel.send("I choose `" + ranbaction + "`!");
+      }
       // User wins
-      if(ranbaction === "rock" && paction === "paper"){
-        message.reply("You win!");
-      }
-      if(ranbaction === "scissors" && paction === "rock"){
-        message.reply("You win!");
-      }
-      if(ranbaction === "paper" && paction === "scissors"){
-        message.reply("You win!");
-      }
+    else if(ranbaction === "rock" && paction === "paper"){
+      message.channel.send("I choose `" + ranbaction + "`!");
+      message.reply("You win!");
+    }
+    else if(ranbaction === "scissors" && paction === "rock"){
+      message.channel.send("I choose `" + ranbaction + "`!");
+      message.reply("You win!");
+    }
+    else if(ranbaction === "paper" && paction === "scissors"){
+      message.channel.send("I choose `" + ranbaction + "`!");
+      message.reply("You win!");
+    }
 
       // User looses
-      if(ranbaction === "rock" && paction === "scissors"){
-        message.reply("You lose!");
-      }
-      if(ranbaction === "scissors" && paction === "paper"){
-        message.reply("You lose!");
-      }
-      if(ranbaction === "paper" && paction === "rock"){
-        message.reply("You lose!");
-      }
-    //}
+    else if(ranbaction === "rock" && paction === "scissors"){
+      message.channel.send("I choose `" + ranbaction + "`!");
+      message.reply("You lose!");
+    }
+    else if(ranbaction === "scissors" && paction === "paper"){
+      message.channel.send("I choose `" + ranbaction + "`!");
+      message.reply("You lose!");
+    }
+    else if(ranbaction === "paper" && paction === "rock"){
+      message.channel.send("I choose `" + ranbaction + "`!");
+      message.reply("You lose!");
+    }else {
+      message.reply("Please use `rock` `paper` or `scissors`.");
+      return;
+    }
+
   }
-
-
-
-  }
-
-
 
 
   if(command === "play"){
