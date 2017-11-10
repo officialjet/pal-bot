@@ -327,10 +327,11 @@ client.on("message", async(message) => {
     const ranbaction = bactions[Math.floor(Math.random() * bactions.length)];
 
     if(paction === ranbaction){
+      message.channel.send("I choose `" + ranbaction + "`!");
       message.reply(":necktie: It's a tie!")
     }
     else {
-      message.reply("I choose " + ranbaction + "!");
+      message.channel.send("I choose `" + ranbaction + "`!");
       // User wins
       if(ranbaction === "rock" && paction === "paper"){
         message.reply("You win!");
