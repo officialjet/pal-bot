@@ -1209,6 +1209,20 @@ Description: Adds custom white text to image and turns it gray
 	    }
 	}
 
+    	/*
+	Command: gif / giphy
+	Description: Searches a GIF in GIPHY with a given tag.
+	*/
+	if(command === "gif" || command === "giphy"){
+	    if(!args[0]){
+		message.react("👎");
+		message.reply("you forgot to send us a search tag to use for searching for a gif.``" + commandPrefix + "gif [argument]``");
+	    } else{
+		let query = args.toString().replace(/,/g, " ");
+		this.getGifFromGIPHY(message, query);
+	    }
+	}
+
 });
 
 // This checks if bot is using a bot token to log in.
@@ -1486,5 +1500,29 @@ exports.getCryptoCurrencyPrice = (msg, cryptoCurrency, convertCurrency) => {
 	    "__For example__: Bitcoin**-**Cash or Ethereum**-**Classic \n\n" +
 	    "Usage: ``" + config.prefix + "crypto [crypto currency] (e.g. Bitcoin or Ethereum-Classic) [currency] (default: USD; example: EUR, PLN, BTC, ETH, ...)``");
     });
+
+};
+
+/**
+ * Search GIF with given term
+ * @param {Class} msg - Message class of Discord.js
+ * @param {String} searchQuery - Search tag for searching a GIF in GIPHY.
+ * @since masterBranch-1.3
+ *
+ * @public
+ */
+exports.getGifFromGIPHY = (msg, searchQuery) => {
+
+    got('http://api.giphy.com/v1/gifs/random?api_key=' + config.giphyKey + '&tag=' + searchQuery ).then(res => {
+
+	try{
+	    let result = JSON.parse(res.body);
+	    return msg.channel.send(result.data.image_original_url);
+	}catch(e){
+	    console.error(e);
+	    throw new Error("GIF command didnt work: please check error exception.");
+	}
+
+    })
 
 };
