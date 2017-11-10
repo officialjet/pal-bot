@@ -301,6 +301,48 @@ client.on("message", async(message) => {
 	    }
 	}
 
+  if(command === "rps"){
+    if(!args[0]){
+		    message.channel.send("Please provide an action, this can be `rock` `paper` or `scissors`.");
+		    return;
+		}
+    const paction = args.join(" ");
+    const bactions = ['rock','scissors','paper'];
+    const ranbaction = bactions[Math.floor(Math.random() * bactions.length)];
+
+    if(paction === ranbaction){
+      message.reply(":necktie: It's a tie!")
+    }
+    else {
+      message.reply("I choose " + ranbaction + "!");
+      // User wins
+      if(ranbaction === "rock" and paction === "paper"){
+        message.reply("You win!");
+      }
+      if(ranbaction === "scissors" and paction === "rock"){
+        message.reply("You win!");
+      }
+      if(ranbaction === "paper" and paction === "scissors"){
+        message.reply("You win!");
+      }
+
+      // User looses
+      if(ranbaction === "rock" and paction === "scissors"){
+        message.reply("You lose!");
+      }
+      if(ranbaction === "scissors" and paction === "paper"){
+        message.reply("You lose!");
+      }
+      if(ranbaction === "paper" and paction === "rock"){
+        message.reply("You lose!");
+      }
+
+    }
+
+
+
+  }
+
 
 
 
