@@ -318,14 +318,16 @@ client.on("message", async(message) => {
 	}
 
   if(command === "rps"){
+    const paction = args.join(" ");
+    const bactions = ['rock','scissors','paper'];
+    const ranbaction = bactions[Math.floor(Math.random() * bactions.length)];
     if(!args[0]){
 		    message.channel.send("Please provide an action, this can be `rock` `paper` or `scissors`.");
 		    return;
 		}
-    const paction = args.join(" ");
-    const bactions = ['rock','scissors','paper'];
-    const ranbaction = bactions[Math.floor(Math.random() * bactions.length)];
-
+    //if(!(args[0] in bactions)){
+      //message.reply("Please use `rock` `paper` or `scissors`.")
+    //}else{
     if(paction === ranbaction){
       message.channel.send("I choose `" + ranbaction + "`!");
       message.reply(":necktie: It's a tie!")
@@ -353,8 +355,8 @@ client.on("message", async(message) => {
       if(ranbaction === "paper" && paction === "rock"){
         message.reply("You lose!");
       }
-
-    }
+    //}
+  }
 
 
 
@@ -678,7 +680,9 @@ Description: Adds custom white text to image and turns it gray
 	    if(message.author.id !== config.ownerID){
 		message.react("👎");
 	    }else {
-		message.channel.send("Fetching updates...").then(function(sentMsg){
+
+
+		  message.channel.send("Fetching updates...").then(function(sentMsg){
 			console.log("Bot updating...");
 			var spawn = require('child_process').spawn;
 			var log = function(err,stdout,stderr){
