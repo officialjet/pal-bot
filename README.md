@@ -1,11 +1,13 @@
-<h1> Pal, the discord bot. </h1>
+<h1 align="center"> Pal, the discord bot. </h1>
 
 <p align="center">
     <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
 
-This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/discord.js/">discord.js</a> and <a href="https://gist.github.com/eslachance/3349734a98d30011bb202f47342601d3">this</a> as an example.
+<p align="center">This is Pal, a discord bot based off <a href="https://github.com/hydrabolt/discord.js/">discord.js</a> and <a href="https://gist.github.com/eslachance/3349734a98d30011bb202f47342601d3">this</a> as an example.</p>
+
+
 ## Features:
 #### Commands:
 To see all the **commands** of this bot, check out this [documentation](COMMANDS.md).
