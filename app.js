@@ -47,6 +47,8 @@ const got = require('got')
 
 PNG = require('pngjs').PNG
 
+var request = require('request');
+
 let Jimp = require('jimp')
 
 // Here we define maintenance. (0 = off | 1 = on)
@@ -571,6 +573,23 @@ Description: Adds custom black text to image and turns it gray
 	    console.log(buffer)
     }
   }
+
+if(command === 'inspire'){
+  var errimage = 'http://inspirobot.me/website/images/inspirobot-dark-green.png';
+  request('http://inspirobot.me/api?generate=true', function (error, response, body) {
+    //console.log('error:', error); // Print the error if one occurred
+    //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    message.channel.send(
+      {
+      files: [
+        body
+      ]
+    });
+  });
+}
+
+
+
 
 /*
 Command: sad-white
@@ -1104,6 +1123,10 @@ Description: Adds custom white text to image and turns it gray
       {
 			    name: config.prefix + 'server-members',
 			    value: 'Counting the discord member of the server where the command was executed.'
+      },
+      {
+			    name: config.prefix + 'inspire',
+			    value: 'Gives you an insipiring image. Provided by inspirobot.me'
       },
       {
 			    name: config.prefix + 'bot-invite',
