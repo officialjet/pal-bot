@@ -502,7 +502,7 @@ client.on('message', async(message) => {
     Jimp.read(url).then(function (image) {
       image.resize(1024, 1024, Jimp.RESIZE_BEZIER)
       image.invert()
-      let outputfile = './output/' + Math.random().toString(36).substr(2, 5) + 'sad.' + image.getExtension() // create a random name for the output file
+      let outputfile = './img/output/' + Math.random().toString(36).substr(2, 5) + 'sad.' + image.getExtension() // create a random name for the output file
       image.write(outputfile, function () {
 				// upload file
         message.channel.send({
@@ -1026,24 +1026,34 @@ Description: Adds custom white text to image and turns it gray
 	    }
     }
 
-	// o boi this took a lot of time.
-    	if (command === 'embarrass') {
-    	    try {
-    	        const things = ['I have been a bad person :(', 'I stole kitkats from the store', 'My daddy still makes my bed ;(', 'I pee my trousers when i get excited :( ', 'i watch bnha unironically', 'my mom checks my phone', `Shoot! It's past my bed time!`]
+	/*
+  Command: embarrass
+  Description: Will embarrass the tagged user!
+  */
+  if (command === 'embarrass') {
+      try {
+          const things = ['I have been a bad person :(', 'I stole kitkats from the store', 'My daddy still makes my bed ;(', 'I pee my trousers when i get excited :( ', 'i watch bnha unironically', 'my mom checks my phone', `Shoot! It's past my bed time!`]
           const ranactions = things[Math.floor(Math.random() * things.length)]
           const member = message.guild.member(message.mentions.members.first())
-	      	message.channel.createWebhook(member.user.username, member.user.avatarURL)
-	      	.then(webhook => {
-        const emb = new Discord.WebhookClient(`${webhook.id}`, `${webhook.token}`)
-        emb.send(ranactions)
-        emb.delete()
-	      	}).catch(console.error)
-	    } catch (e) {
+          console.log(member.user.id)
+          if (member.user.id === "300955174225051650"){
+            message.channel.send({embed: {
+              title: "I can't embarrass myself, that's embarrassing!"
+            }})
+          }else{
+            message.channel.createWebhook(member.user.username, member.user.avatarURL)
+            .then(webhook => {
+              const emb = new Discord.WebhookClient(`${webhook.id}`, `${webhook.token}`)
+              emb.send(ranactions)
+              emb.delete()
+            }).catch(console.error)
+          }
+        }catch (e) {
           message.channel.send({embed: {
-		    title: ":warning: No user found in this guild with the name: ' " + args[0] + "'"
+            title: ":warning: No user found in this guild with the name: ' " + args[0] + "'"
           }})
-	    }
-    	}
+        }
+      }
 
 	/*
 	Command: user
@@ -1079,6 +1089,20 @@ Description: Adds custom white text to image and turns it gray
     }
   }
 
+  /*
+  if (command === 'tuna'){
+    const tuna = ['/img/tuna/','/img/tuna/'];
+    const rtuna = tuna[Math.floor(Math.random() * tuna.length)];
+    message.channel.send(
+      {
+      files: [
+        rtuna
+      ]
+    });
+  }
+  */
+
+
 	/*
 	Command: kill
 	Description: Turns off the bot, can only be used by [slem]
@@ -1109,7 +1133,7 @@ Description: Adds custom white text to image and turns it gray
 		    title: 'Available commands',
 		    description: 'Here you have a list of all commands of the bot: ',
 		    footer: {
-		        text: '- by Pal (who want to help humans :) )'
+		        text: '- by Pal (who want to help humans 😃 )'
 		    },
 		    fields: [
       {
