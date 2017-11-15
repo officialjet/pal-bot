@@ -47,6 +47,8 @@ const got = require('got')
 
 PNG = require('pngjs').PNG
 
+const bans = require('./bans.json');
+
 var request = require('request');
 
 let Jimp = require('jimp')
@@ -125,18 +127,21 @@ client.on('message', async(message) => {
   // Ignore other bots. This also makes your bot ignore itself and not get into a "botception".
   // We´re preventing DM command spams with this too.
   if (message.author.bot) return
+  //if (bans.bans.includes(message.author.id)) {message.reply('You are banned using commands.')};
   // Here we separate our "command" name, and our "arguments" for the command.
 	// e.g. if we have the message "+say Is this the real life?" , we'll get the following:
 	// command = say
 	// args = ["Is", "this", "the", "real", "life?"]
   let args = message.content.slice(config.prefix.length).trim().split(/ +/g)
 	// Make recived command all lower case.
-  const command = args.shift().toLowerCase()
+  const command = args.shift().toLowerCase();
+
+
 
 	// Content of the message in lower cases.
     	// Attention: not usable for, for example, replacing message.content in splittedContentArgs
     	// because there could be arguments which should not be in lower cases.
-  let content = message.content.toLowerCase()
+  let content = message.content.toLowerCase();
 
 	// Message used for DialogFlow, this removes the bots id to make the bot work better.
   const messageDialogFlow = message.content.replace('<@300955174225051650> ', '')
@@ -263,6 +268,7 @@ client.on('message', async(message) => {
 	    */
 
 	    if (command === 'vent' || splittedContentCommand === 'vent') {
+      if (bans.cbans.includes(message.author.id)) {message.reply('You are banned using this command.')};
       if (!args[0]) {
 		    message.channel.send('Please provide text to send.')
 		    return
@@ -651,6 +657,7 @@ Description: Adds custom white text to image and turns it gray
 	Description: Sends an anonymous message to a webhook in a log server.
 	*/
   if (command === 'vent') {
+      if (bans.cbans.includes(message.author.id)) {message.reply('You are banned using this command.')};
 	    if (!args[0]) {
       message.channel.send(':warning: **Please provide text to send.**')
       return
@@ -1030,7 +1037,7 @@ Description: Adds custom white text to image and turns it gray
   Command: embarrass
   Description: Will embarrass the tagged user!
   */
-  if (command === 'embarrass') {
+  if (command === 'embarrass' ) {
       try {
           const things = ['I have been a bad person :(', 'I stole kitkats from the store', 'My daddy still makes my bed ;(', 'I pee my trousers when i get excited :( ', 'i watch bnha unironically', 'my mom checks my phone', `Shoot! It's past my bed time!`]
           const ranactions = things[Math.floor(Math.random() * things.length)]
