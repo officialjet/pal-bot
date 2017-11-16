@@ -538,7 +538,45 @@ client.on('message', async(message) => {
     let rand = [Jimp.FONT_SANS_64_WHITE]
     return rand[Math.floor(Math.random() * rand.length)]
   }
-
+/*
+Command: sad-red
+Description: Adds custom red text to image and turns it gray
+*/
+  
+  if (command === 'sad-red') {
+	  if (!args[0]) {
+	    message.channel.send('Please provide text')	  
+	    return
+	  } 
+	  message.channel.startTyping()
+	  let url = message.author.avatarURL
+	  Jimp.read(url).then(function (image) {
+	    Jimp.loadFont(doRandomSizeRed()).then(function (font) { // load font from .fnt file
+		     	      // print a message on an image
+		              // image.print(font, 2, 2, args.join(" "), Jimp.ALIGN_FONT_CENTER); // print a message on an image with text wrapped at width
+	      image.resize(1024, 1024, Jimp.RESIZE_BEZIER)
+		    		               .grayscale()
+		                               .print(font, 20, 960, args.join(' '), Jimp.ALIGN_FONT_CENTER).getBuffer(Jimp.MIME_JPEG, onBuffer)	    
+	      let outputfile = './output/' + Math.random().toString(36).substr(2, 5) + 'sad.' + image.getExtension() // create a random name for the output file 
+	      image.write(outputfile, function () {
+		      		            // upload file
+		      message.channel.send({
+			'files': [outputfile]      
+		      }).then(function () {
+			                       // delete file
+			      		       fs.unlink(outputfile)
+			      		       console.log('SUCCESS: ' + message.author.username)
+			      		       message.channel.stopTyping()	
+	  })
+        })
+      })
+    }).catch(function (err) {
+      console.error(err)
+    })
+    function onBuffer (err, buffer) {
+	    if (err) throw err
+	    console.log(buffer)
+		      
 /*
 Command: sad-black
 Description: Adds custom black text to image and turns it gray
