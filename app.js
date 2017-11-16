@@ -682,7 +682,7 @@ Description: Adds custom white text to image and turns it gray
 	Description: Helps check if bot is alive, returns ping of bot.
 	*/
   if (command === 'ping') {
-	    const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands', 'September 11th, 2001', 'digital ocean', 'the BBC', 'my mother', 'Mr. Meeseeks', "pewdipie's firewatch stream", 'uncensored hentai. :warning: `not found`', 'Julian Assange', 'african food supplies, jk']
+	    const pings = ['the moon', 'europe', 'oceania', 'Trump', 'a baguette', 'pizza', 'the netherlands', 'September 11th, 2001', 'digital ocean', 'the BBC', 'my mother', 'Mr. Meeseeks', "pewdipie's firewatch stream", 'uncensored hentai. :warning: `not found`', 'Julian Assange', 'african food supplies, jk', 'Gay Porn Archives'] //<--- New Description BTW (Gay Pr0n Archives)
 	    const ranQuote = pings[Math.floor(Math.random() * pings.length)]
 	    // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
 	    // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip).
